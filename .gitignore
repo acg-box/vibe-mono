@@ -1,10 +1,18 @@
 # System
 .DS_Store
 
-# Integrated Development Environment
+# Integrated development environment
 .idea
 .vscode
 
-# Package Manager
+# Package manager
 ## Cargo
 target
+
+# Other cache
+## mdBook
+book
+index.html
+
+# Test data
+test-data
