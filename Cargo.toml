@@ -1,5 +1,6 @@
 [package]
 authors     = ["Xavier Lau <xavier@inv.cafe>"]
+build       = "build.rs"
 description = "<DESCRIPTION>"
 edition     = "2021"
 homepage    = "https://<NAME>.hack.ink"
