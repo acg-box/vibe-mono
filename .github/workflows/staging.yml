@@ -1,0 +1,76 @@
+name: Staging
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.target.name }} package
+    runs-on: ${{ matrix.target.os }}
+    strategy:
+      matrix:
+        target:
+          [
+            { name: x86_64-unknown-linux-gnu, os: ubuntu-latest },
+            { name: aarch64-apple-darwin, os: macos-latest },
+            { name: x86_64-apple-darwin, os: macos-latest },
+            {
+              name: x86_64-pc-windows-msvc,
+              os: windows-latest,
+              extension: .exe,
+            },
+          ]
+    steps:
+      - name: Fetch latest code
+        uses: actions/checkout@v3
+      - name: Install Rust nightly toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          target: ${{ matrix.target.name }}
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --locked --target ${{ matrix.target.name }}
+      - name: Compress
+        run: |
+          mv target/${{ matrix.target.name }}/release/<NAME>${{ matrix.target.extension }} .
+          zstd --ultra -22 -o <NAME>-${{ matrix.target.name }}.zst <NAME>${{ matrix.target.extension }}
+      - name: Collect artifact
+        run: |
+          mkdir -p artifacts
+          mv <NAME>-${{ matrix.target.name }}.zst artifacts
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: artifacts
+          path: artifacts
+
+  staging:
+    name: Staging
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+          path: artifacts
+      - name: Hash
+        run: |
+          cd artifacts
+          sha256sum * | tee ../SHA256
+          md5sum * | tee ../MD5
+          mv ../SHA256 .
+          mv ../MD5 .
+
+  clean-artifacts:
+    name: Clean artifacts
+    if: always()
+    needs: [staging]
+    steps:
+      - name: Clean artifacts
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: artifacts
+    runs-on: ubuntu-latest
