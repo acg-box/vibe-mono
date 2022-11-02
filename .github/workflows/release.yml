@@ -5,6 +5,9 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"
       - "v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+"
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
   build:
     name: Build ${{ matrix.target.name }} package
@@ -25,11 +28,8 @@ jobs:
     steps:
       - name: Fetch latest code
         uses: actions/checkout@v3
-      - name: Install Rust nightly toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          target: ${{ matrix.target.name }}
+      - name: Setup Rust toolchain
+        run: rustup target add ${{ matrix.target.name }}
       - name: Build
         uses: actions-rs/cargo@v1
         with:
