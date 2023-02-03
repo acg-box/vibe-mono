@@ -10,7 +10,8 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
-  GITHUB_CACHE_VERSION: 0
+  GITHUB_CACHE_VERSION: 1
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   RUST_BACKTRACE: full
   RUSTC_WRAPPER: sccache
@@ -55,7 +56,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all --all-features --locked
+          args: --workspace --all-features --all-targets --locked
       - name: Install cargo-nextest
         if: matrix.action == 'nextest'
         uses: taiki-e/install-action@nextest
@@ -64,4 +65,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: nextest
-          args: run --all --all-features --locked
+          args: run --workspace --all-features --all-targets --locked

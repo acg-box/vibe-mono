@@ -3,13 +3,12 @@
 
 # Integrated development environment
 .idea
+.fleet
 .vscode
 
 # Package manager
 ## Cargo
 target
-
-# Other cache
 ## mdBook
 book
 index.html
