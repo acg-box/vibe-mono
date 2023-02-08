@@ -62,4 +62,4 @@ jobs:
         uses: taiki-e/install-action@nextest
       - name: Cargo nextest
         if: matrix.action == 'nextest'
-        run: cargo nextest run --workspace --all-features --all-targets --locked
+        run: cargo nextest run --release --workspace --all-features --all-targets --locked
