@@ -1,6 +1,6 @@
 [package]
 authors     = ["Xavier Lau <xavier@inv.cafe>"]
-build       = "build.rs"
+# build       = "build.rs"
 description = "<DESCRIPTION>"
 edition     = "2021"
 homepage    = "https://<NAME>.hack.ink"
@@ -9,3 +9,7 @@ name        = "<NAME>"
 readme      = "README.md"
 repository  = "https://github.com/hack-ink/<NAME>"
 version     = "0.1.0"
+
+# [build-dependencies]
+# # crates.io
+# vergen = { version = "8.2", features = ["build", "cargo", "git", "gitcl"] }
