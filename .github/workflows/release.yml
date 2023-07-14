@@ -47,6 +47,16 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    steps:
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          discussion_category_name: Announcements
+          generate_release_notes: true
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
     needs: [build]
     steps:
       - name: Download artifacts
