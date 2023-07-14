@@ -17,7 +17,6 @@ jobs:
           [
             { name: x86_64-unknown-linux-gnu, os: ubuntu-latest },
             { name: aarch64-apple-darwin, os: macos-latest },
-            { name: x86_64-apple-darwin, os: macos-latest },
             {
               name: x86_64-pc-windows-msvc,
               os: windows-latest,
@@ -30,10 +29,10 @@ jobs:
       - name: Setup Rust toolchain
         run: rustup target add ${{ matrix.target.name }}
       - name: Build
-        run: cargo build --release --locked --target ${{ matrix.target.name }}
+        run: cargo build --profile ci-release --locked --target ${{ matrix.target.name }}
       - name: Compress
         run: |
-          mv target/${{ matrix.target.name }}/release/<NAME>${{ matrix.target.extension }} .
+          mv target/${{ matrix.target.name }}/ci-release/<NAME>${{ matrix.target.extension }} .
           zstd --ultra -22 -o <NAME>-${{ matrix.target.name }}.zst <NAME>${{ matrix.target.extension }}
       - name: Collect artifact
         run: |
