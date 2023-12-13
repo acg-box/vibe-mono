@@ -69,12 +69,12 @@ jobs:
           md5sum * | tee ../MD5
           mv ../SHA256 .
           mv ../MD5 .
-      - name: Publish
-        uses: softprops/action-gh-release@v1
-        with:
-          discussion_category_name: Announcements
-          generate_release_notes: true
-          files: artifacts/*
+      # - name: Publish
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     discussion_category_name: Announcements
+      #     generate_release_notes: true
+      #     files: artifacts/*
 
   # publish-on-crates-io:
   #   name: Publish on crates.io
