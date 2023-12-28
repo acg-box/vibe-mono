@@ -34,15 +34,16 @@ jobs:
         run: |
           mv target/${{ matrix.target.name }}/ci-release/<NAME>${{ matrix.target.extension }} .
           zstd --ultra -22 -o <NAME>-${{ matrix.target.name }}.zst <NAME>${{ matrix.target.extension }}
-      - name: Collect artifact
+      - name: Collect artifacts
         run: |
           mkdir -p artifacts
           mv <NAME>-${{ matrix.target.name }}.zst artifacts
-      - name: Upload artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4.0.0
         with:
           name: artifacts
           path: artifacts
+          retention-days: 1
 
   release:
     name: Release
@@ -99,14 +100,3 @@ jobs:
         run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
       - name: Publish
         run: .maintain/release.sh
-
-  clean-artifacts:
-    name: Clean artifacts
-    if: always()
-    needs: [release]
-    steps:
-      - name: Clean artifacts
-        uses: geekyeggo/delete-artifact@v2
-        with:
-          name: artifacts
-    runs-on: ubuntu-latest
