@@ -34,15 +34,11 @@ jobs:
         run: |
           mv target/${{ matrix.target.name }}/ci-release/<NAME>${{ matrix.target.extension }} .
           zstd --ultra -22 -o <NAME>-${{ matrix.target.name }}.zst <NAME>${{ matrix.target.extension }}
-      - name: Collect artifacts
-        run: |
-          mkdir -p artifacts
-          mv <NAME>-${{ matrix.target.name }}.zst artifacts
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
-          path: artifacts
+          name: <NAME>-${{ matrix.target.name }}
+          path: <NAME>-${{ matrix.target.name }}.zst
           retention-days: 1
 
   release:
@@ -62,11 +58,10 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
-        with:
-          name: artifacts
-          path: artifacts
       - name: Hash
         run: |
+          mkdir -p artifacts
+          mv <NAME>-*/* artifacts/
           cd artifacts
           sha256sum * | tee ../SHA256
           md5sum * | tee ../MD5
