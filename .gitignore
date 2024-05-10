@@ -2,16 +2,9 @@
 .DS_Store
 
 # Integrated development environment
-.idea
 .fleet
 .vscode
 
 # Package manager
 ## Cargo
 target
-## mdBook
-book
-index.html
-
-# Test data
-nohup.out
