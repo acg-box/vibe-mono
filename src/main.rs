@@ -1,3 +1,5 @@
+#![deny(clippy::all, missing_docs, unused_crate_dependencies)]
+
 mod cli;
 use cli::Cli;
 

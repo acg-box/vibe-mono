@@ -2,9 +2,13 @@
 .DS_Store
 
 # Integrated development environment
-.fleet
 .vscode
 
 # Package manager
 ## Cargo
 target
+## NPM
+node_modules
+
+# Test data
+tmp
