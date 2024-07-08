@@ -1,5 +1,8 @@
 name: Pages
 
+env:
+  CARGO_TERM_COLOR: always
+
 on:
   push:
     branches:
@@ -7,9 +10,6 @@ on:
   pull_request:
     branches:
       - main
-
-env:
-  CARGO_TERM_COLOR: always
 
 jobs:
   deploy:
