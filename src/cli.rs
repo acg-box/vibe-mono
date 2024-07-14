@@ -1,6 +1,7 @@
 // crates.io
 use anyhow::Result;
 use clap::Parser;
+use tracing_subscriber::{reload::Handle, EnvFilter, Registry};
 
 #[derive(Debug, Parser)]
 #[command(
@@ -20,7 +21,7 @@ pub struct Cli {
 	pub placeholder: String,
 }
 impl Cli {
-	pub fn run(&self) -> Result<()> {
+	pub fn run(&self, _log_filter_handle: Handle<EnvFilter, Registry>) -> Result<()> {
 		dbg!(self);
 
 		Ok(())
