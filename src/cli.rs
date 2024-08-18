@@ -9,6 +9,7 @@ use clap::{
 };
 use tracing_subscriber::{reload::Handle, EnvFilter, Registry};
 
+/// Cli.
 #[derive(Debug, Parser)]
 #[command(
 	version = concat!(
@@ -25,7 +26,7 @@ use tracing_subscriber::{reload::Handle, EnvFilter, Registry};
 pub struct Cli {
 	/// Placeholder.
 	#[arg(long, short, value_name = "NUM", default_value_t = String::from("Welcome to use rust-initializer!"))]
-	pub placeholder: String,
+	placeholder: String,
 }
 impl Cli {
 	pub fn run(&self, _log_filter_handle: Handle<EnvFilter, Registry>) -> Result<()> {
