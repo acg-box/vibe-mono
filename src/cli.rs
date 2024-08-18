@@ -1,6 +1,12 @@
 // crates.io
 use anyhow::Result;
-use clap::Parser;
+use clap::{
+	builder::{
+		styling::{AnsiColor, Effects},
+		Styles,
+	},
+	Parser,
+};
 use tracing_subscriber::{reload::Handle, EnvFilter, Registry};
 
 #[derive(Debug, Parser)]
@@ -14,6 +20,7 @@ use tracing_subscriber::{reload::Handle, EnvFilter, Registry};
 	),
 	about,
 	rename_all = "kebab",
+	styles = styles(),
 )]
 pub struct Cli {
 	/// Placeholder.
@@ -26,4 +33,12 @@ impl Cli {
 
 		Ok(())
 	}
+}
+
+fn styles() -> Styles {
+	Styles::styled()
+		.header(AnsiColor::Red.on_default() | Effects::BOLD)
+		.usage(AnsiColor::Red.on_default() | Effects::BOLD)
+		.literal(AnsiColor::Blue.on_default() | Effects::BOLD)
+		.placeholder(AnsiColor::Green.on_default())
 }
