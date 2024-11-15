@@ -1,5 +1,5 @@
 [package]
-authors     = ["Xavier Lau <xavier@inv.cafe>"]
+authors     = ["Xavier Lau <x@acg.box>"]
 build       = "build.rs"
 description = "<DESCRIPTION>"
 edition     = "2021"
