@@ -1,5 +1,4 @@
 // crates.io
-use anyhow::Result;
 use clap::{
 	builder::{
 		styling::{AnsiColor, Effects},
@@ -8,6 +7,8 @@ use clap::{
 	Parser,
 };
 use tracing_subscriber::{reload::Handle, EnvFilter, Registry};
+// self
+use crate::prelude::*;
 
 /// Cli.
 #[derive(Debug, Parser)]
