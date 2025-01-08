@@ -1,6 +1,3 @@
-# System.
-.DS_Store
-
 # Integrated development environment.
 .vscode
 
@@ -9,6 +6,9 @@
 target
 ## NPM.
 node_modules
+
+# System.
+.DS_Store
 
 # Test data.
 tmp
