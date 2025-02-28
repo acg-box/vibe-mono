@@ -2,7 +2,7 @@
 authors     = ["Xavier Lau <x@acg.box>"]
 build       = "build.rs"
 description = "<DESCRIPTION>"
-edition     = "2021"
+edition     = "2024"
 homepage    = "https://hack.ink/<NAME>"
 license     = "GPL-3.0"
 name        = "<NAME>"
