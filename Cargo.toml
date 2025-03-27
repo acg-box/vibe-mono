@@ -8,6 +8,7 @@ license     = "GPL-3.0"
 name        = "<NAME>"
 readme      = "README.md"
 repository  = "https://github.com/hack-ink/<NAME>"
+resolver    = "3"
 version     = "0.1.0"
 
 [profile.ci-dev]
