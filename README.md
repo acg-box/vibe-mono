@@ -1,29 +1,34 @@
 <div align="center">
 
 # <NAME>
+
 ### <DESCRIPTION>
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Docs](https://img.shields.io/docsrs/<NAME>)](https://docs.rs/<NAME>)
-[![Checks](https://github.com/hack-ink/<NAME>/actions/workflows/checks.yml/badge.svg?branch=main)](https://github.com/hack-ink/<NAME>/actions/workflows/checks.yml)
+[![Checks](https://github.com/hack-ink/<NAME>/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/hack-ink/<NAME>/actions/workflows/rust.yml)
 [![Release](https://github.com/hack-ink/<NAME>/actions/workflows/release.yml/badge.svg)](https://github.com/hack-ink/<NAME>/actions/workflows/release.yml)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hack-ink/<NAME>)](https://github.com/hack-ink/<NAME>/tags)
 [![GitHub last commit](https://img.shields.io/github/last-commit/hack-ink/<NAME>?color=red&style=plastic)](https://github.com/hack-ink/<NAME>)
 [![GitHub code lines](https://tokei.rs/b1/github/hack-ink/<NAME>)](https://github.com/hack-ink/<NAME>)
 </div>
 
-
 ## Feature Highlights
+
 ### TODO
+
 TODO
 
 ## Status
+
 TODO
 
-
 ## Usage
+
 ### Installation
+
 #### Build from Source
+
 ```sh
 # Clone the repository.
 git clone https://github.com/hack-ink/<NAME>
@@ -50,6 +55,7 @@ cargo bundle --release
 ```
 
 #### Download Pre-built Binary
+
 - **macOS**
   - Download the latest pre-built binary from [GitHub Releases](https://github.com/hack-ink/<NAME>/releases/latest).
 - **Windows**
@@ -58,22 +64,27 @@ cargo bundle --release
   - TODO
 
 ### Configuration
+
 #### TODO
+
 TODO
 
 ### Interaction
+
 TODO
 
 ### Update
-TODO
 
+TODO
 
 ## Development
+
 ### Architecture
+
 TODO
 
-
 ## Support Me
+
 If you find this project helpful and would like to support its development, you can buy me a coffee!
 
 Your support is greatly appreciated and motivates me to keep improving this project.
@@ -91,18 +102,19 @@ Your support is greatly appreciated and motivates me to keep improving this proj
 
 Thank you for your support!
 
-
 ## Appreciation
+
 We would like to extend our heartfelt gratitude to the following projects and contributors:
+
 - The Rust community for their continuous support and development of the Rust ecosystem.
 
-
 ## Additional Acknowledgements
-- TODO
 
+- TODO
 
 <div align="right">
 
 ### License
+
 <sup>Licensed under [GPL-3.0](LICENSE).</sup>
 </div>
