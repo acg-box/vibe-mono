@@ -26,25 +26,31 @@ jobs:
     steps:
       - name: Fetch latest code
         uses: actions/checkout@v4
+
       - name: Setup Rust toolchain
         run: rustup target add ${{ matrix.target.name }}
+
       - name: Build
         run: cargo build --profile ci-release --locked --target ${{ matrix.target.name }}
+
       - name: Pack (macOS)
         if: matrix.target.os == 'macos-latest'
         run: |
           mv target/${{ matrix.target.name }}/ci-release/<NAME> .
           zip <NAME>-${{ matrix.target.name }}.zip <NAME>
+
       - name: Pack (Windows)
         if: matrix.target.os == 'windows-latest'
         run: |
           mv target/${{ matrix.target.name }}/ci-release/<NAME>.exe .
           Compress-Archive -Path <NAME>.exe -DestinationPath <NAME>-${{ matrix.target.name }}.zip
+
       - name: Pack (Linux)
         if: matrix.target.os == 'ubuntu-latest'
         run: |
           mv target/${{ matrix.target.name }}/ci-release/<NAME> .
           tar -czvf <NAME>-${{ matrix.target.name }}.tar.gz <NAME>
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -69,6 +75,7 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
+
       - name: Hash
         run: |
           mkdir -p artifacts
@@ -78,6 +85,7 @@ jobs:
           md5sum * | tee ../MD5
           mv ../SHA256 .
           mv ../MD5 .
+
       - name: Publish
         uses: softprops/action-gh-release@v2
         with:
@@ -91,7 +99,9 @@ jobs:
     steps:
       - name: Fetch latest code
         uses: actions/checkout@v4
+
       - name: Login
         run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
       - name: Publish
         run: cargo publish --locked

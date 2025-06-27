@@ -24,25 +24,31 @@ jobs:
     steps:
       - name: Fetch latest code
         uses: actions/checkout@v4
+
       - name: Setup Rust toolchain
         run: rustup target add ${{ matrix.target.name }}
+
       - name: Build
         run: cargo build --profile ci-release --locked --target ${{ matrix.target.name }}
+
       - name: Pack (macOS)
         if: matrix.target.os == 'macos-latest'
         run: |
           mv target/${{ matrix.target.name }}/ci-release/<NAME> .
           zip <NAME>-${{ matrix.target.name }}.zip <NAME>
+
       - name: Pack (Windows)
         if: matrix.target.os == 'windows-latest'
         run: |
           mv target/${{ matrix.target.name }}/ci-release/<NAME>.exe .
           Compress-Archive -Path <NAME>.exe -DestinationPath <NAME>-${{ matrix.target.name }}.zip
+
       - name: Pack (Linux)
         if: matrix.target.os == 'ubuntu-latest'
         run: |
           mv target/${{ matrix.target.name }}/ci-release/<NAME> .
           tar -czvf <NAME>-${{ matrix.target.name }}.tar.gz <NAME>
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -70,6 +76,7 @@ jobs:
         with:
           name: artifacts
           path: artifacts
+
       - name: Hash
         run: |
           mkdir -p artifacts
