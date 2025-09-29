@@ -3,7 +3,7 @@
   "name": "any",
   "target": "branch",
   "source_type": "Repository",
-  "source": "hack-ink/openagent",
+  "source": "hack-ink/rust-initializer",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
