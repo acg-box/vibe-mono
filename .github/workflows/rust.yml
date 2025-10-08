@@ -1,5 +1,8 @@
 name: Rust CI
 
+permissions:
+  contents: read
+
 env:
   CACHE_VERSION: 0
 
@@ -17,6 +20,8 @@ on:
 
 jobs:
   cargo-checks:
+    permissions:
+      actions: write
     name: Task cargo ${{ matrix.action }}
     runs-on: ubuntu-latest
 
