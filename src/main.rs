@@ -17,8 +17,8 @@ use app_dirs2::{AppDataType, AppInfo};
 use clap::Parser;
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
 use tracing_subscriber::{
-	filter::LevelFilter, fmt, layer::SubscriberExt, reload::Layer, util::SubscriberInitExt,
-	EnvFilter,
+	EnvFilter, filter::LevelFilter, fmt, layer::SubscriberExt, reload::Layer,
+	util::SubscriberInitExt,
 };
 
 const APP_INFO: AppInfo = AppInfo { name: "<NAME>", author: "hack.ink" };
