@@ -48,7 +48,7 @@ jobs:
         if: matrix.action == 'clippy'
         uses: giraffate/clippy-action@v1
         with:
-          clippy_flags: --workspace --all-features --all-targets --locked
+          clippy_flags: --workspace --all-features --all-targets --locked -- -Dwarnings
 
       - name: Cargo fmt
         if: matrix.action == 'fmt'
