@@ -64,7 +64,7 @@ jobs:
       - name: Cargo nextest
         if: matrix.action == 'nextest'
         run: |
-          cargo nextest run --no-tests=pass --cargo-profile ci-dev --workspace --all-features --all-targets --locked
+          cargo nextest run --no-tests pass --cargo-profile ci-dev --workspace --all-features --all-targets --locked
 
       - name: Fast fail
         if: failure()
