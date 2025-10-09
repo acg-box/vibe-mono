@@ -18,6 +18,10 @@ on:
     branches: [main]
   merge_group:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   cargo-checks:
     permissions:
@@ -65,11 +69,3 @@ jobs:
         if: matrix.action == 'nextest'
         run: |
           cargo nextest run --no-tests pass --cargo-profile ci-dev --workspace --all-features --all-targets --locked
-
-      - name: Fast fail
-        if: failure()
-        uses: vishnudxb/cancel-workflow@v1.2
-        with:
-          repo: hack-ink/<NAME>
-          workflow_id: ${{ github.run_id }}
-          access_token: ${{ github.token }}
