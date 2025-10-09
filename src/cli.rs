@@ -31,7 +31,7 @@ pub struct Cli {
 }
 impl Cli {
 	pub fn run(&self, _log_filter_handle: Handle<EnvFilter, Registry>) -> Result<()> {
-		dbg!(self);
+		tracing::info!("{self:?}");
 
 		Ok(())
 	}
