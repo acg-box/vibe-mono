@@ -5,6 +5,7 @@
 ## Cargo.
 target
 ## Python
+.venv
 __pycache__
 ## NPM.
 node_modules
