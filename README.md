@@ -6,11 +6,12 @@
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Docs](https://img.shields.io/docsrs/<NAME>)](https://docs.rs/<NAME>)
-[![Checks](https://github.com/hack-ink/<NAME>/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/hack-ink/<NAME>/actions/workflows/rust.yml)
+[![Rust](https://github.com/hack-ink/<NAME>/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/hack-ink/<NAME>/actions/workflows/rust.yml)
 [![Release](https://github.com/hack-ink/<NAME>/actions/workflows/release.yml/badge.svg)](https://github.com/hack-ink/<NAME>/actions/workflows/release.yml)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hack-ink/<NAME>)](https://github.com/hack-ink/<NAME>/tags)
 [![GitHub last commit](https://img.shields.io/github/last-commit/hack-ink/<NAME>?color=red&style=plastic)](https://github.com/hack-ink/<NAME>)
 [![GitHub code lines](https://tokei.rs/b1/github/hack-ink/<NAME>)](https://github.com/hack-ink/<NAME>)
+
 </div>
 
 ## Feature Highlights
@@ -57,11 +58,11 @@ cargo bundle --release
 #### Download Pre-built Binary
 
 - **macOS**
-  - Download the latest pre-built binary from [GitHub Releases](https://github.com/hack-ink/<NAME>/releases/latest).
+    - Download the latest pre-built binary from [GitHub Releases](https://github.com/hack-ink/<NAME>/releases/latest).
 - **Windows**
-  - TODO
+    - TODO
 - **Unix**
-  - TODO
+    - TODO
 
 ### Configuration
 
@@ -90,15 +91,15 @@ If you find this project helpful and would like to support its development, you 
 Your support is greatly appreciated and motivates me to keep improving this project.
 
 - **Fiat**
-  - [Ko-fi](https://ko-fi.com/hack_ink)
-  - [爱发电](https://afdian.com/a/hack_ink)
+    - [Ko-fi](https://ko-fi.com/hack_ink)
+    - [爱发电](https://afdian.com/a/hack_ink)
 - **Crypto**
-  - **Bitcoin**
-    - `bc1pedlrf67ss52md29qqkzr2avma6ghyrt4jx9ecp9457qsl75x247sqcp43c`
-  - **Ethereum**
-    - `0x3e25247CfF03F99a7D83b28F207112234feE73a6`
-  - **Polkadot**
-    - `156HGo9setPcU2qhFMVWLkcmtCEGySLwNqa3DaEiYSWtte4Y`
+    - **Bitcoin**
+        - `bc1pedlrf67ss52md29qqkzr2avma6ghyrt4jx9ecp9457qsl75x247sqcp43c`
+    - **Ethereum**
+        - `0x3e25247CfF03F99a7D83b28F207112234feE73a6`
+    - **Polkadot**
+        - `156HGo9setPcU2qhFMVWLkcmtCEGySLwNqa3DaEiYSWtte4Y`
 
 Thank you for your support!
 
@@ -117,4 +118,5 @@ We would like to extend our heartfelt gratitude to the following projects and co
 ### License
 
 <sup>Licensed under [GPL-3.0](LICENSE).</sup>
+
 </div>
