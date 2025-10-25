@@ -1,25 +1,27 @@
-# AI.
+# AI
 .codex
 .specify
 
-# Integrated development environment.
+# Integrated Development Environment
 .vscode
 
-# Language specifics.
-## Cargo.
-target
+# Language Specifics
+
+## JavaScript/TypeScript
+node_modules
+
 ## Python
 __pycache__
 .ruff_cache
-.venv
-## NPM.
-node_modules
+.venv/
 
-# System.
+## Rust
+target
+
+# System
 .DS_Store
 
-# Test data.
+# General Ignores
 *.bak
 .env
 tmp
-
