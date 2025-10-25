@@ -13,7 +13,7 @@ node_modules
 ## Python
 __pycache__
 .ruff_cache
-.venv/
+.venv
 
 ## Rust
 target
