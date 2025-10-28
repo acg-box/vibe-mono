@@ -23,7 +23,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  cargo-checks:
+  rust-checks:
     permissions:
       actions: write
     name: Task cargo ${{ matrix.action }}
