@@ -24,4 +24,5 @@ target
 # General Ignores
 *.bak
 .env
+.orchestrator
 tmp
