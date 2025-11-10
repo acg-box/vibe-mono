@@ -20,7 +20,6 @@ use crate::prelude::*;
 		"-",
 		env!("VERGEN_CARGO_TARGET_TRIPLE"),
 	),
-	about,
 	rename_all = "kebab",
 	styles = styles(),
 )]
