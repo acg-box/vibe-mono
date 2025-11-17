@@ -1,9 +1,11 @@
 [package]
 authors     = ["Xavier Lau <x@acg.box>"]
 build       = "build.rs"
+categories  = []
 description = "<DESCRIPTION>"
 edition     = "2024"
 homepage    = "https://hack.ink/<NAME>"
+keywords    = []
 license     = "GPL-3.0"
 name        = "rust-initializer"
 readme      = "README.md"
