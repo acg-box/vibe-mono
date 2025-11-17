@@ -1,5 +1,6 @@
 # AI
 .codex
+.orchestrator
 .specify
 
 # Editor
@@ -12,18 +13,24 @@ node_modules
 
 ## Python
 __pycache__
-.pytest_cache
 .ruff_cache
 .venv
 
 ## Rust
 target
+debug
+release
+*.rs.bk
+*.rlib
+*.prof*
+.idea/
 
 # System
 .DS_Store
 
 # General Ignores
 *.bak
+.env*
+*.log
 .env
-.orchestrator
 tmp
