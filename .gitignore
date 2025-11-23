@@ -20,17 +20,12 @@ __pycache__
 target
 debug
 release
-*.rs.bk
-*.rlib
-*.prof*
-.idea/
 
 # System
 .DS_Store
 
 # General Ignores
-*.bak
-.env*
-*.log
-.env
 tmp
+*.bak
+*.log
+.env*
