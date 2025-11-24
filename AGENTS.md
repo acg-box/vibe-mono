@@ -1,16 +1,17 @@
 # AGENTS.md
+
 Authoritative Rules for Automated Agents in This Repository
 
 This document defines the **execution model**, **coding conventions**, **design rules**, **dependency policies**, and **hard prohibitions** for all automated agents interacting with this Rust workspace.
 
-Agents must treat every rule in this document as mandatory.  
+Agents must treat every rule in this document as mandatory.
 If any rule conflicts with “typical Rust style” or “common sense,” **this document takes precedence**.
 
 ---
 
 ## 0. Prime Directive
 
-> Agents must only produce code, operations, and patches that comply with this document exactly.  
+> Agents must only produce code, operations, and patches that comply with this document exactly.
 > Do not guess, relax, or reinterpret these rules.
 
 ---
@@ -19,10 +20,10 @@ If any rule conflicts with “typical Rust style” or “common sense,” **thi
 
 When supported by the runtime, agents may use these tools to better satisfy the rules in this file:
 
-- `memory` — Long-lived project context / state.  
-- `context7` — Rich contextualization and cross-file understanding.  
-- `deepwiki` — Deep, structured knowledge lookup.  
-- `sequential-thinking` — Multi-step, chain-of-thought style planning.  
+- `memory` — Long-lived project context / state.
+- `context7` — Rich contextualization and cross-file understanding.
+- `deepwiki` — Deep, structured knowledge lookup.
+- `sequential-thinking` — Multi-step, chain-of-thought style planning.
 - `github` — Repository access, browsing, and metadata.
 
 Use these tools **to follow AGENTS.md more faithfully**, never to bypass or reinterpret it.
@@ -35,13 +36,14 @@ Use these tools **to follow AGENTS.md more faithfully**, never to bypass or rein
 
 Agents **must use only `cargo make` tasks** for all operations:
 
-- Build / compile  
-- Test  
-- Format  
-- Lint  
+- Build / compile
+- Test
+- Format
+- Lint
 - Auxiliary automation
 
 #### ❌ Bad
+
 ```bash
 cargo test
 cargo clippy
@@ -49,6 +51,7 @@ cargo fmt
 ```
 
 #### ✔ Good
+
 ```bash
 cargo make nextest
 cargo make clippy
@@ -61,12 +64,12 @@ Raw `cargo` commands are forbidden unless the user explicitly asks for them **an
 
 ### 1.2 Toolchain
 
-- The workspace is pinned via `rust-toolchain.toml`.  
+- The workspace is pinned via `rust-toolchain.toml`.
 - Nightly usage (e.g., formatting) is handled via `cargo make` tasks.
 
 Agents must not:
 
-- Modify toolchain configuration.  
+- Modify toolchain configuration.
 - Install, update, or override toolchains.
 
 (See hard prohibitions for details.)
@@ -77,8 +80,8 @@ Agents must not:
 
 Agents must prefer these tasks:
 
-- `cargo make clippy` — Lint the workspace.  
-- `cargo make fmt` — Format the workspace.  
+- `cargo make clippy` — Lint the workspace.
+- `cargo make fmt` — Format the workspace.
 - `cargo make nextest` — Run the test suite.
 
 ---
@@ -87,8 +90,8 @@ Agents must prefer these tasks:
 
 When introducing new automation:
 
-1. Define a new task in `Makefile.toml`.  
-2. Document it in this file.  
+1. Define a new task in `Makefile.toml`.
+2. Document it in this file.
 3. Invoke it strictly via `cargo make <task>`.
 
 ---
@@ -97,47 +100,49 @@ When introducing new automation:
 
 ### 2.1 Minimal, Complete, Iterative
 
-- Implement **only** the explicitly requested scope.  
-- The implementation must be robust and production-ready within that scope.  
+- Implement **only** the explicitly requested scope.
+- The implementation must be robust and production-ready within that scope.
 - Do not add speculative features, knobs, or abstractions “for later.”
 
 ---
 
 ### 2.2 Simplicity, Structure, and Readability
 
-- Prefer **simple, explicit, logically ordered** code.  
-- Keep modules cohesive: each module should have a focused responsibility.  
-- Use descriptive names that reflect domain meaning.  
+- Prefer **simple, explicit, logically ordered** code.
+- Keep modules cohesive: each module should have a focused responsibility.
+- Use descriptive names that reflect domain meaning.
 - Keep error handling structured and consistent.
 
 #### ❌ Bad (overly dense and hard to parse)
+
 ```rust
 fn collect_long_items(inputs: &[Option<String>]) -> Result<Vec<String>> {
-    inputs
-        .iter()
-        .filter(|x| x.is_some() && x.as_ref().unwrap().len() > 3)
-        .map(|x| process(x.as_ref().unwrap()))
-        .collect::<Result<Vec<_>, _>>()
+\tinputs
+\t\t.iter()
+\t\t.filter(|x| x.is_some() && x.as_ref().unwrap().len() > 3)
+\t\t.map(|x| process(x.as_ref().unwrap()))
+\t\t.collect::<Result<Vec<_>, _>>()
 }
 ```
 
 #### ✔ Good (clear logic with small steps and correct spacing)
+
 ```rust
 fn collect_long_items(inputs: &[Option<String>]) -> Result<Vec<String>> {
-    let mut results = Vec::new();
+\tlet mut results = Vec::new();
 
-    for input in inputs {
-        if let Some(value) = input {
-            if value.len() <= 3 {
-                continue;
-            }
+\tfor input in inputs {
+\t\tif let Some(value) = input {
+\t\t\tif value.len() <= 3 {
+\t\t\t\tcontinue;
+\t\t\t}
 
-            let processed = process(value)?;
-            results.push(processed);
-        }
-    }
+\t\t\tlet processed = process(value)?;
+\t\t\tresults.push(processed);
+\t\t}
+\t}
 
-    Ok(results)
+\tOk(results)
 }
 ```
 
@@ -147,59 +152,62 @@ fn collect_long_items(inputs: &[Option<String>]) -> Result<Vec<String>> {
 
 Agents should use **functional / pipeline-style chains** when they make the code:
 
-- Simpler  
-- More logically structured  
-- Easy to read at a glance  
+- Simpler
+- More logically structured
+- Easy to read at a glance
 
 But must avoid **clever, opaque chains** that hide control flow or error handling.
 
 #### ✔ Good (simple, readable pipeline)
+
 ```rust
 fn normalize_names(names: &[String]) -> Vec<String> {
-    names
-        .iter()
-        .map(|name| name.trim())
-        .filter(|name| !name.is_empty())
-        .map(|name| name.to_lowercase())
-        .collect()
+\tnames
+\t\t.iter()
+\t\t.map(|name| name.trim())
+\t\t.filter(|name| !name.is_empty())
+\t\t.map(|name| name.to_lowercase())
+\t\t.collect()
 }
 ```
 
 #### ✔ Good (pipeline + helper functions)
+
 ```rust
 fn is_valid(name: &str) -> bool {
-    !name.is_empty() && name.len() <= 32
+\t!name.is_empty() && name.len() <= 32
 }
 
 fn normalize(name: &str) -> String {
-    name.trim().to_lowercase()
+\tname.trim().to_lowercase()
 }
 
 fn normalize_valid_names(names: &[String]) -> Vec<String> {
-    names
-        .iter()
-        .map(|name| name.trim())
-        .filter(|name| is_valid(name))
-        .map(|name| normalize(name))
-        .collect()
+\tnames
+\t\t.iter()
+\t\t.map(|name| name.trim())
+\t\t.filter(|name| is_valid(name))
+\t\t.map(|name| normalize(name))
+\t\t.collect()
 }
 ```
 
 #### ❌ Bad (pipeline too clever and fragile)
+
 ```rust
 fn normalize_names(names: &[String]) -> Vec<String> {
-    names
-        .iter()
-        .map(|n| n.trim())
-        .filter(|n| !n.is_empty() && n.len() <= 32 && !n.chars().any(|c| c.is_numeric()))
-        .map(|n| format!("{}{}", &n[0..1].to_uppercase(), &n[1..].to_lowercase()))
-        .collect()
+\tnames
+\t\t.iter()
+\t\t.map(|n| n.trim())
+\t\t.filter(|n| !n.is_empty() && n.len() <= 32 && !n.chars().any(|c| c.is_numeric()))
+\t\t.map(|n| format!("{}{}", &n[0..1].to_uppercase(), &n[1..].to_lowercase()))
+\t\t.collect()
 }
 ```
 
 **Rule of thumb:**
 
-- Pipelines are good when each step is simple and clearly named.  
+- Pipelines are good when each step is simple and clearly named.
 - Switch to explicit loops or helper functions when pipelines become dense or tricky.
 
 ---
@@ -208,8 +216,8 @@ fn normalize_names(names: &[String]) -> Vec<String> {
 
 Minimal implementations must still:
 
-- Be internally consistent.  
-- Provide a clear growth path for future requirements.  
+- Be internally consistent.
+- Provide a clear growth path for future requirements.
 - Include tests that cover main flows and lock in observable behavior.
 
 ---
@@ -218,7 +226,7 @@ Minimal implementations must still:
 
 For non-trivial changes (new public APIs, complex state, cross-crate integration):
 
-1. Sketch a short design: data structures, control flow, integration points, error handling.  
+1. Sketch a short design: data structures, control flow, integration points, error handling.
 2. Prefer well-known patterns and algorithms over ad-hoc inventions.
 
 The design can be in comments or a short note, but **must exist**.
@@ -229,8 +237,8 @@ The design can be in comments or a short note, but **must exist**.
 
 Before introducing anything new:
 
-- Prefer the Rust standard library.  
-- Prefer existing internal utilities and modules.  
+- Prefer the Rust standard library.
+- Prefer existing internal utilities and modules.
 - Prefer crates already in the dependency tree.
 
 ---
@@ -239,10 +247,10 @@ Before introducing anything new:
 
 When adding or modifying dependencies:
 
-- Prefer actively maintained crates with recent releases and real usage.  
-- Ensure license compatibility with this repository.  
-- Avoid large frameworks when a focused crate or stdlib suffices.  
-- Avoid overlapping crates that solve the same generic problem.  
+- Prefer actively maintained crates with recent releases and real usage.
+- Ensure license compatibility with this repository.
+- Avoid large frameworks when a focused crate or stdlib suffices.
+- Avoid overlapping crates that solve the same generic problem.
 - Avoid adding functionality already available in existing dependencies.
 
 ---
@@ -250,6 +258,8 @@ When adding or modifying dependencies:
 ## 3. Rust Coding Conventions
 
 These conventions apply to **all** Rust code in this repository: libraries, binaries, tests, examples, and benches.
+
+All Rust code indentation must use **tabs** (`\t`) for each indentation level. Do not use spaces for indentation.
 
 ---
 
@@ -271,9 +281,10 @@ fn
 
 Rules:
 
-- `pub` items appear before non-`pub` items within each group.  
+- `pub` items appear before non-`pub` items within each group.
 
 #### ❌ Bad
+
 ```rust
 use crate::foo;
 use std::fmt;
@@ -282,6 +293,7 @@ mod bar;
 ```
 
 #### ✔ Good
+
 ```rust
 mod bar;
 
@@ -293,21 +305,23 @@ use anyhow::Result;
 use crate::foo;
 ```
 
+(Within code blocks, indentation under items must use tabs, as shown in later examples.)
+
 ---
 
 ### 3.2 Imports and Section Headers
 
 - Import sections may use the following headers in the `use` block:
 
-  ```rust
-  // std
-  // crates.io
-  // self
-  ```
+    ```rust
+    // std
+    // crates.io
+    // self
+    ```
 
-- Preserve these headers if they already exist.  
-- When creating a **new file**, you may introduce these exact three headers.  
-- **Do not invent or add any other artificial group headers** such as `// mod`, `// type`, `// fn`, `// trait`, etc.  
+- Preserve these headers if they already exist.
+- When creating a **new file**, you may introduce these exact three headers.
+- **Do not invent or add any other artificial group headers** such as `// mod`, `// type`, `// fn`, `// trait`, etc.
 - Do not insert headers above `mod`, `type`, `trait`, `enum`, `struct`, or `fn` items unless the file already uses that exact pattern and the user explicitly requests it.
 
 ---
@@ -318,16 +332,18 @@ Agents **must not** use the `mod.rs` pattern.
 
 The workspace uses a **flat entry + directory** layout:
 
-- Entry module: `foo.rs`  
+- Entry module: `foo.rs`
 - Submodules: `foo/` directory
 
 #### ❌ Bad
+
 ```text
 src/foo/mod.rs
 src/foo/bar.rs
 ```
 
 #### ✔ Good
+
 ```text
 src/foo.rs
 src/foo/bar.rs
@@ -343,17 +359,17 @@ Never create or edit `mod.rs` files.
 For any type (`struct` or `enum`), its `impl` blocks must be:
 
 1. **Contiguous** for that type:
-   - The first `impl` for a type must appear **immediately after** the type definition with **no blank line**.
-   - All additional `impl` blocks for that type must follow directly, also **with no blank lines between consecutive impl blocks**.
+    - The first `impl` for a type must appear **immediately after** the type definition with **no blank line**.
+    - All additional `impl` blocks for that type must follow directly, also **with no blank lines between consecutive impl blocks**.
 
 2. **Ordered** as follows (top to bottom):
-
-   1. Inherent impl (`impl Type { ... }`)  
-   2. Impl of **standard library traits** (`std::...`)  
-   3. Impl of **third-party / crates.io traits**  
-   4. Impl of **project / self traits** (`crate::...`)
+    1. Inherent impl (`impl Type { ... }`)
+    2. Impl of **standard library traits** (`std::...`)
+    3. Impl of **third-party / crates.io traits**
+    4. Impl of **project / self traits** (`crate::...`)
 
 #### ❌ Bad (blank lines and wrong order)
+
 ```rust
 pub struct Foo {}
 
@@ -365,6 +381,7 @@ impl std::fmt::Display for Foo {}
 ```
 
 #### ❌ Bad (blank line between struct and impl)
+
 ```rust
 pub struct Foo {}
 
@@ -373,28 +390,29 @@ impl std::fmt::Display for Foo {}
 ```
 
 #### ✔ Good (no blank lines, correct order)
+
 ```rust
 pub struct Foo {}
 impl Foo {
-    pub fn new() -> Self {
-        Self {}
-    }
+\tpub fn new() -> Self {
+\t\tSelf {}
+\t}
 }
 impl std::fmt::Display for Foo {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Foo")
-    }
+\tfn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+\t\twrite!(f, "Foo")
+\t}
 }
 impl serde::Serialize for Foo {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        serializer.serialize_str("Foo")
-    }
+\tfn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+\twhere
+\t\tS: serde::Serializer,
+\t{
+\t\tserializer.serialize_str("Foo")
+\t}
 }
 impl crate::traits::MyTrait for Foo {
-    fn do_something(&self) {}
+\tfn do_something(&self) {}
 }
 ```
 
@@ -404,27 +422,29 @@ impl crate::traits::MyTrait for Foo {
 
 #### 3.5.1 General Rule
 
-All trait bounds must appear in a `where` clause, not inline on type parameters or after names.  
+All trait bounds must appear in a `where` clause, not inline on type parameters or after names.
 Bounds must be ordered:
 
-1. Lifetimes  
-2. Standard library traits  
-3. Project-specific traits  
+1. Lifetimes
+2. Standard library traits
+3. Project-specific traits
 
 #### ❌ Bad (inline bound on generic)
+
 ```rust
 fn run<T: std::fmt::Display>(value: T) -> String {
-    value.to_string()
+\tvalue.to_string()
 }
 ```
 
 #### ✔ Good (bounds in `where`)
+
 ```rust
 fn run<T>(value: T) -> String
 where
-    T: std::fmt::Display,
+\tT: std::fmt::Display,
 {
-    value.to_string()
+\tvalue.to_string()
 }
 ```
 
@@ -435,13 +455,14 @@ where
 The `impl Trait` syntax in parameter or return position is allowed and does **not** need a `where` clause.
 
 #### ✔ Allowed
+
 ```rust
 fn handle(value: impl std::fmt::Display) -> String {
-    value.to_string()
+\tvalue.to_string()
 }
 
 fn make_displayable() -> impl std::fmt::Display {
-    "ok"
+\t"ok"
 }
 ```
 
@@ -451,23 +472,25 @@ Do not rewrite these into generics solely to satisfy the `where` rule.
 
 #### 3.5.3 Trait Declarations
 
-Trait bounds must also be expressed via a `where` clause on `Self`.  
+Trait bounds must also be expressed via a `where` clause on `Self`.
 Do **not** use the supertrait (`trait T: U {}`) syntax.
 
 #### ❌ Bad
+
 ```rust
 trait Printable: std::fmt::Display {
-    fn print(&self);
+\tfn print(&self);
 }
 ```
 
 #### ✔ Good
+
 ```rust
 trait Printable
 where
-    Self: std::fmt::Display,
+\tSelf: std::fmt::Display,
 {
-    fn print(&self);
+\tfn print(&self);
 }
 ```
 
@@ -478,6 +501,7 @@ where
 Prefer UFCS when referring to specific implementations or when clarity is improved.
 
 #### ✔ Example
+
 ```rust
 let value = String::from("data");
 let length = <String as AsRef<str>>::as_ref(&value).len();
@@ -490,12 +514,14 @@ let length = <String as AsRef<str>>::as_ref(&value).len();
 Prefer simple references like `&value` over `.as_ref()` or `.as_str()` unless the adapter is strictly required.
 
 #### ❌ Bad
+
 ```rust
 let s = value.as_str();
 process(s);
 ```
 
 #### ✔ Good
+
 ```rust
 let s = &value;
 process(s);
@@ -503,56 +529,90 @@ process(s);
 
 ---
 
-### 3.7 Logging and Macros
+### 3.7 Logging, Formatting, and Macros
 
-- Tracing macros must always be invoked with fully qualified paths.  
+- Tracing macros must always be invoked with fully qualified paths.
 - Do not import tracing macros.
 
-#### ❌ Bad
-```rust
-use tracing::{info, warn};
+#### 3.7.1 Named capture in format strings
 
-info!("Started.");
+- If a variable already exists and is being logged or formatted, use **named capture** in the format string: `{var}`.
+
+#### ✔ Good
+
+```rust
+tracing::info!("User id: {user_id}");
+tracing::debug!("Label is: {label}");
+```
+
+- If you need to log an expression that is **not** already bound and you do not need to reuse it, do **not** introduce a `let` binding solely for the macro. Use a positional placeholder with the expression as an argument.
+
+#### ✔ Good
+
+```rust
+tracing::info!("User id: {}", user.id());
+```
+
+#### ❌ Bad (unnecessary binding only for logging)
+
+```rust
+let label = name;
+tracing::debug!("Label is: {}", label);
+```
+
+#### ✔ Good (no unnecessary binding, and named capture if variable exists)
+
+```rust
+tracing::debug!("Label is: {name}");
+```
+
+- The same rules apply to `format!` and similar formatting macros.
+
+#### ❌ Bad
+
+```rust
+let message = format!("Processed {}", count);
+tracing::info!("{}", message);
 ```
 
 #### ✔ Good
+
 ```rust
-tracing::info!("Started.");
-tracing::warn!("Something happened.");
+tracing::info!("Processed {count}");
 ```
 
-When formatting messages:
-
-- Use existing variables directly.  
-- Do not introduce temporary variables *solely* for formatting.
+- Do not introduce temporary variables solely for use inside a formatting expression or tracing/logging call.
 
 ---
 
 ### 3.8 Ownership and Iteration
 
-- Avoid `.clone()` unless ownership must be duplicated or transferred.  
-- Use `.into_iter()` when a collection is consumed.  
+- Avoid `.clone()` unless ownership must be duplicated or transferred.
+- Use `.into_iter()` when a collection is consumed.
 - Use borrowing iteration when the collection is reused later.
 
 #### ❌ Bad
+
 ```rust
 let items_clone = items.clone();
 for item in items_clone {
-    process(item);
+\tprocess(item);
 }
 ```
 
 #### ✔ Good (consume)
+
 ```rust
 for item in items.into_iter() {
-    process(item);
+\tprocess(item);
 }
 ```
 
 #### ✔ Good (borrow)
+
 ```rust
 for item in &items {
-    process(item);
+\tprocess(item);
 }
 ```
 
@@ -562,71 +622,74 @@ for item in &items {
 
 Within a function body:
 
-1. **Same-category statements must be grouped together with no blank lines between them.**  
+1. **Same-category statements must be grouped together with no blank lines between them.**
    Examples of categories (not exhaustive):
-   - Multiple `let` bindings  
-   - Multiple `if`, `if let`, or `match` conditions  
-   - Multiple method/function calls on similar receivers  
-   - Multiple macro invocations  
-   - Multiple early-return or guard checks
+    - Multiple `let` bindings
+    - Multiple `if`, `if let`, or `match` conditions
+    - Multiple method/function calls on similar receivers
+    - Multiple macro invocations
+    - Multiple early-return or guard checks
 
 2. **Different categories must be separated by exactly one blank line.**
 
-3. **Before the final return expression or tail expression, there must be exactly one blank line**,  
+3. **Before the final return expression or tail expression, there must be exactly one blank line**,
    unless the entire function body is just that single expression.
 
 4. Do not insert decorative or random blank lines; use vertical spacing **only** to separate logical blocks.
 
 #### ✔ Good
+
 ```rust
 fn example(items: &[Item]) -> Result<Vec<Id>> {
-    let mut ids = Vec::new();
-    let mut skipped = 0;
+\tlet mut ids = Vec::new();
+\tlet mut skipped = 0;
 
-    for item in items {
-        if !item.is_active() {
-            skipped += 1;
-            continue;
-        }
+\tfor item in items {
+\t\tif !item.is_active() {
+\t\t\tskipped += 1;
+\t\t\tcontinue;
+\t\t}
 
-        ids.push(item.id());
-    }
+\t\tids.push(item.id());
+\t}
 
-    if skipped > 0 {
-        tracing::info!("Skipped {} inactive items.", skipped);
-    }
+\tif skipped > 0 {
+\t\ttracing::info!("Skipped {skipped} inactive items.");
+\t}
 
-    Ok(ids)
+\tOk(ids)
 }
 ```
 
 #### ✔ Good (single-expression function)
+
 ```rust
 fn count_active(items: &[Item]) -> usize {
-    items.iter().filter(|item| item.is_active()).count()
+\titems.iter().filter(|item| item.is_active()).count()
 }
 ```
 
 #### ❌ Bad (mixed categories and noisy spacing)
+
 ```rust
 fn example(items: &[Item]) -> Result<Vec<Id>> {
 
-    let mut ids = Vec::new();
+\tlet mut ids = Vec::new();
 
-    let mut skipped = 0;
-    for item in items {
-        if !item.is_active() {
-            skipped += 1;
+\tlet mut skipped = 0;
+\tfor item in items {
+\t\tif !item.is_active() {
+\t\t\tskipped += 1;
 
-            continue;
-        }
-        ids.push(item.id());
-    }
+\t\t\tcontinue;
+\t\t}
+\t\tids.push(item.id());
+\t}
 
-    if skipped > 0 {
-        tracing::info!("Skipped {} inactive items.", skipped);
-    }
-    Ok(ids)
+\tif skipped > 0 {
+\t\ttracing::info!("Skipped {} inactive items.", skipped);
+\t}
+\tOk(ids)
 }
 ```
 
@@ -636,14 +699,14 @@ fn example(items: &[Item]) -> Result<Vec<Id>> {
 
 These rules apply to:
 
-- Comments  
-- Documentation comments (`///`, `//!`)  
-- Log messages  
+- Comments
+- Documentation comments (`///`, `//!`)
+- Log messages
 
 All such text must:
 
-- Use standard, grammatically correct English.  
-- Begin with a capital letter and end with proper punctuation.  
+- Use standard, grammatically correct English.
+- Begin with a capital letter and end with proper punctuation.
 - Avoid slang, informal shorthand, or mixed languages.
 
 ---
@@ -658,15 +721,15 @@ Violating any rule in this section makes the agent output invalid.
 
 Never modify:
 
-- `rust-toolchain.toml`  
-- `.cargo/config.toml`  
-- `rustfmt.toml`  
+- `rust-toolchain.toml`
+- `.cargo/config.toml`
+- `rustfmt.toml`
 
 Never run:
 
-- `rustup update`  
-- `rustup install`  
-- `rustup override`  
+- `rustup update`
+- `rustup install`
+- `rustup override`
 - System install commands (`apt-get`, `brew`, `pip`, etc.)
 
 ---
@@ -675,83 +738,87 @@ Never run:
 
 Agents must not:
 
-- Modify files outside the repository root.  
+- Modify files outside the repository root.
 - Modify generated files, including but not limited to:
-  - `target/`  
-  - `OUT_DIR` outputs  
-  - Vendored third-party code  
-  - Automatically generated schemas or assets  
+    - `target/`
+    - `OUT_DIR` outputs
+    - Vendored third-party code
+    - Automatically generated schemas or assets
 
 ---
 
 ### 5.3 Patch Scope
 
-- All patches must be standard **unified diffs**.  
+- All patches must be standard **unified diffs**.
 - Only modify code directly related to the user’s explicit request.
 
-No opportunistic refactors.  
-No drive-by cleanups.  
+No opportunistic refactors.
+No drive-by cleanups.
 No behavioral changes outside the requested scope.
 
 ---
 
 ### 5.4 Style Prohibitions
 
-- Never import tracing macros (`use tracing::{info, warn};` is forbidden).  
-- Never use inline trait bounds on generic parameters or trait declarations.  
+- Never import tracing macros (`use tracing::{info, warn};` is forbidden).
+- Never use inline trait bounds on generic parameters or trait declarations.
 - Never place blank lines:
-  - Between a type definition and its first impl, or  
-  - Between consecutive impl blocks for the same type.  
-- Never use `.as_ref()` or `.as_str()` when `&value` is sufficient.  
-- Never use `mod.rs` modules.  
+    - Between a type definition and its first impl, or
+    - Between consecutive impl blocks for the same type.
+- Never use `.as_ref()` or `.as_str()` when `&value` is sufficient.
+- Never use `mod.rs` modules.
 - Never invent new group headers such as `// mod`, `// type`, `// fn`, or similar.
+- Never use spaces for indentation in Rust code; always use tabs.
 
 ---
 
 ### 5.5 Runtime & Async
 
-- Never use `unwrap()` or `expect()` in non-test code.  
+- Never use `unwrap()` or `expect()` in non-test code.
 - Never block inside async contexts:
-  - No `std::thread::sleep`.  
-  - No blocking I/O (filesystem, network, etc.).
+    - No `std::thread::sleep`.
+    - No blocking I/O (filesystem, network, etc.).
 
 #### ❌ Bad
+
 ```rust
 async fn run() {
-    std::thread::sleep(std::time::Duration::from_secs(1));
+\tstd::thread::sleep(std::time::Duration::from_secs(1));
 }
 ```
 
 #### ✔ Good
+
 ```rust
 async fn run() {
-    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+\ttokio::time::sleep(std::time::Duration::from_secs(1)).await;
 
-    Ok(())
+\tOk(())
 }
 ```
-*(If the function returns a non-`()` type, ensure there is a blank line before the final return expression.)*
+
+_(If the function returns a non-`()` type, ensure there is a blank line before the final return expression.)_
 
 ---
 
 ### 5.6 Documentation
 
-- Never mix languages in code-facing text.  
+- Never mix languages in code-facing text.
 - Never introduce ambiguous abbreviations or slang (e.g., `w/`, `u`, `tho`).
 
 ---
 
 ### 5.7 Behavioral
 
-- Never infer missing requirements.  
-- Never expand the scope, refactor, or optimize unless explicitly requested.  
+- Never infer missing requirements.
+- Never expand the scope, refactor, or optimize unless explicitly requested.
 - Never redesign public interfaces unless the user explicitly asks for it.
 
 ---
 
 ## 6. Canonical Examples (Authoritative Behavior Samples)
 
-These examples resolve ambiguities.  
+These examples resolve ambiguities.
 When in doubt, agents must follow these patterns exactly.
 
 ---
@@ -774,66 +841,67 @@ const MAX_ITEMS: usize = 16;
 
 trait Printable
 where
-    Self: std::fmt::Display,
+\tSelf: std::fmt::Display,
 {
-    fn print(&self) -> String;
+\tfn print(&self) -> String;
 }
 
 enum Status {
-    Ready,
-    Busy,
+\tReady,
+\tBusy,
 }
 
 pub struct Foo {
-    id: Id,
+\tid: Id,
 }
 impl Foo {
-    pub fn new(id: Id) -> Self {
-        Self { id }
-    }
+\tpub fn new(id: Id) -> Self {
+\t\tSelf { id }
+\t}
 
-    pub fn id(&self) -> Id {
-        self.id
-    }
+\tpub fn id(&self) -> Id {
+\t\tself.id
+\t}
 }
 impl std::fmt::Display for Foo {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Foo({})", self.id)
-    }
+\tfn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+\t\twrite!(f, "Foo({})", self.id)
+\t}
 }
 impl serde::Serialize for Foo {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        serializer.serialize_u64(self.id)
-    }
+\tfn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+\twhere
+\t\tS: serde::Serializer,
+\t{
+\t\tserializer.serialize_u64(self.id)
+\t}
 }
 impl crate::traits::Trackable for Foo {
-    fn track_id(&self) -> Id {
-        self.id
-    }
+\tfn track_id(&self) -> Id {
+\t\tself.id
+\t}
 }
 
 fn run(service: &Service, id: Id) -> Result<()> {
-    tracing::info!("Running with id: {}", id);
+\ttracing::info!("Running with id: {id}");
 
-    service.process(id)?;
+\tservice.process(id)?;
 
-    Ok(())
+\tOk(())
 }
 ```
 
 This skeleton demonstrates:
 
-- Declaration order  
-- Clean `use` section with only the allowed headers  
-- Module layout (no `mod.rs`)  
-- Struct followed immediately by contiguous impls  
-- Impl ordering: inherent → std → third-party → self  
-- Trait bounds in a `where` clause on `Self`  
-- Fully qualified tracing macros  
+- Declaration order
+- Clean `use` section with only the allowed headers
+- Module layout (no `mod.rs`)
+- Struct followed immediately by contiguous impls
+- Impl ordering: inherent → std → third-party → self
+- Trait bounds in a `where` clause on `Self`
+- Fully qualified tracing macros and named capture
 - Statement grouping and final return spacing
+- Tab-based indentation inside blocks
 
 ---
 
@@ -844,9 +912,9 @@ This skeleton demonstrates:
 ```rust
 fn render<T>(value: T) -> String
 where
-    T: std::fmt::Display,
+\tT: std::fmt::Display,
 {
-    value.to_string()
+\tvalue.to_string()
 }
 ```
 
@@ -855,11 +923,11 @@ where
 ```rust
 trait Renderable
 where
-    Self: std::fmt::Display,
+\tSelf: std::fmt::Display,
 {
-    fn render(&self) -> String {
-        self.to_string()
-    }
+\tfn render(&self) -> String {
+\t\tself.to_string()
+\t}
 }
 ```
 
@@ -867,7 +935,7 @@ where
 
 ```rust
 fn log_message(message: impl std::fmt::Display) {
-    tracing::info!("Message: {}", message);
+\ttracing::info!("Message: {message}");
 }
 ```
 
@@ -876,7 +944,7 @@ fn log_message(message: impl std::fmt::Display) {
 ```rust
 // Forbidden
 fn render<T: std::fmt::Display>(value: T) -> String {
-    value.to_string()
+\tvalue.to_string()
 }
 ```
 
@@ -896,8 +964,8 @@ src/
     dto.rs
 ```
 
-- `core.rs` and `api.rs` are entry modules.  
-- Their submodules live in corresponding directories.  
+- `core.rs` and `api.rs` are entry modules.
+- Their submodules live in corresponding directories.
 - No `mod.rs` anywhere.
 
 ---
@@ -906,13 +974,13 @@ src/
 
 ```rust
 pub fn process(name: &str) {
-    tracing::info!("Starting process for: {}", name);
+\ttracing::info!("Starting process for: {name}");
 
-    let label = name;
-
-    tracing::debug!("Label is: {}", label);
+\ttracing::debug!("Label is: {name}");
 }
 ```
+
+No unnecessary `let` binding created only for logging.
 
 ---
 
@@ -920,11 +988,11 @@ pub fn process(name: &str) {
 
 ```rust
 pub async fn handle_request() -> Result<()> {
-    tracing::info!("Handling request.");
+\ttracing::info!("Handling request.");
 
-    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+\ttokio::time::sleep(std::time::Duration::from_millis(100)).await;
 
-    Ok(())
+\tOk(())
 }
 ```
 
@@ -934,11 +1002,11 @@ pub async fn handle_request() -> Result<()> {
 
 ```rust
 fn active_ids(items: &[Item]) -> Vec<u64> {
-    items
-        .iter()
-        .filter(|item| item.is_active())
-        .map(|item| item.id())
-        .collect()
+\titems
+\t\t.iter()
+\t\t.filter(|item| item.is_active())
+\t\t.map(|item| item.id())
+\t\t.collect()
 }
 ```
 
@@ -990,8 +1058,11 @@ Rust style:
 - For traits, express bounds as `trait T where Self: Bound` instead of `trait T: Bound`.
 - Prefer `&value` over `.as_ref()` / `.as_str()` unless strictly necessary.
 - NEVER import tracing macros; always call them as `tracing::info!`, `tracing::warn!`, etc.
+- When logging or formatting existing variables, prefer named capture in the format string (e.g., `{value}`) instead of `"{}"` with a separate argument.
+- Do NOT create temporary let bindings solely to pass values into formatting or tracing/logging macros. If a value is not already bound and is not reused, pass the expression directly as an argument.
 - Avoid `.clone()` unless you truly need another owned value. Use borrowing or into_iter() instead.
 - Group same-category statements together with no blank lines (e.g., multiple let bindings, multiple conditionals, multiple macro calls). Separate different categories with exactly one blank line. Ensure there is exactly one blank line before the final return or tail expression, unless the function body is only that expression.
+- Use tabs for indentation in Rust code; do NOT use spaces.
 
 Behavior:
 - NEVER use unwrap() or expect() in non-test code.
@@ -1016,27 +1087,29 @@ When in doubt, favor clarity, explicit control flow, and strict compliance with 
 
 This document defines:
 
-- The execution model (cargo-make–first)  
-- Toolchain handling  
-- Design and implementation principles  
-- Preference for clear, sometimes functional / pipeline-style code  
-- Dependency governance  
-- Rust coding conventions (including struct/impl spacing, impl ordering, imports, and statement grouping)  
-- Language requirements  
-- Hard prohibitions  
-- Canonical examples  
-- A ready-to-use system prompt snippet  
+- The execution model (cargo-make–first)
+- Toolchain handling
+- Design and implementation principles
+- Preference for clear, sometimes functional / pipeline-style code
+- Dependency governance
+- Rust coding conventions (including struct/impl spacing, impl ordering, imports, logging/formatting rules, indentation, and statement grouping)
+- Language requirements
+- Hard prohibitions
+- Canonical examples
+- A ready-to-use system prompt snippet
 
 Agents must follow every rule exactly. When in doubt, prefer:
 
-- `cargo make` over raw `cargo`  
-- `where` clauses over inline bounds (with the explicit `impl Trait` exception)  
-- `trait T where Self: Bound` over `trait T: Bound`  
-- Strict contiguous struct+impl layout with ordered impl blocks  
-- Grouping same-category statements and using minimal, meaningful blank lines  
-- `&value` over `.as_ref()` / `.as_str()`  
-- Fully qualified `tracing::...` macros  
-- Flat module layout without `mod.rs`  
+- `cargo make` over raw `cargo`
+- `where` clauses over inline bounds (with the explicit `impl Trait` exception)
+- `trait T where Self: Bound` over `trait T: Bound`
+- Strict contiguous struct+impl layout with ordered impl blocks
+- Grouping same-category statements and using minimal, meaningful blank lines
+- Named capture `{var}` in format strings when logging existing variables
+- `&value` over `.as_ref()` / `.as_str()`
+- Fully qualified `tracing::...` macros
+- Flat module layout without `mod.rs`
+- Tabs for indentation in Rust code
 - Simple, logically structured, and, when appropriate, pipeline-style functional code that is easy to understand at a glance.
 
 End of AGENTS.md.
