@@ -1111,5 +1111,3 @@ Agents must follow every rule exactly. When in doubt, prefer:
 - Flat module layout without `mod.rs`
 - Tabs for indentation in Rust code
 - Simple, logically structured, and, when appropriate, pipeline-style functional code that is easy to understand at a glance.
-
-End of AGENTS.md.
