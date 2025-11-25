@@ -18,15 +18,15 @@ If any rule conflicts with “typical Rust style” or “common sense,” **thi
 
 ## 0.1 Available MCP / External Tools
 
-When supported by the runtime, agents may use these tools to better satisfy the rules in this file:
+When supported by the runtime, agents may use the following MCP servers to better understand the codebase, implement features faster, and improve correctness:
 
-- `memory` — Long-lived project context / state.
-- `context7` — Rich contextualization and cross-file understanding.
-- `deepwiki` — Deep, structured knowledge lookup.
-- `sequential-thinking` — Multi-step, chain-of-thought style planning.
-- `github` — Repository access, browsing, and metadata.
+- `memory` — A knowledge-graph–based memory server that lets the agent store and retrieve structured project facts over time (requirements, design decisions, APIs, invariants). Use it to keep long-running work coherent instead of relying on a single prompt window.
+- `context7` — An up-to-date code documentation server. It pulls current, version-specific library and framework docs (and examples) into the agent’s context so it can call real APIs instead of hallucinated or outdated ones.
+- `deepwiki` — A repository-documentation server for GitHub repos indexed on DeepWiki. It provides tools to inspect a repo’s “wiki view”, read structured docs, and ask questions about architecture, modules, and flows—useful for understanding large or unfamiliar projects quickly.
+- `sequential-thinking` — A planning and reasoning server that helps the agent break complex tasks into ordered steps, explore alternative solution paths, and iteratively refine a plan before or while writing code.
+- `github` — GitHub’s official MCP server. It lets the agent read and search repositories, inspect and analyze code, and work with issues and pull requests so it can align changes with the actual repo state and ongoing development.
 
-Use these tools **to follow AGENTS.md more faithfully**, never to bypass or reinterpret it.
+These servers exist to improve code quality, speed, and accuracy when working on real project tasks. They are optional but should be used whenever they help the agent understand context, design a better solution, or implement the requested changes more reliably.
 
 ---
 
