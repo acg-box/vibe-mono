@@ -117,11 +117,11 @@ When introducing new automation:
 
 ```rust
 fn collect_long_items(inputs: &[Option<String>]) -> Result<Vec<String>> {
-\tinputs
-\t\t.iter()
-\t\t.filter(|x| x.is_some() && x.as_ref().unwrap().len() > 3)
-\t\t.map(|x| process(x.as_ref().unwrap()))
-\t\t.collect::<Result<Vec<_>, _>>()
+	inputs
+		.iter()
+		.filter(|x| x.is_some() && x.as_ref().unwrap().len() > 3)
+		.map(|x| process(x.as_ref().unwrap()))
+		.collect::<Result<Vec<_>, _>>()
 }
 ```
 
@@ -129,20 +129,20 @@ fn collect_long_items(inputs: &[Option<String>]) -> Result<Vec<String>> {
 
 ```rust
 fn collect_long_items(inputs: &[Option<String>]) -> Result<Vec<String>> {
-\tlet mut results = Vec::new();
+	let mut results = Vec::new();
 
-\tfor input in inputs {
-\t\tif let Some(value) = input {
-\t\t\tif value.len() <= 3 {
-\t\t\t\tcontinue;
-\t\t\t}
+	for input in inputs {
+		if let Some(value) = input {
+			if value.len() <= 3 {
+				continue;
+			}
 
-\t\t\tlet processed = process(value)?;
-\t\t\tresults.push(processed);
-\t\t}
-\t}
+			let processed = process(value)?;
+			results.push(processed);
+		}
+	}
 
-\tOk(results)
+	Ok(results)
 }
 ```
 
@@ -162,12 +162,12 @@ But must avoid **clever, opaque chains** that hide control flow or error handlin
 
 ```rust
 fn normalize_names(names: &[String]) -> Vec<String> {
-\tnames
-\t\t.iter()
-\t\t.map(|name| name.trim())
-\t\t.filter(|name| !name.is_empty())
-\t\t.map(|name| name.to_lowercase())
-\t\t.collect()
+	names
+		.iter()
+		.map(|name| name.trim())
+		.filter(|name| !name.is_empty())
+		.map(|name| name.to_lowercase())
+		.collect()
 }
 ```
 
@@ -175,20 +175,20 @@ fn normalize_names(names: &[String]) -> Vec<String> {
 
 ```rust
 fn is_valid(name: &str) -> bool {
-\t!name.is_empty() && name.len() <= 32
+	!name.is_empty() && name.len() <= 32
 }
 
 fn normalize(name: &str) -> String {
-\tname.trim().to_lowercase()
+	name.trim().to_lowercase()
 }
 
 fn normalize_valid_names(names: &[String]) -> Vec<String> {
-\tnames
-\t\t.iter()
-\t\t.map(|name| name.trim())
-\t\t.filter(|name| is_valid(name))
-\t\t.map(|name| normalize(name))
-\t\t.collect()
+	names
+		.iter()
+		.map(|name| name.trim())
+		.filter(|name| is_valid(name))
+		.map(|name| normalize(name))
+		.collect()
 }
 ```
 
@@ -196,12 +196,12 @@ fn normalize_valid_names(names: &[String]) -> Vec<String> {
 
 ```rust
 fn normalize_names(names: &[String]) -> Vec<String> {
-\tnames
-\t\t.iter()
-\t\t.map(|n| n.trim())
-\t\t.filter(|n| !n.is_empty() && n.len() <= 32 && !n.chars().any(|c| c.is_numeric()))
-\t\t.map(|n| format!("{}{}", &n[0..1].to_uppercase(), &n[1..].to_lowercase()))
-\t\t.collect()
+	names
+		.iter()
+		.map(|n| n.trim())
+		.filter(|n| !n.is_empty() && n.len() <= 32 && !n.chars().any(|c| c.is_numeric()))
+		.map(|n| format!("{}{}", &n[0..1].to_uppercase(), &n[1..].to_lowercase()))
+		.collect()
 }
 ```
 
@@ -259,7 +259,7 @@ When adding or modifying dependencies:
 
 These conventions apply to **all** Rust code in this repository: libraries, binaries, tests, examples, and benches.
 
-All Rust code indentation must use **tabs** (`\t`) for each indentation level. Do not use spaces for indentation.
+All Rust code indentation must use **tabs** (`	`) for each indentation level. Do not use spaces for indentation.
 
 ---
 
@@ -394,25 +394,25 @@ impl std::fmt::Display for Foo {}
 ```rust
 pub struct Foo {}
 impl Foo {
-\tpub fn new() -> Self {
-\t\tSelf {}
-\t}
+	pub fn new() -> Self {
+		Self {}
+	}
 }
 impl std::fmt::Display for Foo {
-\tfn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-\t\twrite!(f, "Foo")
-\t}
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "Foo")
+	}
 }
 impl serde::Serialize for Foo {
-\tfn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-\twhere
-\t\tS: serde::Serializer,
-\t{
-\t\tserializer.serialize_str("Foo")
-\t}
+	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+	where
+		S: serde::Serializer,
+	{
+		serializer.serialize_str("Foo")
+	}
 }
 impl crate::traits::MyTrait for Foo {
-\tfn do_something(&self) {}
+	fn do_something(&self) {}
 }
 ```
 
@@ -433,7 +433,7 @@ Bounds must be ordered:
 
 ```rust
 fn run<T: std::fmt::Display>(value: T) -> String {
-\tvalue.to_string()
+	value.to_string()
 }
 ```
 
@@ -442,9 +442,9 @@ fn run<T: std::fmt::Display>(value: T) -> String {
 ```rust
 fn run<T>(value: T) -> String
 where
-\tT: std::fmt::Display,
+	T: std::fmt::Display,
 {
-\tvalue.to_string()
+	value.to_string()
 }
 ```
 
@@ -458,11 +458,11 @@ The `impl Trait` syntax in parameter or return position is allowed and does **no
 
 ```rust
 fn handle(value: impl std::fmt::Display) -> String {
-\tvalue.to_string()
+	value.to_string()
 }
 
 fn make_displayable() -> impl std::fmt::Display {
-\t"ok"
+	"ok"
 }
 ```
 
@@ -479,7 +479,7 @@ Do **not** use the supertrait (`trait T: U {}`) syntax.
 
 ```rust
 trait Printable: std::fmt::Display {
-\tfn print(&self);
+	fn print(&self);
 }
 ```
 
@@ -488,9 +488,9 @@ trait Printable: std::fmt::Display {
 ```rust
 trait Printable
 where
-\tSelf: std::fmt::Display,
+	Self: std::fmt::Display,
 {
-\tfn print(&self);
+	fn print(&self);
 }
 ```
 
@@ -596,7 +596,7 @@ tracing::info!("Processed {count}");
 ```rust
 let items_clone = items.clone();
 for item in items_clone {
-\tprocess(item);
+	process(item);
 }
 ```
 
@@ -604,7 +604,7 @@ for item in items_clone {
 
 ```rust
 for item in items.into_iter() {
-\tprocess(item);
+	process(item);
 }
 ```
 
@@ -612,7 +612,7 @@ for item in items.into_iter() {
 
 ```rust
 for item in &items {
-\tprocess(item);
+	process(item);
 }
 ```
 
@@ -641,23 +641,23 @@ Within a function body:
 
 ```rust
 fn example(items: &[Item]) -> Result<Vec<Id>> {
-\tlet mut ids = Vec::new();
-\tlet mut skipped = 0;
+	let mut ids = Vec::new();
+	let mut skipped = 0;
 
-\tfor item in items {
-\t\tif !item.is_active() {
-\t\t\tskipped += 1;
-\t\t\tcontinue;
-\t\t}
+	for item in items {
+		if !item.is_active() {
+			skipped += 1;
+			continue;
+		}
 
-\t\tids.push(item.id());
-\t}
+		ids.push(item.id());
+	}
 
-\tif skipped > 0 {
-\t\ttracing::info!("Skipped {skipped} inactive items.");
-\t}
+	if skipped > 0 {
+		tracing::info!("Skipped {skipped} inactive items.");
+	}
 
-\tOk(ids)
+	Ok(ids)
 }
 ```
 
@@ -665,7 +665,7 @@ fn example(items: &[Item]) -> Result<Vec<Id>> {
 
 ```rust
 fn count_active(items: &[Item]) -> usize {
-\titems.iter().filter(|item| item.is_active()).count()
+	items.iter().filter(|item| item.is_active()).count()
 }
 ```
 
@@ -674,22 +674,22 @@ fn count_active(items: &[Item]) -> usize {
 ```rust
 fn example(items: &[Item]) -> Result<Vec<Id>> {
 
-\tlet mut ids = Vec::new();
+	let mut ids = Vec::new();
 
-\tlet mut skipped = 0;
-\tfor item in items {
-\t\tif !item.is_active() {
-\t\t\tskipped += 1;
+	let mut skipped = 0;
+	for item in items {
+		if !item.is_active() {
+			skipped += 1;
 
-\t\t\tcontinue;
-\t\t}
-\t\tids.push(item.id());
-\t}
+			continue;
+		}
+		ids.push(item.id());
+	}
 
-\tif skipped > 0 {
-\t\ttracing::info!("Skipped {} inactive items.", skipped);
-\t}
-\tOk(ids)
+	if skipped > 0 {
+		tracing::info!("Skipped {} inactive items.", skipped);
+	}
+	Ok(ids)
 }
 ```
 
@@ -783,7 +783,7 @@ No behavioral changes outside the requested scope.
 
 ```rust
 async fn run() {
-\tstd::thread::sleep(std::time::Duration::from_secs(1));
+	std::thread::sleep(std::time::Duration::from_secs(1));
 }
 ```
 
@@ -791,9 +791,9 @@ async fn run() {
 
 ```rust
 async fn run() {
-\ttokio::time::sleep(std::time::Duration::from_secs(1)).await;
+	tokio::time::sleep(std::time::Duration::from_secs(1)).await;
 
-\tOk(())
+	Ok(())
 }
 ```
 
@@ -841,53 +841,53 @@ const MAX_ITEMS: usize = 16;
 
 trait Printable
 where
-\tSelf: std::fmt::Display,
+	Self: std::fmt::Display,
 {
-\tfn print(&self) -> String;
+	fn print(&self) -> String;
 }
 
 enum Status {
-\tReady,
-\tBusy,
+	Ready,
+	Busy,
 }
 
 pub struct Foo {
-\tid: Id,
+	id: Id,
 }
 impl Foo {
-\tpub fn new(id: Id) -> Self {
-\t\tSelf { id }
-\t}
+	pub fn new(id: Id) -> Self {
+		Self { id }
+	}
 
-\tpub fn id(&self) -> Id {
-\t\tself.id
-\t}
+	pub fn id(&self) -> Id {
+		self.id
+	}
 }
 impl std::fmt::Display for Foo {
-\tfn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-\t\twrite!(f, "Foo({})", self.id)
-\t}
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "Foo({})", self.id)
+	}
 }
 impl serde::Serialize for Foo {
-\tfn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-\twhere
-\t\tS: serde::Serializer,
-\t{
-\t\tserializer.serialize_u64(self.id)
-\t}
+	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+	where
+		S: serde::Serializer,
+	{
+		serializer.serialize_u64(self.id)
+	}
 }
 impl crate::traits::Trackable for Foo {
-\tfn track_id(&self) -> Id {
-\t\tself.id
-\t}
+	fn track_id(&self) -> Id {
+		self.id
+	}
 }
 
 fn run(service: &Service, id: Id) -> Result<()> {
-\ttracing::info!("Running with id: {id}");
+	tracing::info!("Running with id: {id}");
 
-\tservice.process(id)?;
+	service.process(id)?;
 
-\tOk(())
+	Ok(())
 }
 ```
 
@@ -912,9 +912,9 @@ This skeleton demonstrates:
 ```rust
 fn render<T>(value: T) -> String
 where
-\tT: std::fmt::Display,
+	T: std::fmt::Display,
 {
-\tvalue.to_string()
+	value.to_string()
 }
 ```
 
@@ -923,11 +923,11 @@ where
 ```rust
 trait Renderable
 where
-\tSelf: std::fmt::Display,
+	Self: std::fmt::Display,
 {
-\tfn render(&self) -> String {
-\t\tself.to_string()
-\t}
+	fn render(&self) -> String {
+		self.to_string()
+	}
 }
 ```
 
@@ -935,7 +935,7 @@ where
 
 ```rust
 fn log_message(message: impl std::fmt::Display) {
-\ttracing::info!("Message: {message}");
+	tracing::info!("Message: {message}");
 }
 ```
 
@@ -944,7 +944,7 @@ fn log_message(message: impl std::fmt::Display) {
 ```rust
 // Forbidden
 fn render<T: std::fmt::Display>(value: T) -> String {
-\tvalue.to_string()
+	value.to_string()
 }
 ```
 
@@ -974,9 +974,9 @@ src/
 
 ```rust
 pub fn process(name: &str) {
-\ttracing::info!("Starting process for: {name}");
+	tracing::info!("Starting process for: {name}");
 
-\ttracing::debug!("Label is: {name}");
+	tracing::debug!("Label is: {name}");
 }
 ```
 
@@ -988,11 +988,11 @@ No unnecessary `let` binding created only for logging.
 
 ```rust
 pub async fn handle_request() -> Result<()> {
-\ttracing::info!("Handling request.");
+	tracing::info!("Handling request.");
 
-\ttokio::time::sleep(std::time::Duration::from_millis(100)).await;
+	tokio::time::sleep(std::time::Duration::from_millis(100)).await;
 
-\tOk(())
+	Ok(())
 }
 ```
 
@@ -1002,11 +1002,11 @@ pub async fn handle_request() -> Result<()> {
 
 ```rust
 fn active_ids(items: &[Item]) -> Vec<u64> {
-\titems
-\t\t.iter()
-\t\t.filter(|item| item.is_active())
-\t\t.map(|item| item.id())
-\t\t.collect()
+	items
+		.iter()
+		.filter(|item| item.is_active())
+		.map(|item| item.id())
+		.collect()
 }
 ```
 
