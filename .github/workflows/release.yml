@@ -71,10 +71,10 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Publish
-  #       uses: ncipollo/release-action@v1
+  #       uses: softprops/action-gh-release@v2
   #       with:
-  #         discussionCategoryName: Announcements
-  #         generateReleaseNotes: true
+  #         discussion_category_name: Announcements
+  #         generate_release_notes: true
 
   release:
     name: Release
@@ -95,11 +95,11 @@ jobs:
           mv ../MD5 .
 
       - name: Publish
-        uses: ncipollo/release-action@v1
+        uses: softprops/action-gh-release@v2
         with:
-          discussionCategoryName: Announcements
-          generateReleaseNotes: true
-          artifacts: artifacts/*
+          discussion_category_name: Announcements
+          generate_release_notes: true
+          files: artifacts/*
 
   publish-on-crates-io:
     name: Publish on crates.io
