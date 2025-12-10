@@ -26,18 +26,20 @@ If unrelated issues are noticed:
 
 ---
 
-# 0.1 Global Language & Tone Rules (applies to ALL text)
+## 0.1 Global Language & Tone Rules (repository content)
 
-These requirements apply to **all text produced**, including:
+These requirements apply to **repository artifacts** generated or modified by agents, including:
 
 - Code comments (`//`, `///`, `//!`)
 - Documentation and README content
 - Log messages and tracing output
 - Error messages, panic text, diagnostics
-- User-facing strings (CLI, UI, HTTP responses)
-- Commit messages, summaries, explanations
+- User-facing strings stored in the codebase (CLI, UI, HTTP responses)
+- Commit messages, summaries, and explanations written into repository files
 
-Global requirements:
+They **do not** constrain interactive chat responses outside the repository. For chat, use the language requested or implied by the user (for example, Chinese when the user is speaking Chinese).
+
+Global requirements for repository artifacts:
 
 - Use **clear, grammatically correct English**.
 - Start sentences with a capital letter and end with proper punctuation.
@@ -45,7 +47,7 @@ Global requirements:
 - Avoid ambiguous abbreviations (`u`, `tho`, `w/`, etc.).
 - Ignore poor style in surrounding text; follow these global rules instead.
 
-**These language rules override any conflicting rules elsewhere.**
+**These language rules override any conflicting rules elsewhere for repository artifacts.**
 
 ---
 
@@ -79,6 +81,93 @@ Never:
 - Modify `rust-toolchain.toml`, `.cargo/config.toml`, or `rustfmt.toml`.
 - Install, update, or override toolchains.
 - Invoke system package managers.
+
+## 1.3 Model Context Protocol (MCP) Tools
+
+Agents **should actively consider** using available MCP tools whenever they improve understanding of the codebase, reduce errors, or lead to better engineering outcomes, while still fully respecting scope and change-control rules in this document.
+
+Use only the tools that are configured and enabled in the environment. If a tool is unavailable or fails, degrade gracefully and proceed without it.
+
+High-level rules:
+
+- MCP tools **do not** override scope limits. They are helpers, not a license to make broader changes.
+- Do not attempt to modify MCP configuration, credentials, or endpoints.
+- Prefer MCP tools over generic guessing when they can provide precise, authoritative information about code, documentation, or repository state.
+
+### 1.3.1 context7
+
+- **Endpoint:** `https://mcp.context7.com/mcp`
+- **Tools:** `get-library-docs`, `resolve-library-id`
+
+Usage guidance:
+
+- Use `context7` to retrieve and resolve library documentation or identifiers when you need accurate information about external libraries, APIs, or dependencies.
+- Prefer this over speculative assumptions about third-party crates or APIs.
+- Do not use it to justify out-of-scope refactors; use it strictly to implement the requested change correctly.
+
+### 1.3.2 deepwiki
+
+- **Endpoint:** `https://mcp.devin.ai/mcp`
+- **Tools:** `ask_question`, `read_wiki_contents`, `read_wiki_structure`
+
+Usage guidance:
+
+- Use `deepwiki` to understand higher-level concepts, architecture notes, or domain knowledge that may be documented in wiki-like systems.
+- Prefer it when the user request depends on non-obvious domain context or design decisions that are likely documented elsewhere.
+- Do not treat wiki content as a mandate to change unrelated parts of the codebase; it is context, not a new requirement.
+
+### 1.3.3 github
+
+- **Endpoint:** `https://api.githubcopilot.com/mcp`
+- **Representative tools:**
+    - Repository and code: `get_file_contents`, `search_code`, `list_branches`, `list_commits`
+    - Issues and PRs: `list_issues`, `issue_read`, `issue_write`, `list_pull_requests`, `pull_request_read`, `pull_request_review_write`
+    - Changes: `create_or_update_file`, `delete_file`, `push_files`, `create_branch`, `create_pull_request`, `update_pull_request`, `merge_pull_request`, `update_pull_request_branch`, `request_copilot_review`, `add_comment_to_pending_review`, `add_issue_comment`, `assign_copilot_to_issue`, `sub_issue_write`
+
+Usage guidance:
+
+- Use `github` to:
+    - Inspect repository files, branches, and history when needed for the user’s request.
+    - Cross-check behavior, prior decisions, or related work in issues and pull requests.
+
+- Creation or modification actions (branches, files, pull requests, merges) must obey:
+    - Scope rules in this file (no out-of-scope refactors or cleanup).
+    - Any explicit user instructions about Git workflow.
+
+- Do **not**:
+    - Create or merge pull requests, or push changes, unless the user clearly asks for this workflow.
+    - Delete files or repositories unless explicitly requested and clearly in scope.
+
+### 1.3.4 memory
+
+- **Command:** `npx -y @modelcontextprotocol/server-memory`
+- **Tools:** `add_observations`, `create_entities`, `create_relations`, `delete_entities`, `delete_observations`, `delete_relations`, `open_nodes`, `read_graph`, `search_nodes`
+
+Usage guidance:
+
+- Use `memory` to capture and reuse long-lived, cross-task insights that improve consistency, such as:
+    - Stable architectural decisions.
+    - Important domain concepts and their relationships.
+    - Persistent conventions or invariants that are not obvious from a single file.
+
+- Do not store ephemeral or highly local details that are unlikely to be reused.
+- Do not store sensitive information beyond what is necessary for development.
+
+### 1.3.5 sequential-thinking
+
+- **Command:** `npx -y @modelcontextprotocol/server-sequential-thinking`
+- **Tools:** `sequentialthinking`
+
+Usage guidance:
+
+- Use `sequential-thinking` to structure reasoning for complex, multi-step tasks where explicit step tracking will reduce mistakes or help coordinate multiple edits.
+- Prefer this when:
+    - The requested change spans several modules or layers.
+    - There are many interdependent steps that must be kept in a clear order.
+
+- Even when using sequential thinking, you must still:
+    - Respect scope limits and behavior-preservation rules.
+    - Avoid introducing additional work beyond what the user requests.
 
 ---
 
@@ -116,6 +205,7 @@ Within that scope:
 - Prefer simple, explicit constructs.
 - Avoid clever or obscure code.
 - Maintain module cohesion.
+- Keep functions readable: aim for a single, easy-to-follow responsibility per function. If a function grows beyond what fits comfortably on one screen (~30–80 lines for typical business logic) or accumulates many branches, consider extracting helpers so the happy path stays clear. Do not split tightly coupled logic just to satisfy a line count; prioritize clarity and low cognitive load.
 
 ## 3.3 Reuse First
 
