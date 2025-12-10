@@ -13,6 +13,9 @@ repository  = "https://github.com/hack-ink/<NAME>"
 resolver    = "3"
 version     = "0.1.0"
 
+[package.metadata.docs.rs]
+all-features = true
+
 [profile.ci-dev]
 incremental = false
 inherits    = "dev"
