@@ -1,3 +1,7 @@
+exclude = [
+	"Makefile.toml",
+]
+
 [formatting]
 align_comments       = true
 align_entries        = true
