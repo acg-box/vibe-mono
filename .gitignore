@@ -9,7 +9,9 @@
 # Language Specifics
 
 ## JavaScript/TypeScript
+dist
 node_modules
+.vite
 
 ## Python
 __pycache__
@@ -23,6 +25,7 @@ target
 .DS_Store
 
 # General Ignores
+model
 tmp
 *.bak
 *.log
