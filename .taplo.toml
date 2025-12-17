@@ -1,5 +1,7 @@
 exclude = [
 	"Makefile.toml",
+	"poetry.toml",
+	"pyproject.toml",
 ]
 
 [formatting]
