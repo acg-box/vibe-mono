@@ -51,6 +51,12 @@ Global requirements for repository artifacts:
 
 ---
 
+## 0.2 Conflict Precedence
+
+If these rules conflict with higher-priority instructions (system, developer, or user), follow the higher-priority instruction and briefly note the conflict in your response.
+
+---
+
 # 1. Execution Model
 
 ## 1.1 cargo-make Only
@@ -71,6 +77,7 @@ Forbidden unless no equivalent task exists:
 
 If the user requests raw `cargo` and a matching `cargo make` task exists,
 use the task and briefly note this.
+Run these tasks only when the user requests them or when you need to verify changes before claiming completion.
 
 ## 1.2 Toolchain
 
@@ -81,95 +88,6 @@ Never:
 - Modify `rust-toolchain.toml`, `.cargo/config.toml`, or `rustfmt.toml`.
 - Install, update, or override toolchains.
 - Invoke system package managers.
-
-## 1.3 Model Context Protocol (MCP) Tools
-
-Agents **should actively consider** using available MCP tools whenever they improve understanding of the codebase, reduce errors, or lead to better engineering outcomes, while still fully respecting scope and change-control rules in this document.
-
-Use only the tools that are configured and enabled in the environment. If a tool is unavailable or fails, degrade gracefully and proceed without it.
-
-High-level rules:
-
-- MCP tools **do not** override scope limits. They are helpers, not a license to make broader changes.
-- Do not attempt to modify MCP configuration, credentials, or endpoints.
-- Prefer MCP tools over generic guessing when they can provide precise, authoritative information about code, documentation, or repository state.
-
-### 1.3.1 context7
-
-- **Endpoint:** `https://mcp.context7.com/mcp`
-- **Tools:** `get-library-docs`, `resolve-library-id`
-
-Usage guidance:
-
-- Use `context7` to retrieve and resolve library documentation or identifiers when you need accurate information about external libraries, APIs, or dependencies.
-- Prefer this over speculative assumptions about third-party crates or APIs.
-- Do not use it to justify out-of-scope refactors; use it strictly to implement the requested change correctly.
-
-### 1.3.2 deepwiki
-
-- **Endpoint:** `https://mcp.devin.ai/mcp`
-- **Tools:** `ask_question`, `read_wiki_contents`, `read_wiki_structure`
-
-Usage guidance:
-
-- Use `deepwiki` to understand higher-level concepts, architecture notes, or domain knowledge that may be documented in wiki-like systems.
-- Prefer it when the user request depends on non-obvious domain context or design decisions that are likely documented elsewhere.
-- Do not treat wiki content as a mandate to change unrelated parts of the codebase; it is context, not a new requirement.
-
-### 1.3.3 github
-
-- **Endpoint:** `https://api.githubcopilot.com/mcp`
-- **Representative tools:**
-    - Repository and code: `get_file_contents`, `search_code`, `list_branches`, `list_commits`
-    - Issues and PRs: `list_issues`, `issue_read`, `issue_write`, `list_pull_requests`, `pull_request_read`, `pull_request_review_write`
-    - Changes: `create_or_update_file`, `delete_file`, `push_files`, `create_branch`, `create_pull_request`, `update_pull_request`, `merge_pull_request`, `update_pull_request_branch`, `request_copilot_review`, `add_comment_to_pending_review`, `add_issue_comment`, `assign_copilot_to_issue`, `sub_issue_write`
-
-Usage guidance:
-
-- Use `github` to:
-    - Inspect repository files, branches, and history when needed for the user’s request.
-    - Cross-check behavior, prior decisions, or related work in issues and pull requests.
-
-- Creation or modification actions (branches, files, pull requests, merges) must obey:
-    - Scope rules in this file (no out-of-scope refactors or cleanup).
-    - Any explicit user instructions about Git workflow.
-
-- Do **not**:
-    - Create or merge pull requests, or push changes, unless the user clearly asks for this workflow.
-    - Delete files or repositories unless explicitly requested and clearly in scope.
-
-### 1.3.4 memory
-
-- **Command:** `npx -y @modelcontextprotocol/server-memory`
-- **Tools:** `add_observations`, `create_entities`, `create_relations`, `delete_entities`, `delete_observations`, `delete_relations`, `open_nodes`, `read_graph`, `search_nodes`
-
-Usage guidance:
-
-- Use `memory` to capture and reuse long-lived, cross-task insights that improve consistency, such as:
-    - Stable architectural decisions.
-    - Important domain concepts and their relationships.
-    - Persistent conventions or invariants that are not obvious from a single file.
-
-- Do not store ephemeral or highly local details that are unlikely to be reused.
-- Do not store sensitive information beyond what is necessary for development.
-
-### 1.3.5 sequential-thinking
-
-- **Command:** `npx -y @modelcontextprotocol/server-sequential-thinking`
-- **Tools:** `sequentialthinking`
-
-Usage guidance:
-
-- Use `sequential-thinking` to structure reasoning for complex, multi-step tasks where explicit step tracking will reduce mistakes or help coordinate multiple edits.
-- Prefer this when:
-    - The requested change spans several modules or layers.
-    - There are many interdependent steps that must be kept in a clear order.
-
-- Even when using sequential thinking, you must still:
-    - Respect scope limits and behavior-preservation rules.
-    - Avoid introducing additional work beyond what the user requests.
-
----
 
 # 2. Scope & Change Control
 
@@ -229,7 +147,7 @@ Do not change existing behavior unless explicitly required.
 - Batch related edits; avoid scattered micro-patches.
 - Never revert user-made changes.
 - Never use destructive git commands (`reset --hard`, `checkout --`).
-- If unexpected file changes appear: **STOP** and ask the user.
+- If unexpected file changes appear: **STOP** and ask the user. “Unexpected” means any modified file you did not touch or any change not required by the request.
 
 ---
 
@@ -257,6 +175,7 @@ Never modify:
 - `target/`
 - Vendored/third-party code
 - Files outside the repository root
+  Treat any file with a “Generated by” or “Do not edit” header, or any file under directories named target/, dist/, build/, gen/, or .next/ as generated.
 
 ## 6.3 Patch Scope
 
@@ -265,19 +184,20 @@ Never modify:
 
 ## 6.4 Async & Runtime
 
-- No `unwrap()` or `expect()` in non-test code.
+- No `unwrap()` in non-test code.
+- `expect()` is allowed only in global or static initialization and one-time startup initialization where failure should terminate the process immediately with a clear message.
 - Never block inside async (`thread::sleep`, blocking I/O).
 
 ## 6.5 Behavioral
 
 - Never infer missing requirements.
 - Choose the smallest valid change.
-- Ask questions only when truly blocked.
+- Ask clarifying questions only when requirements are ambiguous or there are multiple reasonable interpretations. Otherwise proceed.
 
 ---
 
 # 7. Rust Style Rules Reference
 
-Rust formatting and style conventions live in `STYLE_RUST.md`.
+Rust formatting and style conventions live in `docs/guide/development/rust_style_guide.md`.
 These rules apply **only** when editing Rust code and do **not** override
 the global behavior and language rules in this file.
