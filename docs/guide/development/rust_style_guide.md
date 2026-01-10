@@ -35,6 +35,19 @@ fn
 ```
 
 Within each group, `pub` items MUST appear before non-`pub` items.
+Within the `fn` group and the same visibility level, non-`async` functions MUST appear before `async` functions.
+
+Example (non-normative):
+
+```rust
+pub fn build_request() -> Request {
+	// ...
+}
+
+pub async fn fetch_response() -> Response {
+	// ...
+}
+```
 
 Expanded `#[cfg(test)] mod tests { ... }` blocks MUST appear at the end of the file, after all other items.
 If `mod tests;` is used, it MUST appear after all other items as well.
