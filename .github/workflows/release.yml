@@ -2,7 +2,6 @@ name: Release
 
 permissions:
   contents: write
-  actions: write
 
 env:
   CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
@@ -35,7 +34,13 @@ jobs:
       - name: Fetch latest code
         uses: actions/checkout@v6
 
-      - name: Setup Rust toolchain
+      - name: Set up Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache: true
+          components: rustfmt, clippy
+
+      - name: Add target
         run: rustup target add ${{ matrix.target.name }}
 
       - name: Build
@@ -44,26 +49,26 @@ jobs:
       - name: Pack (macOS)
         if: matrix.target.os == 'macos-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/<NAME> .
-          zip <NAME>-${{ matrix.target.name }}.zip <NAME>
+          mv target/${{ matrix.target.name }}/ci-release/rust-initializer .
+          zip rust-initializer-${{ matrix.target.name }}.zip rust-initializer
 
       - name: Pack (Windows)
         if: matrix.target.os == 'windows-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/<NAME>.exe .
-          Compress-Archive -Path <NAME>.exe -DestinationPath <NAME>-${{ matrix.target.name }}.zip
+          mv target/${{ matrix.target.name }}/ci-release/rust-initializer.exe .
+          Compress-Archive -Path rust-initializer.exe -DestinationPath rust-initializer-${{ matrix.target.name }}.zip
 
       - name: Pack (Linux)
         if: matrix.target.os == 'ubuntu-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/<NAME> .
-          tar -czvf <NAME>-${{ matrix.target.name }}.tar.gz <NAME>
+          mv target/${{ matrix.target.name }}/ci-release/rust-initializer .
+          tar -czvf rust-initializer-${{ matrix.target.name }}.tar.gz rust-initializer
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          name: <NAME>-${{ matrix.target.name }}
-          path: <NAME>-${{ matrix.target.name }}.*
+          name: rust-initializer-${{ matrix.target.name }}
+          path: rust-initializer-${{ matrix.target.name }}.*
           retention-days: 1
 
   # release:
@@ -87,7 +92,7 @@ jobs:
       - name: Hash
         run: |
           mkdir -p artifacts
-          mv <NAME>-*/* artifacts/
+          mv rust-initializer-*/* artifacts/
           cd artifacts
           sha256sum * | tee ../SHA256
           md5sum * | tee ../MD5
@@ -107,6 +112,12 @@ jobs:
     steps:
       - name: Fetch latest code
         uses: actions/checkout@v6
+
+      - name: Set up Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache: true
+          components: rustfmt, clippy
 
       - name: Login
         run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
