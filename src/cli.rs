@@ -6,7 +6,6 @@ use clap::{
 		styling::{AnsiColor, Effects},
 	},
 };
-use tracing_subscriber::{EnvFilter, Registry, reload::Handle};
 // self
 use crate::prelude::*;
 
@@ -29,7 +28,7 @@ pub struct Cli {
 	placeholder: String,
 }
 impl Cli {
-	pub fn run(&self, _log_filter_handle: Handle<EnvFilter, Registry>) -> Result<()> {
+	pub fn run(&self) -> Result<()> {
 		tracing::info!("{self:?}");
 
 		Ok(())

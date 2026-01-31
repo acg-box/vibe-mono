@@ -44,24 +44,24 @@ jobs:
         run: rustup target add ${{ matrix.target.name }}
 
       - name: Build
-        run: cargo build --profile ci-release --locked --target ${{ matrix.target.name }}
+        run: cargo build --profile final-release --locked --target ${{ matrix.target.name }}
 
       - name: Pack (macOS)
         if: matrix.target.os == 'macos-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/vibe-mono .
+          mv target/${{ matrix.target.name }}/final-release/vibe-mono .
           zip vibe-mono-${{ matrix.target.name }}.zip vibe-mono
 
       - name: Pack (Windows)
         if: matrix.target.os == 'windows-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/vibe-mono.exe .
+          mv target/${{ matrix.target.name }}/final-release/vibe-mono.exe .
           Compress-Archive -Path vibe-mono.exe -DestinationPath vibe-mono-${{ matrix.target.name }}.zip
 
       - name: Pack (Linux)
         if: matrix.target.os == 'ubuntu-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/vibe-mono .
+          mv target/${{ matrix.target.name }}/final-release/vibe-mono .
           tar -czvf vibe-mono-${{ matrix.target.name }}.tar.gz vibe-mono
 
       - name: Upload artifact

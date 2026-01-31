@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Docs](https://img.shields.io/docsrs/<NAME>)](https://docs.rs/<NAME>)
-[![Rust](https://github.com/hack-ink/<NAME>/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/hack-ink/<NAME>/actions/workflows/rust.yml)
+[![Language Checks](https://github.com/hack-ink/<NAME>/actions/workflows/language.yml/badge.svg?branch=main)](https://github.com/hack-ink/<NAME>/actions/workflows/language.yml)
 [![Release](https://github.com/hack-ink/<NAME>/actions/workflows/release.yml/badge.svg)](https://github.com/hack-ink/<NAME>/actions/workflows/release.yml)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hack-ink/<NAME>)](https://github.com/hack-ink/<NAME>/tags)
 [![GitHub last commit](https://img.shields.io/github/last-commit/hack-ink/<NAME>?color=red&style=plastic)](https://github.com/hack-ink/<NAME>)

@@ -3,46 +3,41 @@
 #![deny(clippy::all, missing_docs, unused_crate_dependencies)]
 
 mod cli;
-use cli::Cli;
-
 mod prelude {
-	pub use anyhow::Result;
+	pub use color_eyre::{Result, eyre};
 }
+
+use cli::Cli;
 use prelude::*;
 
 // std
 use std::{panic, process};
 // crates.io
-use app_dirs2::{AppDataType, AppInfo};
 use clap::Parser;
+use directories::ProjectDirs;
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
-use tracing_subscriber::{
-	EnvFilter, filter::LevelFilter, fmt, layer::SubscriberExt, reload::Layer,
-	util::SubscriberInitExt,
-};
-
-const APP_INFO: AppInfo = AppInfo { name: "<NAME>", author: "hack.ink" };
+use tracing_subscriber::EnvFilter;
 
 fn main() -> Result<()> {
-	color_eyre::install().unwrap();
+	color_eyre::install()?;
 
+	let project_dirs = ProjectDirs::from("", "hack.ink", "<NAME>")
+		.ok_or_else(|| eyre::eyre!("Failed to resolve project directories."))?;
+	let app_root = project_dirs.data_dir();
 	let (non_blocking, _guard) = tracing_appender::non_blocking(
 		RollingFileAppender::builder()
-			.rotation(Rotation::DAILY)
+			.rotation(Rotation::WEEKLY)
+			.max_log_files(3)
 			.filename_suffix("log")
-			.build(app_dirs2::get_app_root(AppDataType::UserData, &APP_INFO).unwrap())?,
+			.build(app_root)?,
 	);
-	let filter =
-		EnvFilter::builder().with_default_directive(LevelFilter::INFO.into()).from_env_lossy();
-	let (reloadable_filter, filter_handle) = Layer::new(filter);
-	let file_layer = fmt::layer().with_ansi(false).with_writer(non_blocking);
-	let subscriber = tracing_subscriber::registry().with(reloadable_filter).with(file_layer);
-	#[cfg(feature = "dev")]
-	let console_layer = fmt::layer();
-	#[cfg(feature = "dev")]
-	let subscriber = subscriber.with(console_layer);
+	let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
 
-	subscriber.init();
+	tracing_subscriber::fmt()
+		.with_env_filter(filter)
+		.with_ansi(false)
+		.with_writer(non_blocking)
+		.init();
 
 	let default_hook = panic::take_hook();
 
@@ -51,7 +46,8 @@ fn main() -> Result<()> {
 
 		process::abort();
 	}));
-	Cli::parse().run(filter_handle)?;
+
+	Cli::parse().run()?;
 
 	Ok(())
 }

@@ -39,6 +39,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           cache: true
+          rustflags: ''
           components: rustfmt, clippy
 
       - name: Install nightly rustfmt
@@ -47,7 +48,26 @@ jobs:
       - name: Install cargo-make
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,nextest
+          tool: cargo-make
 
-      - name: Run checks
-        run: cargo make checks
+      - name: Run lint
+        run: cargo make lint-rust
+
+      - name: Run Rust format checks
+        run: cargo make fmt-rust-check
+
+      - name: Install taplo
+        uses: taiki-e/install-action@v2
+        with:
+          tool: taplo
+
+      - name: Run TOML format checks
+        run: cargo make fmt-toml-check
+
+      - name: Install nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: nextest
+
+      - name: Run tests
+        run: cargo make test-rust

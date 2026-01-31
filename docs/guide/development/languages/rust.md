@@ -8,13 +8,13 @@ All comments and messages must also follow the Global Language Rules in `AGENTS.
 These rules apply to Rust crates, binaries, and tooling in this repository, typically within directories that include a `Cargo.toml`.
 Do not apply them to non-Rust projects.
 
-## Rule Language and Precedence
+## Rule Keywords and Precedence
 
 - MUST indicates a strict requirement.
 - SHOULD indicates a strong preference.
 - MAY indicates an optional choice.
-- Unless a rule uses SHOULD or MAY, treat imperative statements as MUST.
-- rustfmt output is always the final authority for formatting.
+- Treat imperative statements without SHOULD or MAY as MUST.
+- `rustfmt` output is always the final authority for formatting.
 
 ## Development Rules
 
@@ -35,11 +35,11 @@ Do not apply them to non-Rust projects.
 
 ### Indentation
 
-- Indentation MUST use tabs (`\t`).
+- Use tabs (`\t`) for indentation.
 
 ### Declaration Order
 
-Each Rust file MUST follow this order for module-level items:
+At module scope, order items as:
 
 ```
 mod
@@ -55,8 +55,12 @@ impl
 fn
 ```
 
-Within each group, `pub` items MUST appear before non-`pub` items.
-Within the `fn` group and the same visibility level, non-`async` functions MUST appear before `async` functions.
+Rules:
+
+- Within each group, place `pub` items before non-`pub` items.
+- Within the `fn` group at the same visibility, place non-`async` functions before `async` functions.
+- Any tests module, whether inline (`#[cfg(test)] mod tests { ... }`) or declared with `mod tests;`, MUST appear after all other items.
+- Inside `#[cfg(test)] mod tests`, you MUST use `use super::*;`.
 
 Example (illustrative):
 
@@ -70,29 +74,25 @@ pub async fn fetch_response() -> Response {
 }
 ```
 
-Expanded `#[cfg(test)] mod tests { ... }` blocks MUST appear at the end of the file, after all other items.
-If `mod tests;` is used, it MUST appear after all other items as well.
-
 ### Imports and Headers
 
-Allowed `use` section headers are:
+Allowed `use` section headers and meanings:
 
-- `// std`.
-- `// crates.io`.
-- `// self`.
+- `// std` (paths starting with `std::`).
+- `// crates.io` (third-party crates declared in `Cargo.toml`).
+- `// self` (current crate paths starting with `crate::` or `self::`).
 
 Rules:
 
-- You MUST preserve existing header groups.
-- You MUST NOT invent new groups.
-- You MUST NOT add headers above non-import definitions.
-- Within each header group, you MUST order imports lexicographically by full path text (ASCII order, case-sensitive).
-- You MUST NOT import functions directly. Import the module and call `module::function(...)` at the use site.
-- You MUST keep function calls to a single module qualifier. If the function lives in a nested module, import the module path and alias it so the call remains `module::function(...)` rather than `module::module::function(...)`.
+- Preserve existing groups. Do not invent new groups or add headers above non-import items.
+- Within each group, order imports lexicographically by full path text (ASCII order, case-sensitive).
+- Do not import functions directly; import the module and call `module::function(...)`.
+- Keep a single module qualifier in calls. For nested modules, import and alias so calls are `module::function(...)`, not `module::module::function(...)`.
+- If `crate::prelude::*` is imported, do not add redundant imports.
 
 ### Module Layout (No mod.rs)
 
-You MUST use a flat structure:
+Use a flat structure:
 
 ```
 src/foo.rs
@@ -100,7 +100,7 @@ src/foo/bar.rs
 src/foo/baz.rs
 ```
 
-You MUST NOT create or modify `mod.rs`.
+Do not create or modify `mod.rs`.
 
 ### Structs, Enums, and Impl Blocks
 
@@ -109,14 +109,12 @@ For each type:
 1. The first `impl` block MUST appear immediately after the type definition.
 2. All `impl` blocks MUST be contiguous without blank lines between them.
 3. `impl` order MUST be:
-    1. Inherent `impl`.
-    2. Standard library traits.
-    3. Third-party traits.
-    4. Project or self traits.
+   1. Inherent `impl`.
+   2. Standard library traits.
+   3. Third-party traits.
+   4. Project or self traits.
 
-Inside `impl Type` blocks, you MUST use `Self` instead of the concrete type name when referring to the
-implementing type in method signatures (parameters and return types), including references, slices,
-and generic containers.
+Inside `impl Type` blocks, you MUST use `Self` instead of the concrete type name when referring to the implementing type in method signatures (parameters and return types), including references, slices, and generic containers.
 
 Examples (illustrative):
 
@@ -193,8 +191,8 @@ fn render<T: Display>(value: T) -> String {
 - Tracing macros MUST NOT be imported.
 - Tracing calls MUST use structured fields for dynamic values such as identifiers, names, counts, statuses, sizes, durations, and errors.
 - You MUST NOT encode those values only in the message string.
-
-Examples (illustrative):
+- Use a short, action-oriented message alongside structured fields.
+- Do not create temporary variables solely for logging.
 
 Allowed:
 
@@ -231,23 +229,6 @@ Forbidden:
 - `10000`.
 - `1000000`.
 
-## Additional Mandatory Rules
-
-All rules in this section are mandatory.
-
-### Declaration Order
-
-- Inside `#[cfg(test)] mod tests`, use `use super::*;`.
-
-### Imports and Headers
-
-- If `crate::prelude::*` is imported, do not add redundant imports.
-
-### Logging Rules
-
-- Use a short, action-oriented message alongside structured fields.
-- Do not create temporary variables solely for logging.
-
 ### Error Wrapping
 
 - Add contextual messages at crate or module boundaries and keep the original error as the source.
@@ -269,13 +250,13 @@ pub enum Error {
 
 ### Borrowing and Ownership
 
-- Prefer borrowing with `&` over `.as_*()` conversions (for example, `.as_ref()`, `.as_str()`) when both are applicable.
+- Prefer borrowing with `&` over `.as_*()` conversions when both are applicable.
 - Avoid `.clone()` unless it is required by ownership or lifetimes, or it clearly improves clarity. Do not pay a cost with no benefit.
 - Use `into_iter()` when intentionally consuming collections.
 - Do not use scope blocks solely to end a borrow.
 - When an early release is required, use an explicit `drop`.
 - When the value is a reference and you need to end a borrow without a drop warning, use `let _ = value;`.
-- Do not create single-use `let` bindings that only forward a value; inline the expression unless it improves readability, error handling, or avoids repeated work.
+- Do not create single-use `let` bindings that only forward a value. Inline the expression unless it improves readability, error handling, or avoids repeated work.
 
 ### Vertical Spacing
 
@@ -295,4 +276,5 @@ Treat statements as the same type when they share the same syntactic form or cal
 - Multiple `Type::function(...)` calls.
 - Multiple `self.method(...)` calls.
 - Multiple assignment statements like `a = b`.
-  These examples are not exhaustive. Apply the same rule to any repeated statement shape.
+
+This list is not exhaustive. Apply the same rule to any repeated statement shape.
