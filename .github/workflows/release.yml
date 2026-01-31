@@ -49,26 +49,26 @@ jobs:
       - name: Pack (macOS)
         if: matrix.target.os == 'macos-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/rust-initializer .
-          zip rust-initializer-${{ matrix.target.name }}.zip rust-initializer
+          mv target/${{ matrix.target.name }}/ci-release/vibe-mono .
+          zip vibe-mono-${{ matrix.target.name }}.zip vibe-mono
 
       - name: Pack (Windows)
         if: matrix.target.os == 'windows-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/rust-initializer.exe .
-          Compress-Archive -Path rust-initializer.exe -DestinationPath rust-initializer-${{ matrix.target.name }}.zip
+          mv target/${{ matrix.target.name }}/ci-release/vibe-mono.exe .
+          Compress-Archive -Path vibe-mono.exe -DestinationPath vibe-mono-${{ matrix.target.name }}.zip
 
       - name: Pack (Linux)
         if: matrix.target.os == 'ubuntu-latest'
         run: |
-          mv target/${{ matrix.target.name }}/ci-release/rust-initializer .
-          tar -czvf rust-initializer-${{ matrix.target.name }}.tar.gz rust-initializer
+          mv target/${{ matrix.target.name }}/ci-release/vibe-mono .
+          tar -czvf vibe-mono-${{ matrix.target.name }}.tar.gz vibe-mono
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          name: rust-initializer-${{ matrix.target.name }}
-          path: rust-initializer-${{ matrix.target.name }}.*
+          name: vibe-mono-${{ matrix.target.name }}
+          path: vibe-mono-${{ matrix.target.name }}.*
           retention-days: 1
 
   # release:
@@ -92,7 +92,7 @@ jobs:
       - name: Hash
         run: |
           mkdir -p artifacts
-          mv rust-initializer-*/* artifacts/
+          mv vibe-mono-*/* artifacts/
           cd artifacts
           sha256sum * | tee ../SHA256
           md5sum * | tee ../MD5

@@ -25,7 +25,7 @@ use crate::prelude::*;
 )]
 pub struct Cli {
 	/// Placeholder.
-	#[arg(long, short, value_name = "NUM", default_value_t = String::from("Welcome to use rust-initializer!"))]
+	#[arg(long, short, value_name = "NUM", default_value_t = String::from("Welcome to use vibe-mono!"))]
 	placeholder: String,
 }
 impl Cli {
@@ -42,4 +42,15 @@ fn styles() -> Styles {
 		.usage(AnsiColor::Red.on_default() | Effects::BOLD)
 		.literal(AnsiColor::Blue.on_default() | Effects::BOLD)
 		.placeholder(AnsiColor::Green.on_default())
+}
+
+#[cfg(test)]
+mod tests {
+	// self
+	use super::*;
+
+	#[test]
+	fn default_placeholder_mentions_vibe_mono() {
+		assert_eq!(Cli::parse_from(["app"]).placeholder, "Welcome to use vibe-mono!");
+	}
 }
