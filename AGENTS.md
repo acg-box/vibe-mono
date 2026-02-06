@@ -43,6 +43,27 @@ Requirements for repository artifacts:
 
 **These language rules override any conflicting rules elsewhere for repository artifacts.**
 
+### Commit Message Schema
+
+Commit messages are exempt from the English language and punctuation rules above.
+All commit messages must follow the schema below exactly.
+
+Schema (single line JSON with fixed key order):
+`{"schema":"cmsg/1","type":"feat|fix|refactor|docs|chore|build|ci|perf|revert","scope":"global|<component>","summary":"...","intent":"...","impact":"...","breaking":false,"risk":"low|medium|high","refs":[]}`
+
+Rules:
+
+- The JSON object must be a single line with no extra whitespace.
+- Keys must appear in the exact order shown.
+- Only the keys shown are allowed.
+- `schema` must be `cmsg/1`.
+- `type` must be one of `feat`, `fix`, `refactor`, `docs`, `chore`, `build`, `ci`, `perf`, or `revert`.
+- `scope` must be `global` or a lowercase kebab-case component name.
+- `summary`, `intent`, and `impact` must be short text without double quotes, backslashes, or newlines.
+- `breaking` must be `true` or `false`.
+- `risk` must be `low`, `medium`, or `high`.
+- `refs` must be an array of strings. Each string must use one of the following forms: `gh:<owner>/<repo>#<issue>`, `pr:<number>`, `doc:<slug>`, `url:<https://...>`. Use an empty array when there are no references.
+
 Commenting guidance:
 
 - Avoid redundant comments that restate the code in different words.
@@ -64,8 +85,6 @@ Language- or stack-specific rules must be documented under `docs/guide/developme
 
 Run verification commands only when requested or when you need evidence before claiming completion.
 
-When a data debugging method is not specified, use `psql` with the `.env`-provided `PUBFI_DATABASE_URL` for the `pubfi_stg` database.
-
 ## 1.1 Workspace Automation (cargo make)
 
 - Use `cargo make` tasks from `Makefile.toml` when they are the best fit for the job.
@@ -76,7 +95,6 @@ When a data debugging method is not specified, use `psql` with the `.env`-provid
   - Tests: `cargo make test` for full workspace, or `cargo make test-rust` for Rust-only.
   - SQLx metadata: `scripts/sqlx-prepare.sh`.
   - Full validation: `cargo make checks`.
-- Do not set `DATABASE_URL` manually when running `cargo make` tasks.
 
 # 2. Implementation Scope
 

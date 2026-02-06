@@ -1,9 +1,9 @@
 {
-  "id": 9349786,
+  "id": 12430561,
   "name": "default",
   "target": "branch",
   "source_type": "Repository",
-  "source": "hack-ink/vibe-mono",
+  "source": "hack-ink/ELF",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
@@ -89,13 +89,6 @@
       }
     },
     {
-      "type": "copilot_code_review",
-      "parameters": {
-        "review_on_push": true,
-        "review_draft_pull_requests": false
-      }
-    },
-    {
       "type": "code_quality",
       "parameters": {
         "severity": "errors"
@@ -118,7 +111,11 @@
       }
     },
     {
-      "type": "copilot_code_review"
+      "type": "copilot_code_review",
+      "parameters": {
+        "review_on_push": true,
+        "review_draft_pull_requests": false
+      }
     }
   ],
   "bypass_actors": [

@@ -14,3 +14,4 @@ Purpose: Provide the entry point for operational guidance and runbooks.
 
 - `docs/guide/development/languages/index.md` — Language- and stack-specific development rules.
 - `docs/guide/development/languages/rust.md` — Rust development and style rules for this repository.
+- `docs/guide/development/dependency_upgrade_workflow.md` — Dependency upgrade workflow for Rust dependencies.
