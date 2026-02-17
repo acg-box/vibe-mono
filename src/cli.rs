@@ -1,4 +1,3 @@
-// crates.io
 use clap::{
 	Parser,
 	builder::{
@@ -6,8 +5,8 @@ use clap::{
 		styling::{AnsiColor, Effects},
 	},
 };
-// self
-use crate::prelude::*;
+
+use crate::prelude::Result;
 
 /// Cli.
 #[derive(Debug, Parser)]
@@ -29,7 +28,7 @@ pub struct Cli {
 }
 impl Cli {
 	pub fn run(&self) -> Result<()> {
-		tracing::info!("{self:?}");
+		tracing::info!(?self, "Running CLI command");
 
 		Ok(())
 	}
@@ -45,8 +44,8 @@ fn styles() -> Styles {
 
 #[cfg(test)]
 mod tests {
-	// self
-	use super::*;
+	use crate::cli::Cli;
+	use clap::Parser;
 
 	#[test]
 	fn default_placeholder_mentions_vibe_mono() {

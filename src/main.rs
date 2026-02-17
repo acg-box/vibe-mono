@@ -7,16 +7,17 @@ mod prelude {
 	pub use color_eyre::{Result, eyre};
 }
 
-use cli::Cli;
-use prelude::*;
-
-// std
 use std::{panic, process};
-// crates.io
+
 use clap::Parser;
 use directories::ProjectDirs;
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
 use tracing_subscriber::EnvFilter;
+
+use crate::{
+	cli::Cli,
+	prelude::{Result, eyre},
+};
 
 fn main() -> Result<()> {
 	color_eyre::install()?;
@@ -46,7 +47,6 @@ fn main() -> Result<()> {
 
 		process::abort();
 	}));
-
 	Cli::parse().run()?;
 
 	Ok(())
