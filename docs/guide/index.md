@@ -14,4 +14,3 @@ Purpose: Provide the entry point for operational guidance and runbooks.
 
 - `docs/guide/development/languages/python.md` — Python environment and workflow.
 - `docs/guide/development/languages/rust.md` — Rust development and style rules for this repository.
-- `docs/guide/development/dependency_upgrade_workflow.md` — Dependency upgrade workflow for Rust dependencies.
