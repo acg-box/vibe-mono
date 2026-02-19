@@ -9,8 +9,3 @@ Purpose: Provide the entry point for operational guidance and runbooks.
 - `docs/governance.md` for documentation structure, ownership, and update rules.
 
 ## Guide sections
-
-### Development
-
-- `docs/guide/development/languages/python.md` — Python environment and workflow.
-- `docs/guide/development/languages/rust.md` — Rust development and style rules for this repository.
