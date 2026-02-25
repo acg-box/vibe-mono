@@ -442,6 +442,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "name_placeholder"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "color-eyre",
+ "directories",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+ "vergen-gitcl",
+]
+
+[[package]]
 name = "nu-ansi-term"
 version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -865,19 +878,6 @@ dependencies = [
  "anyhow",
  "derive_builder",
  "rustversion",
-]
-
-[[package]]
-name = "vibe-mono"
-version = "0.1.0"
-dependencies = [
- "clap",
- "color-eyre",
- "directories",
- "tracing",
- "tracing-appender",
- "tracing-subscriber",
- "vergen-gitcl",
 ]
 
 [[package]]

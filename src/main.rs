@@ -1,4 +1,4 @@
-//! <DESCRIPTION>
+//! description_placeholder
 
 #![deny(clippy::all, missing_docs, unused_crate_dependencies)]
 
@@ -22,7 +22,7 @@ use crate::{
 fn main() -> Result<()> {
 	color_eyre::install()?;
 
-	let project_dirs = ProjectDirs::from("", "hack.ink", "<NAME>")
+	let project_dirs = ProjectDirs::from("", "hack.ink", "name_placeholder")
 		.ok_or_else(|| eyre::eyre!("Failed to resolve project directories."))?;
 	let app_root = project_dirs.data_dir();
 	let (non_blocking, _guard) = tracing_appender::non_blocking(

@@ -49,26 +49,26 @@ jobs:
       - name: Pack (macOS)
         if: matrix.target.os == 'macos-latest'
         run: |
-          mv target/${{ matrix.target.name }}/final-release/vibe-mono .
-          zip vibe-mono-${{ matrix.target.name }}.zip vibe-mono
+          mv target/${{ matrix.target.name }}/final-release/name_placeholder .
+          zip name_placeholder-${{ matrix.target.name }}.zip name_placeholder
 
       - name: Pack (Windows)
         if: matrix.target.os == 'windows-latest'
         run: |
-          mv target/${{ matrix.target.name }}/final-release/vibe-mono.exe .
-          Compress-Archive -Path vibe-mono.exe -DestinationPath vibe-mono-${{ matrix.target.name }}.zip
+          mv target/${{ matrix.target.name }}/final-release/name_placeholder.exe .
+          Compress-Archive -Path name_placeholder.exe -DestinationPath name_placeholder-${{ matrix.target.name }}.zip
 
       - name: Pack (Linux)
         if: matrix.target.os == 'ubuntu-latest'
         run: |
-          mv target/${{ matrix.target.name }}/final-release/vibe-mono .
-          tar -czvf vibe-mono-${{ matrix.target.name }}.tar.gz vibe-mono
+          mv target/${{ matrix.target.name }}/final-release/name_placeholder .
+          tar -czvf name_placeholder-${{ matrix.target.name }}.tar.gz name_placeholder
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          name: vibe-mono-${{ matrix.target.name }}
-          path: vibe-mono-${{ matrix.target.name }}.*
+          name: name_placeholder-${{ matrix.target.name }}
+          path: name_placeholder-${{ matrix.target.name }}.*
           retention-days: 1
 
   # release:
@@ -92,7 +92,7 @@ jobs:
       - name: Hash
         run: |
           mkdir -p artifacts
-          mv vibe-mono-*/* artifacts/
+          mv name_placeholder-*/* artifacts/
           cd artifacts
           sha256sum * | tee ../SHA256
           md5sum * | tee ../MD5

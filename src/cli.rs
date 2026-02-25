@@ -23,7 +23,7 @@ use crate::prelude::Result;
 )]
 pub struct Cli {
 	/// Placeholder.
-	#[arg(long, short, value_name = "NUM", default_value_t = String::from("Welcome to use vibe-mono!"))]
+	#[arg(long, short, value_name = "NUM", default_value_t = String::from("Welcome to use name_placeholder!"))]
 	placeholder: String,
 }
 impl Cli {
@@ -48,7 +48,7 @@ mod tests {
 	use clap::Parser;
 
 	#[test]
-	fn default_placeholder_mentions_vibe_mono() {
-		assert_eq!(Cli::parse_from(["app"]).placeholder, "Welcome to use vibe-mono!");
+	fn default_placeholder_mentions_name_placeholder() {
+		assert_eq!(Cli::parse_from(["app"]).placeholder, "Welcome to use name_placeholder!");
 	}
 }

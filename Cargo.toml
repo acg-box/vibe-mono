@@ -2,14 +2,14 @@
 authors     = ["Xavier Lau <x@acg.box>"]
 build       = "build.rs"
 categories  = []
-description = "<DESCRIPTION>"
+description = "description_placeholder"
 edition     = "2024"
-homepage    = "https://hack.ink/<NAME>"
+homepage    = "https://hack.ink/name_placeholder"
 keywords    = []
 license     = "GPL-3.0"
-name        = "vibe-mono"
+name        = "name_placeholder"
 readme      = "README.md"
-repository  = "https://github.com/hack-ink/<NAME>"
+repository  = "https://github.com/hack-ink/name_placeholder"
 resolver    = "3"
 version     = "0.1.0"
 
