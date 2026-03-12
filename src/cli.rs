@@ -44,8 +44,9 @@ fn styles() -> Styles {
 
 #[cfg(test)]
 mod tests {
-	use crate::cli::Cli;
 	use clap::Parser;
+
+	use crate::cli::Cli;
 
 	#[test]
 	fn default_placeholder_mentions_name_placeholder() {

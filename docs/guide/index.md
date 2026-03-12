@@ -1,11 +1,54 @@
 # Guide Index
 
-Purpose: Provide the entry point for operational guidance and runbooks.
+Purpose: Route agents to procedural documents that tell them how to execute work safely
+and repeatably.
 
-## Start here
+Question this index answers: "what should I do?"
 
-- `AGENTS.md` for automated agent rules and tooling constraints.
-- `docs/spec/index.md` for the normative system specifications and contracts.
-- `docs/governance.md` for documentation structure, ownership, and update rules.
+## Use this index when
 
-## Guide sections
+- You need a runbook, how-to, migration sequence, validation flow, troubleshooting
+  path, or maintenance procedure.
+- You already know the relevant spec and need the operational steps.
+- You need a bounded sequence with prerequisites and verification.
+
+## Do not use this index when
+
+- You need the authoritative contract, schema, or invariant.
+- You need a temporary execution plan that may drift.
+- You need broad project policy; read `AGENTS.md` or `docs/governance.md` instead.
+
+## What belongs in `docs/guide/`
+
+- Task-oriented runbooks.
+- Validation and test procedures.
+- Migration, rollout, rollback, and recovery sequences.
+- Troubleshooting flows and operator checklists.
+- Short implementation recipes that depend on a governing spec.
+
+## Guide document contract
+
+Start each guide with a compact routing header:
+
+- `Goal`
+- `Read this when`
+- `Inputs` or `Preconditions`
+- `Depends on`
+- `Outputs` or `Verification`
+
+Then structure the body for execution:
+
+- Write steps in the order an agent should perform them.
+- Keep commands, checks, and rollback points explicit.
+- Link to specs for normative truth instead of restating contracts.
+- Include failure branches only when they change the next action.
+- End with verification so an agent can tell whether the guide succeeded.
+
+## Structure policy
+
+- Group guides by workflow or subsystem only when multiple guides exist and the grouping
+  improves retrieval.
+- Do not create empty category folders or placeholder section headings.
+- Prefer titles that encode the task or outcome, such as `validate_release.md` or
+  `rerun_ingest_job.md`.
+- Keep the guide index as a router, not a dumping ground for long explanations.

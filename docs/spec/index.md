@@ -1,20 +1,53 @@
 # Spec Index
 
-Purpose: Provide the canonical entry point for repository specifications.
+Purpose: Route agents to normative documents that define repository truth.
 
-Audience: This documentation is written for LLM consumption and should remain explicit and unambiguous.
+Question this index answers: "what must remain true?"
 
-## Structure
+## Use this index when
 
-- Store specs directly under `docs/spec/` (flat structure).
-- Use descriptive file names with stable prefixes (`system_`, `t0_`, `t1_`, `trace_`, `search_`).
-- Link new specs from `docs/index.md` or `docs/guide/index.md` when relevant.
+- You need an invariant, contract, schema, enum, state model, interface, or required
+  behavior.
+- You are deciding whether code or data is correct.
+- A guide says "see the governing spec" and you need the authoritative source.
 
-## Authoring guidance (LLM-first)
+## Do not use this index when
 
-- Use explicit nouns instead of pronouns whenever possible.
-- Define acronyms and domain terms on first use.
-- Prefer short sentences with one idea each.
-- Include canonical field names, enums, units, and constraints.
-- Provide small, concrete examples for non-obvious flows.
-- Keep links stable and prefer absolute repo paths.
+- You need step-by-step instructions, maintenance actions, migrations, or incident
+  response.
+- You need a temporary plan or work log.
+- You want rationale only, without an authoritative contract.
+
+## What belongs in `docs/spec/`
+
+- Contracts and invariants.
+- Data shapes, canonical field names, enums, defaults, units, and limits.
+- State transitions and protocol rules.
+- Behavior that tests, code, or operators should treat as authoritative.
+
+## Spec document contract
+
+Start each spec with a compact routing header:
+
+- `Purpose`
+- `Status: normative`
+- `Read this when`
+- `Not this document`
+- `Defines`
+
+Then keep the body explicit:
+
+- Prefer concrete nouns over pronouns.
+- Separate facts from rationale.
+- Include canonical names exactly as code or data uses them.
+- Include a small example when it removes ambiguity.
+- Link to related guides instead of embedding procedures.
+
+## Structure policy
+
+- Prefer shallow paths while the spec set is small.
+- Add subfolders only when they mirror stable system boundaries or materially reduce
+  ambiguity.
+- Do not require fixed filename prefixes up front.
+- Choose names for topic clarity and retrieval quality, not visual uniformity.
+- If a guide depends on a spec, the guide links back to the governing spec.

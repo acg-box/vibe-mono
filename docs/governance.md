@@ -1,63 +1,97 @@
 # Documentation Governance
 
-Purpose: Define how documentation is organized, updated, and kept consistent across this
-repository.
+Purpose: Define how agent-facing documentation is organized, updated, and kept consistent
+across this repository.
+
+Audience: All documentation under `docs/` is written for AI agents and LLM workflows.
+The split between `spec` and `guide` is by task shape, not by reader type.
 
 ## Principles
 
-- Write documentation that is clear, concise, retrieval-friendly, and LLM-first.
-- Keep contracts and invariants in `docs/spec/`; keep runbooks and how-to guidance in
-  `docs/guide/`.
-- Avoid duplicating authoritative content. Link to the source of truth instead.
+- Optimize for retrieval, routing, and execution.
+- Keep one authoritative document per topic.
+- Separate normative truth from procedural steps.
+- Prefer explicit section labels and stable links over prose-heavy narrative.
+- Let structure emerge from real topics. Avoid premature folder taxonomies.
 
-## Document classes and ownership
+## Document classes
 
-| Class | Location | Source of truth for | Update trigger |
-| --- | --- | --- | --- |
-| Spec | `docs/spec/` | Contracts, schemas, pipeline behavior, invariants | Any behavior or schema change |
-| Operational docs | `docs/guide/` | Runbooks, pipeline walkthroughs, maintenance | When operating procedures change |
-| Plans | `docs/plans/` | Draft plans and design notes (non-normative) | As-needed, may drift |
+| Class | Location | Answers | Source of truth for | Update trigger |
+| --- | --- | --- | --- | --- |
+| Spec | `docs/spec/` | What must be true? | Contracts, schemas, invariants, required behavior | Any behavior or schema change |
+| Guide | `docs/guide/` | What should I do? | Runbooks, migrations, validation, troubleshooting | Any procedure or operational change |
+| Plan | `docs/plans/` | What are we considering or executing right now? | Temporary plans and exploratory notes | As needed; may drift |
 
 ## Placement rules
 
-- If it defines a contract, it belongs in `docs/spec/`.
-- If it explains how to run or maintain a system, it belongs in `docs/guide/`.
-- If it is temporary or exploratory, it belongs in `docs/plans/`.
-- Module documentation must live under `docs/guide/` and be linked from `docs/guide/index.md`.
-  Do not add module-level README files.
-- Do not duplicate the same content in both spec and guide files. Spec defines what must be true;
-  guide explains how to operate or implement it. When in doubt, link to the source of truth.
+- If a document defines correctness, it belongs in `docs/spec/`.
+- If a document defines actions, it belongs in `docs/guide/`.
+- If a document is temporary, exploratory, or expected to drift, it belongs in
+  `docs/plans/`.
+- Do not duplicate the same authoritative content across documents. Link to the source
+  of truth instead.
+- A guide may summarize why a step exists, but normative statements still live in the
+  governing spec.
+
+## Document contracts
+
+Every document should start with a short routing header.
+
+Spec header:
+
+- `Purpose`
+- `Status: normative`
+- `Read this when`
+- `Not this document`
+- `Defines`
+
+Guide header:
+
+- `Goal`
+- `Read this when`
+- `Inputs` or `Preconditions`
+- `Depends on`
+- `Outputs` or `Verification`
+
+Plan header:
+
+- `Goal`
+- `Scope`
+- `Assumptions`
+- `Steps`
+- `Status`
+
+## Structure rules
+
+- Prefer shallow paths by default.
+- Add subfolders only when they mirror stable system boundaries or improve retrieval.
+- Use descriptive `snake_case` file names.
+- Do not require fixed filename prefixes unless a real ambiguity appears.
+- Do not create empty folders, empty indexes, or placeholder documents to satisfy a
+  taxonomy.
 
 ## Canonical entry points
 
-- Repository overview: `README.md` (the only README in the repository).
-- Specs: `docs/spec/index.md`.
-- Operational docs: `docs/guide/index.md`.
-- Unified documentation index: `docs/index.md`.
-
-## Compatibility note
-
-Legacy paths are no longer maintained. Use `docs/` paths for all references.
+- Repository policy and execution rules: `AGENTS.md`
+- Unified documentation router: `docs/index.md`
+- Normative router: `docs/spec/index.md`
+- Procedural router: `docs/guide/index.md`
 
 ## LLM reading guidance
 
-When answering questions about system behavior:
+When answering a repository question:
 
 1. Read `AGENTS.md` for tool and scope rules.
-2. Use `docs/spec/index.md` for contracts and invariants.
-3. Use `docs/guide/index.md` for runbooks and operational workflows.
+2. Route by question type:
+   - "What must be true?" -> `docs/spec/index.md`
+   - "What should I do?" -> `docs/guide/index.md`
+3. Use `docs/plans/` only when the task explicitly concerns an in-flight plan or draft.
 
 ## Update workflow
 
-- Behavior or schema change: update the relevant `docs/spec/` doc.
-- Procedure change: update the relevant `docs/guide/` guide.
-- Avoid copying long sections between documents. Link instead.
-
-## Naming conventions
-
-- Spec files use descriptive `snake_case` names with stable prefixes (`system_`, `t0_`, `t1_`,
-  `trace_`, `search_`).
-- Guide files use descriptive `snake_case` names within their category folders
-  (`development/`, `operations/`, `pipelines/`, `testing/`).
-- Plan files use `YYYY-MM-DD_<topic>_<type>.md` with `snake_case` topics (for example,
-  `2026-01-01_cryptopotato_crawler_plan.md`).
+- Behavior or schema change: update the relevant spec.
+- Procedure change: update the relevant guide.
+- If a change touches both truth and procedure, update both documents and keep their
+  boundary explicit.
+- When a guide starts carrying normative content, move that content into spec and link
+  to it.
