@@ -12,7 +12,8 @@ The split below is by question type, not by human-versus-agent audience.
 - Then choose one primary lane:
   - `docs/spec/index.md` when the question is "what must be true?"
   - `docs/guide/index.md` when the question is "what should I do?"
-- Use `docs/plans/` only for in-flight plans or exploratory notes that may drift.
+- Use `docs/plans/` only when a planning tool or execution workflow explicitly points to
+  a saved plan artifact there.
 
 ## Routing matrix
 
@@ -22,7 +23,7 @@ The split below is by question type, not by human-versus-agent audience.
   `docs/guide/`
 - Need repo task names or automation entrypoints -> `Makefile.toml`
 - Need documentation placement or authoring rules -> `docs/governance.md`
-- Need temporary execution context or an unfinished design -> `docs/plans/`
+- Need a planning-tool artifact or saved execution plan -> `docs/plans/`
 
 ## Retrieval rules
 

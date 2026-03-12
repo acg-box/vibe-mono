@@ -15,7 +15,7 @@ Question this index answers: "what must remain true?"
 
 - You need step-by-step instructions, maintenance actions, migrations, or incident
   response.
-- You need a temporary plan or work log.
+- You need a planning-tool artifact or a saved execution plan under `docs/plans/`.
 - You want rationale only, without an authoritative contract.
 
 ## What belongs in `docs/spec/`
