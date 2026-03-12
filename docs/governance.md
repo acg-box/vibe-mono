@@ -72,20 +72,21 @@ Plan header:
 
 ## Canonical entry points
 
-- Repository policy and execution rules: `AGENTS.md`
 - Unified documentation router: `docs/index.md`
 - Normative router: `docs/spec/index.md`
 - Procedural router: `docs/guide/index.md`
+- Repo task and automation entrypoints: `Makefile.toml`
 
 ## LLM reading guidance
 
 When answering a repository question:
 
-1. Read `AGENTS.md` for tool and scope rules.
+1. Read `docs/index.md` for routing.
 2. Route by question type:
    - "What must be true?" -> `docs/spec/index.md`
    - "What should I do?" -> `docs/guide/index.md`
-3. Use `docs/plans/` only when the task explicitly concerns an in-flight plan or draft.
+3. Read `Makefile.toml` when the task depends on repository automation or named tasks.
+4. Use `docs/plans/` only when the task explicitly concerns an in-flight plan or draft.
 
 ## Update workflow
 

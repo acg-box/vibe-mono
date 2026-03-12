@@ -16,7 +16,8 @@ Question this index answers: "what should I do?"
 
 - You need the authoritative contract, schema, or invariant.
 - You need a temporary execution plan that may drift.
-- You need broad project policy; read `AGENTS.md` or `docs/governance.md` instead.
+- You need broad documentation policy or repo task-entrypoint rules; read
+  `docs/governance.md` or `Makefile.toml` instead.
 
 ## What belongs in `docs/guide/`
 

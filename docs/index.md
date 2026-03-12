@@ -7,8 +7,8 @@ The split below is by question type, not by human-versus-agent audience.
 
 ## Read order
 
-- Read `AGENTS.md` first for repo policy, tool boundaries, and execution rules.
 - Read `docs/governance.md` for document contracts and placement rules.
+- Read `Makefile.toml` when the task depends on repo task names or execution entrypoints.
 - Then choose one primary lane:
   - `docs/spec/index.md` when the question is "what must be true?"
   - `docs/guide/index.md` when the question is "what should I do?"
@@ -20,7 +20,7 @@ The split below is by question type, not by human-versus-agent audience.
   `docs/spec/`
 - Need runbooks, migrations, validation steps, troubleshooting, or operational sequences ->
   `docs/guide/`
-- Need repo policy or tool constraints -> `AGENTS.md`
+- Need repo task names or automation entrypoints -> `Makefile.toml`
 - Need documentation placement or authoring rules -> `docs/governance.md`
 - Need temporary execution context or an unfinished design -> `docs/plans/`
 
