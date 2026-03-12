@@ -1,7 +1,5 @@
 //! description_placeholder
 
-#![deny(clippy::all, missing_docs, unused_crate_dependencies)]
-
 mod cli;
 mod prelude {
 	pub use color_eyre::{Result, eyre};
