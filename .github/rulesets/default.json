@@ -1,9 +1,9 @@
 {
-  "id": 12430561,
+  "id": 9349786,
   "name": "default",
   "target": "branch",
   "source_type": "Repository",
-  "source": "hack-ink/ELF",
+  "source": "hack-ink/vibe-mono",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
@@ -56,27 +56,6 @@
       }
     },
     {
-      "type": "required_status_checks",
-      "parameters": {
-        "strict_required_status_checks_policy": false,
-        "do_not_enforce_on_create": false,
-        "required_status_checks": [
-          {
-            "context": "Task cargo clippy",
-            "integration_id": 15368
-          },
-          {
-            "context": "Task cargo fmt",
-            "integration_id": 15368
-          },
-          {
-            "context": "Task cargo nextest",
-            "integration_id": 15368
-          }
-        ]
-      }
-    },
-    {
       "type": "code_scanning",
       "parameters": {
         "code_scanning_tools": [
@@ -89,32 +68,16 @@
       }
     },
     {
-      "type": "code_quality",
-      "parameters": {
-        "severity": "errors"
-      }
-    },
-    {
-      "type": "copilot_code_review_analysis_tools",
-      "parameters": {
-        "tools": [
-          {
-            "name": "CodeQL"
-          },
-          {
-            "name": "ESLint"
-          },
-          {
-            "name": "PMD"
-          }
-        ]
-      }
-    },
-    {
       "type": "copilot_code_review",
       "parameters": {
         "review_on_push": true,
         "review_draft_pull_requests": false
+      }
+    },
+    {
+      "type": "code_quality",
+      "parameters": {
+        "severity": "errors"
       }
     }
   ],
