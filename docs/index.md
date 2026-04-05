@@ -7,23 +7,27 @@ The split below is by question type, not by human-versus-agent audience.
 
 ## Read order
 
-- Read `docs/governance.md` for document contracts and placement rules.
+- Read `docs/policy.md` for document contracts and placement rules.
 - Read `Makefile.toml` when the task depends on repo task names or execution entrypoints.
 - Then choose one primary lane:
   - `docs/spec/index.md` when the question is "what must be true?"
-  - `docs/guide/index.md` when the question is "what should I do?"
-- Use `docs/plans/` only when a planning tool or execution workflow explicitly points to
-  a saved plan artifact there.
+  - `docs/runbook/index.md` when the question is "which sequence should I execute?"
+  - `docs/reference/index.md` when the question is "how is it currently organized or implemented?"
+  - `docs/decisions/index.md` when the question is "why was this tradeoff accepted?"
 
 ## Routing matrix
 
 - Need contracts, invariants, schemas, enums, state machines, or required behavior ->
   `docs/spec/`
 - Need runbooks, migrations, validation steps, troubleshooting, or operational sequences ->
-  `docs/guide/`
+  `docs/runbook/`
+- Need current implementation shape, repo layout, or technical context that is descriptive rather
+  than normative -> `docs/reference/`
+- Need to know where code, docs, or automation entrypoints live ->
+  `docs/reference/workspace-layout.md`
+- Need durable rationale for an accepted tradeoff -> `docs/decisions/`
 - Need repo task names or automation entrypoints -> `Makefile.toml`
-- Need documentation placement or authoring rules -> `docs/governance.md`
-- Need a planning-tool artifact or saved execution plan -> `docs/plans/`
+- Need documentation placement or authoring rules -> `docs/policy.md`
 
 ## Retrieval rules
 

@@ -84,6 +84,29 @@ TODO
 
 TODO
 
+## Workspace Layout
+
+The tracked template repository is intentionally small:
+
+- `src/`: runtime entrypoint and CLI surface
+- `docs/`: repository docs split into `spec`, `runbook`, `reference`, and `decisions`
+- `.github/`: repository automation
+- `Cargo.toml`: package metadata and dependency graph
+- `Makefile.toml`: repo-native format, lint, and test entrypoints
+
+Generated or local-only directories such as `target/`, `.worktrees/`, and `.workspaces/` are not
+part of the tracked repository structure.
+
+For code-ownership and directory-routing details, read `docs/reference/workspace-layout.md`.
+
+## Documentation
+
+- Documentation routing and placement rules: `docs/policy.md`
+- Normative contracts: `docs/spec/`
+- Procedural runbooks: `docs/runbook/`
+- Current implementation references: `docs/reference/`
+- Durable design rationale: `docs/decisions/`
+
 ## Support Me
 
 If you find this project helpful and would like to support its development, you can buy me a coffee!
@@ -108,10 +131,6 @@ Thank you for your support!
 We would like to extend our heartfelt gratitude to the following projects and contributors:
 
 - The Rust community for their continuous support and development of the Rust ecosystem.
-
-## Additional Acknowledgements
-
-- TODO
 
 <div align="right">
 

@@ -9,13 +9,13 @@ Question this index answers: "what must remain true?"
 - You need an invariant, contract, schema, enum, state model, interface, or required
   behavior.
 - You are deciding whether code or data is correct.
-- A guide says "see the governing spec" and you need the authoritative source.
+- A runbook says "see the governing spec" and you need the authoritative source.
 
 ## Do not use this index when
 
 - You need step-by-step instructions, maintenance actions, migrations, or incident
   response.
-- You need a planning-tool artifact or a saved execution plan under `docs/plans/`.
+- You need current implementation context, ownership mapping, or design rationale.
 - You want rationale only, without an authoritative contract.
 
 ## What belongs in `docs/spec/`
@@ -41,7 +41,7 @@ Then keep the body explicit:
 - Separate facts from rationale.
 - Include canonical names exactly as code or data uses them.
 - Include a small example when it removes ambiguity.
-- Link to related guides instead of embedding procedures.
+- Link to related runbooks instead of embedding procedures.
 
 ## Structure policy
 
@@ -50,4 +50,8 @@ Then keep the body explicit:
   ambiguity.
 - Do not require fixed filename prefixes up front.
 - Choose names for topic clarity and retrieval quality, not visual uniformity.
-- If a guide depends on a spec, the guide links back to the governing spec.
+- If a runbook depends on a spec, the runbook links back to the governing spec.
+
+## Current specs
+
+- `docs/spec/cli.md` for the current command-line and runtime bootstrap contract
