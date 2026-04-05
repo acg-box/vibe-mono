@@ -84,10 +84,6 @@ TODO
 
 TODO
 
-## Repository Docs
-
-For internal repository routing, policy, and structure, start at `docs/index.md`.
-
 ## Support Me
 
 If you find this project helpful and would like to support its development, you can buy me a coffee!
