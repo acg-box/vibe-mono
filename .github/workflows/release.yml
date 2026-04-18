@@ -89,15 +89,10 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v8
 
-      - name: Hash
+      - name: Prepare release artifacts
         run: |
           mkdir -p artifacts
           mv name_placeholder-*/* artifacts/
-          cd artifacts
-          sha256sum * | tee ../SHA256
-          md5sum * | tee ../MD5
-          mv ../SHA256 .
-          mv ../MD5 .
 
       - name: Publish
         uses: softprops/action-gh-release@v2
