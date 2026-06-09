@@ -8,6 +8,7 @@
 # General Ignores
 *.bak
 *.log
+.config
 .env*
 .turbo
 model
