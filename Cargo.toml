@@ -22,7 +22,7 @@ lto      = true
 
 [build-dependencies]
 # crates.io
-vergen-gitcl = { version = "9.1", features = ["cargo"] }
+vergen-gitcl = { version = "10.0", features = ["cargo", "vcs_info"] }
 
 [dependencies]
 # crates.io
