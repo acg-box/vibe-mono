@@ -1,20 +1,18 @@
 # Rust workspace tasks.
 
 # Check
-# | task              | type      | cwd |
-# | ----------------- | --------- | --- |
-# | check             | composite |     |
-# | check-rust        | command   |     |
-# | check-vstyle      | composite |     |
-# | check-vstyle-rust | command   |     |
+# | task       | type      | cwd |
+# | ---------- | --------- | --- |
+# | check      | composite |     |
+# | check-rust | command   |     |
 
 [tasks.check]
 clear = true
 workspace = false
 dependencies = [
-	"fmt-check",
 	"check-rust",
-	"check-vstyle",
+	"fmt-check",
+	"lint",
 	"test",
 ]
 
@@ -22,45 +20,10 @@ dependencies = [
 workspace = false
 command = "cargo"
 args = [
-	"clippy",
+	"check",
 	"--all-features",
 	"--all-targets",
 	"--workspace",
-	"--",
-	"-D",
-	"clippy::all",
-	"-D",
-	"clippy::too_many_lines",
-	"-D",
-	"clippy::unwrap_used",
-	"-D",
-	"clippy::use_self",
-	"-D",
-	"clippy::wildcard_imports",
-	"-D",
-	"missing-docs",
-	"-D",
-	"unused-crate-dependencies",
-	"-D",
-	"warnings",
-]
-
-[tasks.check-vstyle]
-workspace = false
-dependencies = [
-	"check-vstyle-rust",
-]
-
-[tasks.check-vstyle-rust]
-workspace = false
-command = "cargo"
-args = [
-	"vstyle",
-	"curate",
-	"--language",
-	"rust",
-	"--workspace",
-	"--all-features",
 ]
 
 # Format
@@ -69,9 +32,9 @@ args = [
 # | fmt            | composite |     |
 # | fmt-check      | composite |     |
 # | fmt-rust       | command   |     |
-# | fmt-rust-check | extend    |     |
+# | fmt-rust-check | command   |     |
 # | fmt-toml       | command   |     |
-# | fmt-toml-check | extend    |     |
+# | fmt-toml-check | command   |     |
 
 [tasks.fmt]
 workspace = false
@@ -89,11 +52,27 @@ dependencies = [
 
 [tasks.fmt-rust]
 workspace = false
-script = "cargo +nightly fmt --all"
+command = "rustup"
+args = [
+	"run",
+	"nightly",
+	"cargo",
+	"fmt",
+	"--all",
+]
 
 [tasks.fmt-rust-check]
-extend = "fmt-rust"
-script = "cargo +nightly fmt --all -- --check"
+workspace = false
+command = "rustup"
+args = [
+	"run",
+	"nightly",
+	"cargo",
+	"fmt",
+	"--all",
+	"--",
+	"--check",
+]
 
 [tasks.fmt-toml]
 workspace = false
@@ -103,7 +82,8 @@ args = [
 ]
 
 [tasks.fmt-toml-check]
-extend = "fmt-toml"
+workspace = false
+command = "taplo"
 args = [
 	"fmt",
 	"--check",
@@ -113,9 +93,11 @@ args = [
 # | task             | type      | cwd |
 # | ---------------- | --------- | --- |
 # | lint             | composite |     |
+# | lint-fix         | composite |     |
+# | lint-fix-rust    | command   |     |
+# | lint-fix-vstyle  | command   |     |
 # | lint-rust        | command   |     |
-# | lint-vstyle      | composite |     |
-# | lint-vstyle-rust | command   |     |
+# | lint-vstyle      | command   |     |
 
 [tasks.lint]
 workspace = false
@@ -124,7 +106,14 @@ dependencies = [
 	"lint-vstyle",
 ]
 
-[tasks.lint-rust]
+[tasks.lint-fix]
+workspace = false
+dependencies = [
+	"lint-fix-rust",
+	"lint-fix-vstyle",
+]
+
+[tasks.lint-fix-rust]
 workspace = false
 command = "cargo"
 args = [
@@ -153,18 +142,52 @@ args = [
 	"warnings",
 ]
 
-[tasks.lint-vstyle]
-workspace = false
-dependencies = [
-	"lint-vstyle-rust",
-]
-
-[tasks.lint-vstyle-rust]
+[tasks.lint-fix-vstyle]
 workspace = false
 command = "cargo"
 args = [
 	"vstyle",
 	"tune",
+	"--language",
+	"rust",
+	"--workspace",
+	"--all-features",
+	"--strict",
+]
+
+[tasks.lint-rust]
+workspace = false
+command = "cargo"
+args = [
+	"clippy",
+	"--all-features",
+	"--all-targets",
+	"--workspace",
+	"--",
+	"-D",
+	"clippy::all",
+	"-D",
+	"clippy::too_many_lines",
+	"-D",
+	"clippy::unwrap_used",
+	"-D",
+	"clippy::use_self",
+	"-D",
+	"clippy::wildcard_imports",
+	"-D",
+	"missing-docs",
+	"-D",
+	"unused-crate-dependencies",
+	"-D",
+	"warnings",
+]
+
+[tasks.lint-vstyle]
+workspace = false
+command = "cargo"
+args = [
+	"vstyle",
+	"curate",
 	"--language",
 	"rust",
 	"--workspace",
@@ -194,15 +217,4 @@ args = [
 	"--workspace",
 	"--all-targets",
 	"--all-features",
-]
-
-# Meta
-# | task   | type      | cwd |
-# | ------ | --------- | --- |
-# | checks | composite |     |
-
-[tasks.checks]
-workspace = false
-dependencies = [
-	"check",
 ]

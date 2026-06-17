@@ -1,7 +1,7 @@
 # Repository Checks Runbook
 
-Goal: Run the repository's standard format, lint, and test commands in the right order before
-landing changes.
+Goal: Run the repository's standard check, format, lint, and test commands in the right order
+before landing changes.
 
 Read this when: You are validating a local diff, checking whether the template still passes its
 quality gates, or deciding which repo-native command to use for a full verification pass.
@@ -18,14 +18,15 @@ test regressions.
 Use the top-level gate when you want the same full sweep the repository expects by default:
 
 ```sh
-cargo make checks
+cargo make check
 ```
 
 That runs:
 
+- `cargo make check-rust`
+- `cargo make fmt-check`
 - `cargo make lint`
 - `cargo make test`
-- `cargo make fmt-check`
 
 ## Targeted commands
 
@@ -45,12 +46,13 @@ Use the smaller command that matches the change surface:
 - Use `cargo make fmt` when you changed Rust or TOML files and want to rewrite formatting.
 - Use `cargo make lint-fix` when you want automatic Rust or vstyle fixes before a full validation
   pass.
-- Use `cargo make checks` before commit, review, or merge unless you have a documented reason to
+- Use `cargo make check` before commit, review, or merge unless you have a documented reason to
   run a narrower command set.
 
 ## Expected tooling
 
-- Rust toolchains required by `cargo` and `cargo +nightly fmt`
+- Rust toolchains required by `cargo` and nightly `rustfmt`
+- `cargo-vstyle` for `cargo make lint`, `cargo make lint-fix`, and `cargo make check`
 - `cargo-nextest` for `cargo make test`
 - `taplo` for TOML formatting tasks
 
