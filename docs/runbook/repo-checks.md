@@ -38,21 +38,31 @@ Use the smaller command that matches the change surface:
 - Lint only:
   - `cargo make lint`
   - `cargo make lint-fix`
+  - `cargo make lint-fix-vstyle`
+  - `cargo make lint-fix-vstyle-rust`
+  - `cargo make lint-vstyle`
+  - `cargo make lint-vstyle-rust`
 - Tests only:
   - `cargo make test`
 
 ## When to use each task
 
 - Use `cargo make fmt` when you changed Rust or TOML files and want to rewrite formatting.
-- Use `cargo make lint-fix` when you want automatic Rust or vstyle fixes before a full validation
-  pass.
+- Use `cargo make lint-vstyle` when you want all vstyle checks for currently supported languages.
+- Use `cargo make lint-vstyle-rust` when you want to run the Rust vstyle checks without other
+  lint gates.
+- Use `cargo make lint-fix-vstyle` when you want automatic vstyle fixes for currently supported
+  languages.
+- Use `cargo make lint-fix` when you want automatic Rust clippy or vstyle fixes before a full
+  validation pass.
 - Use `cargo make check` before commit, review, or merge unless you have a documented reason to
   run a narrower command set.
 
 ## Expected tooling
 
 - Rust toolchains required by `cargo` and nightly `rustfmt`
-- `cargo-vstyle` for `cargo make lint`, `cargo make lint-fix`, and `cargo make check`
+- `cargo-vstyle` for `cargo make lint-vstyle*`, `cargo make lint-fix-vstyle*`,
+  `cargo make lint`, `cargo make lint-fix`, and `cargo make check`
 - `cargo-nextest` for `cargo make test`
 - `taplo` for TOML formatting tasks
 
