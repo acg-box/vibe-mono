@@ -1,48 +1,135 @@
+---
+type: Policy
+title: Documentation Policy
+description: Defines the repository OKF and LLM Wiki profile, lane ownership, update workflow, and validation gate.
+status: active
+authority: normative
+owner: maintainers
+last_verified: 2026-06-25
+tags:
+  - docs
+  - okf
+  - llm-wiki
+  - template
+source_refs: []
+code_refs:
+  - Makefile.toml
+related:
+  - index.md
+  - log.md
+  - decisions/docs-okf-template-foundation.md
+  - evidence/docs-self-check.md
+drift_watch:
+  - docs/**
+  - Makefile.toml
+---
+
 # Documentation Policy
 
-Purpose: Define how agent-facing documentation is organized, updated, and kept consistent
-across this repository.
+Purpose: Define how agent-facing documentation is organized, updated, checked,
+and inherited by repositories generated from this template.
 
-Audience: All documentation under `docs/` is written for AI agents and LLM workflows.
-The split between `spec`, `runbook`, `reference`, and `decisions` is by task shape, not by
-reader type.
+Status: normative
 
-## Principles
+Read this when: You are adding, moving, or updating documentation; deciding where
+a claim belongs; or checking whether docs are ready.
 
-- Optimize for retrieval, routing, and execution.
-- Keep one authoritative document per topic.
-- Separate normative truth, execution steps, descriptive current-state reference, and durable
-  design rationale.
-- Prefer explicit section labels and stable links over prose-heavy narrative.
-- Let structure emerge from real topics. Avoid premature folder taxonomies.
+Not this document: Product behavior contracts, validation procedures, current
+layout details, or decision rationale. Use the lane indexes for those owners.
 
-## Document classes
+Defines:
 
-| Class | Location | Answers | Source of truth for | Update trigger |
+- the repository OKF concept shape
+- the LLM Wiki navigation rules
+- the docs impact workflow
+- the docs validation gate
+
+## OKF Bundle Contract
+
+`docs/` is the repository's strict Markdown OKF bundle and LLM Wiki root.
+
+Required files and directories:
+
+- `docs/index.md`
+- `docs/policy.md`
+- `docs/log.md`
+- `docs/spec/index.md`
+- `docs/runbook/index.md`
+- `docs/reference/index.md`
+- `docs/decisions/index.md`
+- `docs/research/index.md`
+- `docs/evidence/index.md`
+
+Every populated directory must have an `index.md`. Non-index, non-log Markdown
+files are OKF concepts and must start with YAML frontmatter delimited by `---`.
+
+Every concept must include:
+
+- `type`
+- `title`
+- `description`
+- `status`
+- `authority`
+- `owner`
+- `last_verified`
+
+Allowed concept types:
+
+- `Decision`
+- `Drift Audit`
+- `Evidence`
+- `Policy`
+- `Reference`
+- `Research Contract`
+- `Runbook`
+- `Spec`
+
+Recommended fields:
+
+- `tags`
+- `source_refs`
+- `code_refs`
+- `related`
+- `promotes_to`
+- `drift_watch`
+
+Spell the acronym `OKF` in prose. Use lowercase `okf` only in slugs, command
+names, or identifiers.
+
+## Lane Ownership
+
+| Lane | Location | Answers | Source of truth for | Update trigger |
 | --- | --- | --- | --- | --- |
+| Policy | `docs/policy.md` | How should docs be shaped and checked? | OKF fields, lane rules, docs workflow | Any docs workflow or validation change |
 | Spec | `docs/spec/` | What must be true? | Contracts, schemas, invariants, required behavior | Any behavior or schema change |
 | Runbook | `docs/runbook/` | Which sequence should I execute? | Runbooks, migrations, validation, troubleshooting | Any procedure or operational change |
-| Reference | `docs/reference/` | How is it currently organized or implemented? | Ownership maps, implementation-model notes, non-normative technical context | Any layout, ownership, or current-implementation explanation change |
-| Decisions | `docs/decisions/` | Why was this tradeoff accepted? | Durable rationale for accepted technical or product choices | Any accepted decision with long-lived consequences |
+| Reference | `docs/reference/` | How is it currently organized or implemented? | Ownership maps and descriptive technical context | Any layout, ownership, or current-state explanation change |
+| Decisions | `docs/decisions/` | Why was this tradeoff accepted? | Durable rationale and accepted consequences | Any accepted decision with long-lived consequences |
+| Research | `docs/research/` | What is being evaluated but is not authoritative? | Latent proposals and research contracts | Any exploratory work that may later promote |
+| Evidence | `docs/evidence/` | What proves or audits a claim? | Drift audits and public-safe evidence | Any docs/code/status/config drift audit |
 
-## Placement rules
+## Placement Rules
 
-- If a document defines correctness, it belongs in `docs/spec/`.
-- If a document defines an execution sequence, it belongs in `docs/runbook/`.
-- If a document explains current layout, ownership, defaults, or implementation shape without
-  defining correctness, it belongs in `docs/reference/`.
-- If a document records why a durable tradeoff was accepted, which alternatives were considered,
-  and what consequences follow from that choice, it belongs in `docs/decisions/`.
-- Do not duplicate the same authoritative content across documents. Link to the source
-  of truth instead.
-- A runbook may summarize why a step exists, but normative statements still live in the
-  governing spec.
+- If a document defines correctness, put it in `docs/spec/`.
+- If a document defines an execution sequence, put it in `docs/runbook/`.
+- If a document explains current layout, ownership, defaults, or implementation
+  shape without defining correctness, put it in `docs/reference/`.
+- If a document records why a durable tradeoff was accepted, put it in
+  `docs/decisions/`.
+- If a document explores a candidate idea that is not yet authoritative, put it
+  in `docs/research/`.
+- If a document proves, audits, or reverse-checks a claim, put it in
+  `docs/evidence/`.
+- Do not duplicate authoritative content across documents. Link to the owning
+  concept instead.
+- A runbook may summarize why a step exists, but normative statements still live
+  in the governing spec.
 
-## Document contracts
+## Concept Headers
 
-Every document should start with a short routing header.
+Each concept starts with OKF frontmatter and then a compact routing header.
 
-Spec header:
+Spec concepts include:
 
 - `Purpose`
 - `Status: normative`
@@ -50,7 +137,7 @@ Spec header:
 - `Not this document`
 - `Defines`
 
-Runbook header:
+Runbook concepts include:
 
 - `Goal`
 - `Read this when`
@@ -58,7 +145,7 @@ Runbook header:
 - `Depends on`
 - `Outputs` or `Verification`
 
-Reference header:
+Reference concepts include:
 
 - `Purpose`
 - `Read this when`
@@ -66,7 +153,7 @@ Reference header:
 - `Depends on`
 - `Covers`
 
-Decision header:
+Decision concepts include:
 
 - `Status`
 - `Date`
@@ -75,50 +162,75 @@ Decision header:
 - `Alternatives considered`
 - `Consequences`
 
-## Structure rules
+Research Contract concepts include:
 
-- Prefer shallow paths by default.
-- Add subfolders only when they mirror stable system boundaries or improve retrieval.
-- Prefer descriptive kebab-case file names for tracked Markdown documents.
-- Prefer stable subject names over phase labels, version labels, or document-status labels.
-- Let the parent directory carry the document class; filenames should carry the topic.
-- Keep existing file paths stable unless a rename materially improves retrieval or removes
-  ambiguity.
-- Do not require fixed filename prefixes unless a real ambiguity appears.
-- Do not create empty folders, empty indexes, or placeholder documents to satisfy a
-  taxonomy.
+- `Question`
+- `Scope`
+- `Evidence`
+- `Options`
+- `Judgment`
+- `Challenge`
+- `Decision`
+- `Promotion`
+- `Drift Impact`
+- `Citations`
 
-## Canonical entry points
+Drift Audit concepts include:
 
-- Unified documentation router: `docs/index.md`
-- Normative router: `docs/spec/index.md`
-- Procedural router: `docs/runbook/index.md`
-- Descriptive router: `docs/reference/index.md`
-- Decision router: `docs/decisions/index.md`
-- Repo task and automation entrypoints: `Makefile.toml`
+- `Watched Claims`
+- `Evidence Anchors`
+- `Reverse Checks`
+- `Verdict`
+- `Required Updates`
+- `Citations`
 
-## LLM reading guidance
+## Docs Impact
 
-When answering a repository question:
+Classify docs impact before claiming a change is ready:
 
-1. Read `docs/index.md` for routing.
-2. Route by question type:
-   - "What must be true?" -> `docs/spec/index.md`
-   - "Which sequence should I execute?" -> `docs/runbook/index.md`
-   - "How is it currently organized or implemented?" -> `docs/reference/index.md`
-   - "Why was this tradeoff accepted?" -> `docs/decisions/index.md`
-3. Read `Makefile.toml` when the task depends on repository automation or named tasks.
+- `none`: no docs, command, behavior, config, status, or workflow claim changed.
+- `update_required`: update a durable concept in the owning lane.
+- `research_required`: create or update a research contract before promotion.
+- `drift_required`: create or update drift audit evidence.
 
-## Update workflow
+Docs changes that alter routing, promotion, naming, or maintenance behavior must
+update `docs/log.md`.
 
-- Behavior or schema change: update the relevant spec.
-- Procedure change: update the relevant runbook.
-- Layout, ownership, or current-implementation explanation change: update the relevant reference.
-- Durable accepted tradeoff change: add or update the relevant decision record.
-- If a change touches both truth and procedure, update both documents and keep their
-  boundary explicit.
-- If a change touches truth plus descriptive context, update both the spec and the reference.
-- When a runbook starts carrying normative content, move that content into spec and link
-  to it.
-- When a runbook starts carrying mostly descriptive context instead of executable steps, move that
-  content into reference and keep only the runbook in `docs/runbook/`.
+## Template Inheritance
+
+Generated repositories should inherit this structure first, then replace
+template-specific claims with project-specific owners:
+
+- Replace `name_placeholder` and `description_placeholder` in public metadata,
+  code, README, and docs.
+- Replace `docs/spec/cli.md` when the generated project changes the CLI,
+  runtime bootstrap, logging, or panic behavior.
+- Keep the lane indexes and policy unless the generated repository has a better
+  checked-in docs owner.
+- Add real decisions only when a tradeoff needs to outlive commit history.
+- Keep `docs/research/` non-authoritative until promotion is explicit.
+- Keep `docs/evidence/` public-safe and free of secrets, credentials, or local
+  machine-only data.
+
+## Validation
+
+Run the docs gate before claiming docs readiness:
+
+```sh
+decodex docs check
+```
+
+The repo-native wrapper is:
+
+```sh
+cargo make check-docs
+```
+
+For a full local sweep, use:
+
+```sh
+cargo make check
+```
+
+Treat docs check failure as a completion blocker for docs, policy, routing,
+research, evidence, or OKF changes.
