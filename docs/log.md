@@ -16,3 +16,5 @@ the repository LLM Wiki and OKF bundle.
   template uses a docs-backed OKF/LLM Wiki profile.
 - Clarified checker-enforced `status` and `authority` frontmatter values in
   `docs/policy.md`.
+- Clarified checker-enforced structured frontmatter rules for source, code,
+  related, promotion, tag, and drift-watch fields in `docs/policy.md`.

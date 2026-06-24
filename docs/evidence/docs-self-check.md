@@ -34,6 +34,8 @@ drift_watch:
   frontmatter.
 - `docs/policy.md` documents the checker-enforced concept `type`, `status`, and
   `authority` values.
+- `docs/policy.md` documents structured frontmatter rules for `source_refs`,
+  `code_refs`, `related`, `promotes_to`, `tags`, and `drift_watch`.
 - `docs/evidence/` includes at least one Drift Audit concept anchoring the docs
   self-check loop.
 - `cargo make check-docs` runs the docs readiness gate.

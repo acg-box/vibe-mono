@@ -109,6 +109,18 @@ Recommended fields:
 - `promotes_to`
 - `drift_watch`
 
+Structured field rules:
+
+- `tags` and `drift_watch` must be lists of strings when present.
+- `source_refs` must contain only `http` or `https` URLs.
+- `code_refs` must contain existing normalized repository-relative file paths
+  without fragments or query strings.
+- `related` must contain Markdown file paths that are relative to the current
+  concept or prefixed with `docs/`; the resolved target must stay inside
+  `docs/`. Heading fragments are allowed, but the file path must still resolve.
+- `promotes_to` may point only at `docs/spec`, `docs/runbook`,
+  `docs/reference`, `docs/decisions`, or `docs/evidence`.
+
 Spell the acronym `OKF` in prose. Use lowercase `okf` only in slugs, command
 names, or identifiers.
 
