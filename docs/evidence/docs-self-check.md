@@ -32,6 +32,8 @@ drift_watch:
 - Every populated docs directory has an `index.md`.
 - Non-index, non-log Markdown files are OKF concepts with required
   frontmatter.
+- `docs/policy.md` documents the checker-enforced concept `type`, `status`, and
+  `authority` values.
 - `docs/evidence/` includes at least one Drift Audit concept anchoring the docs
   self-check loop.
 - `cargo make check-docs` runs the docs readiness gate.

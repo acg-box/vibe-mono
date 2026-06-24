@@ -84,6 +84,22 @@ Allowed concept types:
 - `Runbook`
 - `Spec`
 
+Allowed `status` values:
+
+- `draft`
+- `active`
+- `deprecated`
+- `superseded`
+
+Allowed `authority` values:
+
+- `normative`
+- `procedural`
+- `current_state`
+- `rationale`
+- `evidence`
+- `non_authoritative`
+
 Recommended fields:
 
 - `tags`

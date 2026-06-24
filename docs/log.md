@@ -14,3 +14,5 @@ the repository LLM Wiki and OKF bundle.
   the docs structure and replace template-specific contracts deliberately.
 - Added `docs/decisions/docs-okf-template-foundation.md` to record why the
   template uses a docs-backed OKF/LLM Wiki profile.
+- Clarified checker-enforced `status` and `authority` frontmatter values in
+  `docs/policy.md`.
