@@ -1,0 +1,29 @@
+[package]
+authors.workspace     = true
+build                 = "build.rs"
+categories            = []
+description.workspace = true
+edition.workspace     = true
+homepage.workspace    = true
+keywords              = []
+license.workspace     = true
+name                  = "name_placeholder"
+readme                = "README.md"
+repository.workspace  = true
+version.workspace     = true
+
+[package.metadata.docs.rs]
+all-features = true
+
+[build-dependencies]
+# crates.io
+vergen-gitcl = { workspace = true }
+
+[dependencies]
+# crates.io
+clap               = { workspace = true }
+color-eyre         = { workspace = true }
+directories        = { workspace = true }
+tracing            = { workspace = true }
+tracing-appender   = { workspace = true }
+tracing-subscriber = { workspace = true }

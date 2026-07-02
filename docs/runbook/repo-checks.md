@@ -5,7 +5,7 @@ description: Defines the local validation sequence for docs, Rust, TOML, style, 
 status: active
 authority: procedural
 owner: maintainers
-last_verified: 2026-06-25
+last_verified: 2026-07-02
 tags:
   - validation
   - cargo-make
@@ -13,26 +13,31 @@ tags:
 source_refs: []
 code_refs:
   - Makefile.toml
+  - Cargo.toml
+  - apps/name_placeholder/Cargo.toml
 related:
   - ../policy.md
   - ../evidence/docs-self-check.md
 drift_watch:
   - Makefile.toml
+  - Cargo.toml
+  - apps/**
+  - packages/**
   - .github/workflows/language.yml
 ---
 
 # Repository Checks Runbook
 
-Goal: Run the repository's standard docs, check, format, lint, and test commands
-in the right order before landing changes.
+Goal: Run the repository workspace's standard docs, check, format, lint, and
+test commands in the right order before landing changes.
 
 Read this when: You are validating a local diff, checking whether the template
 still passes its quality gates, or deciding which repo-native command to use for
 a verification pass.
 
-Inputs: `Makefile.toml`; `docs/policy.md`
+Inputs: `Makefile.toml`; `Cargo.toml`; `docs/policy.md`
 
-Depends on: `Makefile.toml`
+Depends on: `Makefile.toml`; `Cargo.toml`
 
 Verification: A passing repo-native validation run with no docs shape failures,
 formatting drift, lint failures, or test regressions.
@@ -53,6 +58,9 @@ That runs:
 - `cargo make fmt-check`
 - `cargo make lint`
 - `cargo make test`
+
+The Rust commands execute from the repository root with Cargo workspace flags.
+The default Rust app currently lives at `apps/name_placeholder/`.
 
 ## Targeted Commands
 
@@ -81,6 +89,8 @@ Use the smaller command that matches the change surface:
 
 - Use `cargo make check-docs` after changing `docs/`, docs policy, OKF fields,
   LLM Wiki navigation, or docs validation expectations.
+- Use `cargo make check-rust` after changing the root Cargo workspace, any Rust
+  app under `apps/`, or any future Rust package under `packages/`.
 - Use `cargo make fmt` when you changed Rust or TOML files and want to rewrite
   formatting.
 - Use `cargo make lint-vstyle` when you want all vstyle checks for currently

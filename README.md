@@ -24,6 +24,15 @@ TODO
 
 TODO
 
+## Workspace Posture
+
+- `apps/name_placeholder/` owns the default Rust CLI application package.
+- `packages/` is reserved for reusable shared packages across Rust,
+  JavaScript/TypeScript, Python, Swift, or other language toolchains.
+- The root `Cargo.toml` is a Rust workspace manifest and owns shared metadata,
+  profiles, and dependency versions.
+- `docs/` remains the authoritative documentation and agent-routing surface.
+
 ## Usage
 
 ### Installation
@@ -45,13 +54,17 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-t
 sudo apt-get update
 sudo apt-get install <DEPENDENCIES>
 
-# Build the project, and the binary will be available at `target/release/name_placeholder`.
-cargo build --release
+# Build the default Rust app, and the binary will be available at `target/release/name_placeholder`.
+cargo build --release -p name_placeholder
+
+# Install the default Rust app from the workspace.
+cargo install --path apps/name_placeholder --force
 
 # If you are a macOS user and want to have a `name_placeholder.app`, run the following command.
 # Install `cargo-bundle` to pack the binary into an app.
 cargo install cargo-bundle
 # Pack the app, and the it will be available at `target/release/bundle/osx/name_placeholder.app`.
+cd apps/name_placeholder
 cargo bundle --release
 ```
 
@@ -82,7 +95,12 @@ TODO
 
 ### Architecture
 
-TODO
+This template starts as a workspace-first monorepo:
+
+- runnable products belong under `apps/`
+- reusable packages belong under `packages/`
+- repository-native checks are exposed through `Makefile.toml`
+- durable architecture, runbook, and routing notes belong under `docs/`
 
 ## Support Me
 

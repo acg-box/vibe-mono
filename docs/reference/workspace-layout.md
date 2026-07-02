@@ -5,7 +5,7 @@ description: Maps the template repository layout, tracked owners, generated outp
 status: active
 authority: current_state
 owner: maintainers
-last_verified: 2026-06-25
+last_verified: 2026-07-02
 tags:
   - layout
   - template
@@ -13,18 +13,20 @@ tags:
 source_refs: []
 code_refs:
   - Cargo.toml
+  - apps/name_placeholder/Cargo.toml
   - Makefile.toml
   - README.md
-  - src/main.rs
-  - src/cli.rs
+  - apps/name_placeholder/src/main.rs
+  - apps/name_placeholder/src/cli.rs
 related:
   - ../spec/cli.md
   - ../runbook/template-adoption.md
 drift_watch:
   - Cargo.toml
+  - apps/**
+  - packages/**
   - Makefile.toml
   - README.md
-  - src/**
   - .github/**
 ---
 
@@ -38,7 +40,9 @@ Read this when: You are deciding where a change belongs, checking whether the
 current layout still matches the implementation, or routing a docs/code question
 to the right file.
 
-Sources: `Cargo.toml`; `Makefile.toml`; `README.md`; `src/main.rs`; `src/cli.rs`
+Sources: `Cargo.toml`; `apps/name_placeholder/Cargo.toml`;
+`Makefile.toml`; `README.md`; `apps/name_placeholder/src/main.rs`;
+`apps/name_placeholder/src/cli.rs`
 
 Depends on: `docs/spec/cli.md`; `docs/policy.md`
 
@@ -50,14 +54,30 @@ treated as repository source.
 
 | Path | Role |
 | --- | --- |
-| `src/main.rs` | Binary entrypoint, runtime bootstrap, logging setup, and panic-hook behavior |
-| `src/cli.rs` | CLI argument surface and command execution |
-| `build.rs` | Build-time metadata emission through `vergen-gitcl` |
-| `Cargo.toml` | Package metadata and Rust dependency graph |
+| `apps/` | Application workspace lane for deployable binaries, services, sites, and apps |
+| `apps/name_placeholder/` | Default Rust CLI application package |
+| `apps/name_placeholder/src/main.rs` | Binary entrypoint, runtime bootstrap, logging setup, and panic-hook behavior |
+| `apps/name_placeholder/src/cli.rs` | CLI argument surface and command execution |
+| `apps/name_placeholder/build.rs` | Build-time metadata emission through `vergen-gitcl` |
+| `packages/` | Shared package lane for reusable libraries across languages |
+| `Cargo.toml` | Rust workspace membership, shared package metadata, and shared Rust dependencies |
+| `apps/name_placeholder/Cargo.toml` | Rust package metadata and app-specific dependency ownership |
 | `Cargo.lock` | Locked Rust dependency graph for reproducible local and CI checks |
 | `Makefile.toml` | Repo-native docs, lint, test, and formatting entrypoints |
 | `docs/` | Repository LLM Wiki and strict Markdown OKF bundle |
 | `.github/` | Repository automation such as Dependabot and workflows |
+
+## Workspace Lanes
+
+- `apps/` contains runnable surfaces. The default Rust CLI app lives at
+  `apps/name_placeholder/`.
+- `packages/` is intentionally language-neutral. Add reusable Rust crates,
+  TypeScript packages, Python packages, Swift packages, or other shared
+  libraries here when they are consumed by more than one app.
+- The root `Cargo.toml` includes `apps/*` as Rust workspace members. Add Rust
+  package lanes deliberately when a future `packages/*` directory contains a
+  `Cargo.toml`; do not force non-Rust package directories into the Cargo
+  workspace.
 
 ## Documentation Layout
 
@@ -82,9 +102,11 @@ repository must replace:
 - `name_placeholder`
 - `description_placeholder`
 - GitHub badge and release URLs under `hack-ink/name_placeholder`
-- package metadata in `Cargo.toml`
-- CLI default text in `src/cli.rs`
-- app data path ownership in `src/main.rs`
+- workspace package metadata in root `Cargo.toml`
+- app package metadata in `apps/name_placeholder/Cargo.toml`
+- app package README in `apps/name_placeholder/README.md`
+- CLI default text in `apps/name_placeholder/src/cli.rs`
+- app data path ownership in `apps/name_placeholder/src/main.rs`
 - release artifact names in `.github/workflows/release.yml`
 
 Use `docs/runbook/template-adoption.md` for the replacement sequence.
@@ -102,13 +124,14 @@ These paths are intentionally not part of the tracked source layout:
 
 ## Structure Assessment
 
-The current template layout is intentionally shallow:
+The current template layout is intentionally workspace-first:
 
-- source lives under `src/`
+- runnable application source lives under `apps/name_placeholder/src/`
+- future reusable package source belongs under `packages/<package-name>/`
 - automation entrypoints live in `Makefile.toml`
 - durable docs live under `docs/`
-- build metadata lives in `build.rs`
+- build metadata lives in `apps/name_placeholder/build.rs`
 
-This is a reasonable starting shape for generated projects because it keeps
-routing simple and leaves room for later subfolders only when the codebase
-actually grows into them.
+This shape keeps the first generated project small while preserving clear lanes
+for monorepos that later mix Rust, Node, Python, Swift, or other language
+toolchains.

@@ -5,22 +5,23 @@ description: Defines the template repository command-line entrypoint and runtime
 status: active
 authority: normative
 owner: maintainers
-last_verified: 2026-06-25
+last_verified: 2026-07-02
 tags:
   - cli
   - runtime
   - template
 source_refs: []
 code_refs:
-  - src/main.rs
-  - src/cli.rs
+  - apps/name_placeholder/src/main.rs
+  - apps/name_placeholder/src/cli.rs
 related:
   - ../runbook/template-adoption.md
   - ../reference/workspace-layout.md
 drift_watch:
-  - src/main.rs
-  - src/cli.rs
+  - apps/name_placeholder/src/main.rs
+  - apps/name_placeholder/src/cli.rs
   - Cargo.toml
+  - apps/name_placeholder/Cargo.toml
 ---
 
 # CLI Contract
@@ -45,8 +46,10 @@ Defines:
 
 ## Binary Shape
 
-- The template currently builds a single binary entrypoint from `src/main.rs`.
-- The CLI surface is defined through `clap::Parser` in `src/cli.rs`.
+- The template currently builds a single binary entrypoint from `apps/name_placeholder/src/main.rs`.
+- The CLI surface is defined through `clap::Parser` in `apps/name_placeholder/src/cli.rs`.
+- The binary package is `apps/name_placeholder/` and is a member of the root
+  Cargo workspace.
 - The current template does not define subcommands.
 
 ## Startup Behavior

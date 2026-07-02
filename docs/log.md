@@ -3,6 +3,18 @@
 Purpose: Record routing, promotion, rename, and maintenance changes that affect
 the repository LLM Wiki and OKF bundle.
 
+## 2026-07-02
+
+- Reworked the template into a workspace-first monorepo layout with
+  `apps/name_placeholder/` owning the default Rust CLI package and `packages/`
+  reserved for reusable shared libraries.
+- Split root Cargo authority from app package authority: root `Cargo.toml`
+  owns workspace metadata, profiles, membership, and shared dependencies while
+  `apps/name_placeholder/Cargo.toml` owns package-specific metadata.
+- Updated layout, CLI, adoption, README, and release workflow references so
+  generated repositories no longer assume a root-level single-package `src/`
+  layout.
+
 ## 2026-06-25
 
 - Promoted the existing docs tree into a strict Markdown OKF bundle with

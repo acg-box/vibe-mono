@@ -5,7 +5,7 @@ description: Defines the sequence for deriving a real repository from this templ
 status: active
 authority: procedural
 owner: maintainers
-last_verified: 2026-06-25
+last_verified: 2026-07-02
 tags:
   - template
   - adoption
@@ -15,8 +15,10 @@ source_refs: []
 code_refs:
   - README.md
   - Cargo.toml
-  - src/main.rs
-  - src/cli.rs
+  - apps/name_placeholder/Cargo.toml
+  - apps/name_placeholder/README.md
+  - apps/name_placeholder/src/main.rs
+  - apps/name_placeholder/src/cli.rs
 related:
   - ../policy.md
   - ../spec/cli.md
@@ -25,8 +27,10 @@ related:
 drift_watch:
   - README.md
   - Cargo.toml
-  - src/main.rs
-  - src/cli.rs
+  - apps/name_placeholder/Cargo.toml
+  - apps/name_placeholder/README.md
+  - apps/name_placeholder/src/main.rs
+  - apps/name_placeholder/src/cli.rs
   - docs/**
 ---
 
@@ -53,14 +57,17 @@ Replace `name_placeholder` and `description_placeholder` in:
 
 - `README.md`
 - `Cargo.toml`
+- `apps/name_placeholder/Cargo.toml`
+- `apps/name_placeholder/README.md`
 - `Cargo.lock`
-- `src/main.rs`
-- `src/cli.rs`
+- `apps/name_placeholder/src/main.rs`
+- `apps/name_placeholder/src/cli.rs`
 - `.github/workflows/*.yml`
 - docs concepts that describe the package, binary, repository, or app data path
 
-Keep replacement names consistent across package metadata, binary paths, badges,
-release artifacts, app data directories, and CLI examples.
+Keep replacement names consistent across workspace metadata, app package
+metadata, binary paths, badges, release artifacts, app data directories, and CLI
+examples.
 
 ## 2. Reclassify The CLI Contract
 
@@ -78,8 +85,12 @@ the template CLI.
 Read `docs/reference/workspace-layout.md` after the first real project files are
 created.
 
-- Add new top-level owners such as `crates/`, `apps/`, `packages/`, `scripts/`,
-  or generated artifact directories only when they exist.
+- Keep `apps/` for runnable applications and `packages/` for reusable shared
+  libraries.
+- Add new top-level owners such as `scripts/`, `artifacts/`, or generated
+  output directories only when they exist.
+- Add Rust `packages/*` directories to the Cargo workspace only when they are
+  real Cargo packages; leave non-Rust package lanes out of Cargo membership.
 - Keep local-only paths separate from tracked source paths.
 - Keep one layout owner; do not repeat the same map in README and docs.
 
