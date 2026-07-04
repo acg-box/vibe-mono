@@ -10,7 +10,6 @@ description_placeholder
 [![Release](https://github.com/hack-ink/name_placeholder/actions/workflows/release.yml/badge.svg)](https://github.com/hack-ink/name_placeholder/actions/workflows/release.yml)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hack-ink/name_placeholder)](https://github.com/hack-ink/name_placeholder/tags)
 [![GitHub last commit](https://img.shields.io/github/last-commit/hack-ink/name_placeholder?color=red&style=plastic)](https://github.com/hack-ink/name_placeholder)
-[![GitHub code lines](https://tokei.rs/b1/github/hack-ink/name_placeholder)](https://github.com/hack-ink/name_placeholder)
 
 </div>
 
