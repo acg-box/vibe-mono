@@ -5,11 +5,11 @@
 description_placeholder
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Docs](https://img.shields.io/docsrs/name_placeholder)](https://docs.rs/name_placeholder)
-[![Language Checks](https://github.com/hack-ink/name_placeholder/actions/workflows/language.yml/badge.svg?branch=main)](https://github.com/hack-ink/name_placeholder/actions/workflows/language.yml)
-[![Release](https://github.com/hack-ink/name_placeholder/actions/workflows/release.yml/badge.svg)](https://github.com/hack-ink/name_placeholder/actions/workflows/release.yml)
-[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hack-ink/name_placeholder)](https://github.com/hack-ink/name_placeholder/tags)
-[![GitHub last commit](https://img.shields.io/github/last-commit/hack-ink/name_placeholder?color=red&style=plastic)](https://github.com/hack-ink/name_placeholder)
+[![Docs](https://img.shields.io/docsrs/vibe-mono)](https://docs.rs/vibe-mono)
+[![Language Checks](https://github.com/hack-ink/vibe-mono/actions/workflows/language.yml/badge.svg?branch=main)](https://github.com/hack-ink/vibe-mono/actions/workflows/language.yml)
+[![Release](https://github.com/hack-ink/vibe-mono/actions/workflows/release.yml/badge.svg)](https://github.com/hack-ink/vibe-mono/actions/workflows/release.yml)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hack-ink/vibe-mono)](https://github.com/hack-ink/vibe-mono/tags)
+[![GitHub last commit](https://img.shields.io/github/last-commit/hack-ink/vibe-mono?color=red&style=plastic)](https://github.com/hack-ink/vibe-mono)
 
 </div>
 
