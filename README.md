@@ -131,6 +131,8 @@ We would like to extend our heartfelt gratitude to the following projects and co
 
 - TODO
 
+---
+
 <div align="right">
 
 ### License
