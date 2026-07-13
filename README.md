@@ -4,7 +4,7 @@
 
 description_placeholder
 
-[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License](https://img.shields.io/badge/License-GPLv3%20only-blue.svg)](https://spdx.org/licenses/GPL-3.0-only.html)
 [![Docs](https://img.shields.io/docsrs/name_placeholder)](https://docs.rs/name_placeholder)
 [![Language Checks](https://github.com/hack-ink/name_placeholder/actions/workflows/language.yml/badge.svg?branch=main)](https://github.com/hack-ink/name_placeholder/actions/workflows/language.yml)
 [![Release](https://github.com/hack-ink/name_placeholder/actions/workflows/release.yml/badge.svg)](https://github.com/hack-ink/name_placeholder/actions/workflows/release.yml)
@@ -136,6 +136,6 @@ We would like to extend our heartfelt gratitude to the following projects and co
 
 ### License
 
-<sup>Licensed under [GPL-3.0](LICENSE).</sup>
+<sup>Licensed under [GPL-3.0-only](LICENSE).</sup>
 
 </div>
