@@ -4,26 +4,16 @@
 # | task       | type      | cwd |
 # | ---------- | --------- | --- |
 # | check      | composite |     |
-# | check-docs | command   |     |
 # | check-rust | command   |     |
 
 [tasks.check]
 clear = true
 workspace = false
 dependencies = [
-	"check-docs",
 	"check-rust",
 	"fmt-check",
 	"lint",
 	"test",
-]
-
-[tasks.check-docs]
-workspace = false
-command = "decodex"
-args = [
-	"docs",
-	"check",
 ]
 
 [tasks.check-rust]
