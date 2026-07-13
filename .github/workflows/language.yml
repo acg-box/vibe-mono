@@ -8,17 +8,9 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**/*.md'
-      - '.gitignore'
-      - 'docs/**'
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - '**/*.md'
-      - '.gitignore'
-      - 'docs/**'
   merge_group:
 
 concurrency:

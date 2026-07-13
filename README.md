@@ -30,7 +30,7 @@ TODO
   JavaScript/TypeScript, Python, Swift, or other language toolchains.
 - The root `Cargo.toml` is a Rust workspace manifest and owns shared metadata,
   profiles, and dependency versions.
-- `docs/` remains the authoritative documentation and agent-routing surface.
+- `openwiki/` is the authoritative repository knowledge and agent-routing surface.
 
 ## Usage
 
@@ -99,7 +99,7 @@ This template starts as a workspace-first monorepo:
 - runnable products belong under `apps/`
 - reusable packages belong under `packages/`
 - repository-native checks are exposed through `Makefile.toml`
-- durable architecture, runbook, and routing notes belong under `docs/`
+- durable architecture, runbook, and routing notes belong under `openwiki/`
 
 ## Support Me
 
