@@ -3,7 +3,7 @@ members  = ["apps/*"]
 resolver = "3"
 
 [workspace.package]
-authors     = ["Xavier Lau <x@acg.box>"]
+authors     = ["acgxv <xv@acg.box>"]
 description = "description_placeholder"
 edition     = "2024"
 homepage    = "https://hack.ink/name_placeholder"
