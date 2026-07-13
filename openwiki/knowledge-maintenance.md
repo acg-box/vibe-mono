@@ -101,6 +101,30 @@ Sources: Git history at commits `7c80c51`, `69eb753`, and `4f91ab1`.
 
 ## Migration Drift Audit
 
-**Status:** active evidence. **Owner:** maintainers. **Last verified:** 2026-07-11 at repository revision `ee6f87f` with the documented migration present as an uncommitted working-tree change.
+**Status:** active evidence. **Owner:** maintainers. **Last verified:** 2026-07-11 against repository base revision `ee6f87f` plus the migration/configuration diff under review.
 
-- **Watched claims:** `openwiki/` is the only maintained knowledge root; all five pages are reachable from `quickstart.md`; task, runtime, workspace, CI/…762 tokens truncated…ip changes.
+- **Watched claims:** `openwiki/` is the only maintained knowledge root; all five pages are reachable from `quickstart.md`; task, runtime, workspace, CI/release, adoption, decision, research, and maintenance claims match current source or identified historical evidence; no recurring OpenWiki automation is authorized.
+- **Evidence anchors:** `README.md`, `Cargo.toml`, `Makefile.toml`, app source/manifests, tracked workflows, `.gitignore`, `.taplo.toml`, the five OpenWiki pages, and the removed documentation at base revision `ee6f87f`.
+- **Checks run (2026-07-11):** Markdown link resolution passed; all 18 `Makefile.toml` tasks matched the documented task matrix; workflow/source claims and runtime/source claims matched; stale artifact scans passed; `actionlint` passed; and `git diff --check` passed. `cargo make check` passed earlier in this migration but was not rerun for the final docs-only regeneration.
+- **Recommended reverse checks:** after relevant changes, resolve Markdown links; compare task names/dependencies with `Makefile.toml`; compare workflow triggers/jobs/`needs` with tracked YAML; compare runtime claims with `main.rs`, `cli.rs`, and `build.rs`; scan for stale `docs/`, `check-docs`, scheduled-automation, and placeholder claims; run `actionlint`, `git diff --check`, and applicable source checks; verify `openwiki/_plan.md` is absent after generation.
+- **Verdict:** pass for the migration/configuration evidence baseline and checks recorded above. This verdict does not imply that checks omitted from the run list were executed during the final regeneration.
+- **Required updates:** rerun the reverse checks after changes to source/config, page routing, knowledge authority, validation, or automation policy. Any mismatch blocks documentation readiness.
+
+## Durable Decisions
+
+Create a focused decision section/page when a tradeoff is accepted and its rationale must outlive commit history. Include status/date, context, decision, alternatives, consequences, replacement/supersession conditions, and source evidence. Good triggers include changing workspace boundaries, replacing the CLI/runtime, selecting a release strategy, or replacing the knowledge-validation mechanism.
+
+Do not use decisions for transient task notes, implementation descriptions, or unresolved proposals.
+
+## Research And Promotion
+
+Research is non-authoritative until an explicit decision or implementation promotion occurs. A useful research note states **Question**, **Scope**, **Evidence**, **Options**, **Judgment**, **Challenge**, **Decision**, **Promotion**, **Drift Impact**, and **Citations**. Create it only for active source-backed evaluation; the migrated corpus contains no current research contracts.
+
+Promotion must name and update a real contract, procedure, current-state reference, decision, or evidence owner—currently architecture/runtime, operations, adoption, a durable decision, or a drift audit—not merely change a research status label.
+
+## Current Maintenance Boundary
+
+- `openwiki/` is the only repository knowledge root; `docs/` and its Decodex task no longer exist.
+- `.github/workflows/language.yml` does not validate OpenWiki. Review links, source citations, commands, routing, and drift explicitly when knowledge changes.
+- No recurring OpenWiki workflow is authorized. Run `openwiki code --update --print` only when repository knowledge needs regeneration, then review every generated change against source authority.
+- Revisit this policy when OpenWiki validation or maintenance automation is explicitly approved, or when page ownership changes.
