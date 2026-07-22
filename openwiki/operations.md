@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Operations And Validation"
+openwiki_generated: true
+---
+
 # Operations And Validation
 
 ## Preconditions
@@ -8,14 +14,15 @@ Repository-native tasks are declared in `Makefile.toml` and invoked with `cargo 
 | --- | --- |
 | Stable Rust/Cargo/Clippy | Rust check, lint, test, and build tasks |
 | Nightly toolchain with rustfmt | `fmt-rust`, `fmt-rust-check` |
+| Node.js/npm from `.node-version` | TypeScript check, format, lint, test, and template-marker tasks |
 | `cargo-make` | Every `cargo make` entrypoint |
 | `taplo` | TOML format tasks |
 | `cargo-vstyle` | vstyle tasks and the composite lint/full gates |
 | `cargo-nextest` | test tasks |
 
-`rust-toolchain.toml` pins stable only. Nightly rustfmt and all third-party Cargo tools are separate prerequisites. The Rust CI job sets up stable with rustfmt/Clippy, then separately installs nightly rustfmt because repository formatting tasks explicitly run it; the TOML job separately installs Taplo.
+The repository intentionally has no `rust-toolchain.toml`; local commands use the global stable toolchain. Nightly rustfmt and all third-party Cargo tools are separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. CI selects stable explicitly, installs Clippy for the Rust lint gate, and separately installs nightly rustfmt because repository formatting tasks explicitly run it; the TOML job separately installs Taplo; the TypeScript job performs the locked npm install.
 
-Sources: `Makefile.toml`, `rust-toolchain.toml`, `.github/workflows/language.yml`.
+Sources: `Makefile.toml`, `.node-version`, `package.json`, `package-lock.json`, `.github/workflows/language.yml`, `.github/workflows/release.yml`.
 
 ## Public Check Aggregate
 
@@ -23,11 +30,12 @@ Sources: `Makefile.toml`, `rust-toolchain.toml`, `.github/workflows/language.yml
 cargo make check
 ```
 
-`check` is a cargo-make composite whose dependencies are `check-rust`, `fmt-check`, `lint`, and `test`. `Makefile.toml` establishes the dependency set but does not state a runtime ordering contract. When deterministic, fail-fast diagnosis matters, invoke the targeted commands explicitly in this recommended sequence:
+`check` is a cargo-make composite whose dependencies are `check-rust`, `check-typescript`, `fmt-check`, `lint`, and `test`. `Makefile.toml` establishes the dependency set but does not state a runtime ordering contract. When deterministic, fail-fast diagnosis matters, invoke the targeted commands explicitly in this recommended sequence:
 
 ```sh
 cargo make fmt-check
 cargo make check-rust
+cargo make check-typescript
 cargo make lint
 cargo make test
 ```
@@ -38,30 +46,54 @@ This diagnostic order catches mechanical formatting drift before compilation/lin
 
 | Task | Exact behavior | Mutates files? |
 | --- | --- | --- |
-| `check` | Composite: `check-rust`, `fmt-check`, `lint`, `test` | Build cache only |
+| `check` | Composite: `check-rust`, `check-typescript`, `fmt-check`, `lint`, `test` | Build/tool caches only |
 | `check-rust` | `cargo check --all-features --all-targets --workspace` | Build cache only |
-| `fmt` | Composite: `fmt-rust`, `fmt-toml` | Yes |
-| `fmt-check` | Composite: `fmt-rust-check`, `fmt-toml-check` | No |
+| `check-typescript` | Run the installed TypeScript compiler with `--noEmit --project tsconfig.json` | Tool cache only |
+| `fmt` | Composite: `fmt-rust`, `fmt-toml`, `fmt-typescript` | Yes |
+| `fmt-check` | Composite: `fmt-rust-check`, `fmt-toml-check`, `fmt-typescript-check` | No |
 | `fmt-rust` | `rustup run nightly cargo fmt --all` | Yes |
 | `fmt-rust-check` | Same with `-- --check` | No |
 | `fmt-toml` | `taplo fmt` | Yes |
 | `fmt-toml-check` | `taplo fmt --check` | No |
-| `lint` | Composite: `lint-rust`, `lint-vstyle` | No |
-| `lint-fix` | Composite: `lint-fix-rust`, `lint-fix-vstyle` | Yes |
+| `fmt-typescript` | Oxfmt over `scripts/` and the owned TypeScript JSON configuration files | Yes |
+| `fmt-typescript-check` | Same Oxfmt scope with `--check` | No |
+| `lint` | Composite: `lint-rust`, `lint-typescript`, `lint-vstyle` | No |
+| `lint-fix` | Composite: `lint-fix-rust`, `lint-fix-typescript`, `lint-fix-vstyle` | Yes |
 | `lint-rust` | Workspace/all-target/all-feature Clippy with repository deny policy | Build cache only |
 | `lint-fix-rust` | Same Clippy policy with `--fix --allow-dirty` | Yes |
+| `lint-typescript` | Oxlint over `scripts/` with the checked-in type-aware deny policy | No |
+| `lint-fix-typescript` | Same Oxlint policy with safe `--fix`; suggestions and dangerous fixes remain disabled | Yes |
 | `lint-vstyle` | Composite: `lint-vstyle-rust` | No |
 | `lint-vstyle-rust` | `cargo vstyle curate --language rust --workspace --all-features --strict` | No |
 | `lint-fix-vstyle` | Composite: `lint-fix-vstyle-rust` | Yes |
 | `lint-fix-vstyle-rust` | `cargo vstyle tune --language rust --workspace --all-features --strict` | Yes |
-| `test` | Composite: `test-rust` | Build cache only |
+| `list-template-markers` | Run the tracked-file marker inventory through Node.js | No |
+| `test` | Composite: `test-rust`, `test-typescript` | Build/tool caches only |
 | `test-rust` | `cargo nextest run --workspace --all-targets --all-features` | Build cache only |
+| `test-typescript` | `node --test` over the discovered `*.test.ts` files | Tool cache only |
 
 The Clippy tasks deny `clippy::all`, `clippy::too_many_lines`, `clippy::unwrap_used`, `clippy::use_self`, `clippy::wildcard_imports`, `missing-docs`, `unused-crate-dependencies`, and all warnings. `clippy.toml` allows unwrap only in tests, sets a 120-line threshold, and warns on wildcard imports. Rust formatting intentionally uses nightly features from `.rustfmt.toml`; Taplo excludes `Makefile.toml` and generated/local trees.
 
+The TypeScript compiler enables strict checking, indexed-access uncertainty, exact optional-property semantics, control-flow checks, and Node-erasable syntax. Oxlint denies correctness, suspicious, and performance diagnostics plus explicit `any`, unsafe type operations, non-null assertions, unhandled or misused promises, non-`Error` throws, and non-exhaustive switches. Warnings and unused suppression directives fail the task. Oxfmt is the sole TypeScript formatter; the prior root Prettier files were unused and are removed. The npm lock contains platform-specific optional binary packages for TypeScript and Oxc; `.npmrc` disables lifecycle scripts and requires exact saved versions.
+
 History: commit `452039e` separated `cargo check` from Clippy and made task contracts explicit; `b250fc0` split vstyle wrappers by language for monorepo extension.
 
-Sources: `Makefile.toml`, `clippy.toml`, `.rustfmt.toml`, `.taplo.toml`; history: commits `452039e`, `b250fc0`.
+Sources: `Makefile.toml`, `clippy.toml`, `.rustfmt.toml`, `.taplo.toml`, `tsconfig.json`, `.oxfmtrc.json`, `.oxlintrc.json`, `.npmrc`; history: commits `452039e`, `b250fc0`.
+
+## TypeScript Template Maintenance
+
+Install the exact development graph and list every tracked template marker:
+
+```sh
+npm ci --ignore-scripts
+cargo make list-template-markers
+```
+
+The marker script prints deterministic `path:line:text` records. A marker record means the repository still contains template identity. No marker records means no configured marker was found; cargo-make can still print its own task status. Both inventory results are successful; inability to execute Git or malformed Git output fails the task. The helper scans only the checked-in root allowlist through `git grep`, so it does not read untracked or ignored secret-bearing files.
+
+Before Node/npm is installed, use the equivalent scoped `rg` fallback from [Template Adoption](template-adoption.md#1-establish-identity-and-inventory). Keep that fallback for bootstrap only; `list-template-markers` owns the installed repository command.
+
+Sources: `scripts/list-template-markers.ts`, `scripts/list-template-markers.test.ts`, `Makefile.toml`, `openwiki/template-adoption.md`.
 
 ## Build, Install, Run, And Bundle
 
@@ -86,12 +118,13 @@ Sources: `README.md`, `Cargo.toml`, `.github/workflows/release.yml`.
 
 Current `.github/workflows/language.yml` runs on pushes and pull requests targeting `main`, plus merge queues. It has no path filters, so documentation-only changes trigger the language checks too.
 
-Two jobs run independently:
+Three jobs run independently:
 
 - **Rust check:** rustfmt check → Cargo check → vstyle action → Clippy → nextest. It installs nightly rustfmt, cargo-make, and nextest; vstyle comes from `hack-ink/vibe-style`.
 - **TOML check:** installs cargo-make and Taplo, then runs `fmt-toml-check`.
+- **TypeScript check:** reads the exact Node.js version from `.node-version`, installs the locked npm graph without lifecycle scripts, then runs TypeScript format, compiler, type-aware lint, and test tasks through cargo-make.
 
-CI does **not** invoke `cargo make check` or validate OpenWiki. Running on a documentation-only diff does not turn this workflow into a documentation-readiness gate: green proves only the listed language/TOML checks. The former CodeQL workflow—push/PR analysis for `main` plus weekly Actions/Rust scans—has been removed, so no tracked workflow currently provides that security-analysis coverage. Actions are SHA-pinned in current tracked workflows; preserve that supply-chain posture when updating them.
+CI does **not** invoke `cargo make check` or validate OpenWiki. Running on a documentation-only diff does not turn this workflow into a documentation-readiness gate: green proves only the listed Rust/TOML/TypeScript checks. The former CodeQL workflow—push/PR analysis for `main` plus weekly Actions/Rust scans—has been removed, so no tracked workflow currently provides that security-analysis coverage. Actions are SHA-pinned in current tracked workflows; preserve that supply-chain posture when updating them. Dependabot covers Cargo, root npm, and GitHub Actions; the TypeScript compiler, types, formatter, linter, and type-aware backend update as one review group.
 
 Source: `.github/workflows/language.yml`.
 
@@ -113,7 +146,9 @@ Sources: `.github/workflows/release.yml`, `Cargo.toml`, `apps/name_placeholder/C
 - Missing command/tool: satisfy the prerequisite; do not rewrite the task to bypass the expected tool without a deliberate contract change.
 - Format failure: run `cargo make fmt`, inspect changes, then rerun `fmt-check`.
 - Cargo check failure: resolve compilation/features/targets before interpreting downstream lint/test noise.
+- TypeScript check failure: resolve compiler diagnostics under the pinned Node/TypeScript versions before interpreting type-aware lint noise.
 - Clippy/vstyle failure: fix directly or use the matching `lint-fix*` task, then review all mutations before rerunning read-only gates.
+- Oxlint failure: fix the diagnostic directly or use `lint-fix-typescript` for safe fixes only; review every mutation before rerunning compiler, lint, and tests.
 - Test failure: treat as a regression or broken assumption in the current diff until evidence shows an environment/tool issue.
 - Release failure: distinguish build, packaging/path, GitHub publication, and crates.io publication; they have different ownership and dependency edges.
 

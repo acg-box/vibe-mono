@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Architecture And Runtime"
+openwiki_generated: true
+---
+
 # Architecture And Runtime
 
 ## Workspace Model
@@ -8,18 +14,37 @@ The repository is intentionally a small monorepo template with lanes for later g
 | --- | --- |
 | `apps/` | Runnable applications, services, sites, and binaries |
 | `apps/name_placeholder/` | Current Rust binary package and all package-specific metadata |
+| `scripts/` | Repository-maintenance TypeScript programs and their colocated tests |
 | `packages/` | Reusable, language-neutral shared packages; currently only `.gitkeep` |
 | `Cargo.toml` | Rust workspace membership (`apps/*`), resolver 3, shared package metadata, `final-release`, and shared dependency versions |
 | `Cargo.lock` | Locked dependency graph used by release commands with `--locked` |
+| `package.json` and `package-lock.json` | Private npm tool-package metadata and the exact TypeScript development tool graph |
+| `tsconfig.json` | Strict, erasable, NodeNext TypeScript contract for `scripts/**/*.ts` |
+| `.oxfmtrc.json` and `.oxlintrc.json` | TypeScript formatting and type-aware lint policy |
 | `Makefile.toml` | Repository-native validation task contracts |
 | `.github/` | CI, release, and dependency automation; no CodeQL workflow is currently retained |
 | `openwiki/` | Maintained repository knowledge and agent routing |
 
 The root is a virtual Cargo workspace, not a package. `apps/name_placeholder/Cargo.toml` inherits common metadata, declares the build script, selects dependencies, and names the package. The accepted workspace-first layout was introduced in commit `4f91ab1`, moving the prior root CLI without changing its runtime behavior and reserving `packages/` for future reuse.
 
-**Ownership invariant:** put runnable surfaces in `apps/` and genuinely reusable code in `packages/`. Add a Rust package lane to workspace membership deliberately; the current `apps/*` pattern does not include `packages/*`, and non-Rust packages never belong in Cargo membership.
+**Ownership invariant:** put runnable product surfaces in `apps/`, repository-maintenance programs in `scripts/`, and genuinely reusable code in `packages/`. Add a Rust package lane to workspace membership deliberately; the current `apps/*` pattern does not include `packages/*`, and non-Rust packages never belong in Cargo membership.
 
-Sources: `Cargo.toml`, `apps/name_placeholder/Cargo.toml`, `packages/.gitkeep`, `Makefile.toml`; historical evidence: commit `4f91ab1`.
+Sources: `Cargo.toml`, `package.json`, `tsconfig.json`, `apps/name_placeholder/Cargo.toml`, `scripts/list-template-markers.ts`, `packages/.gitkeep`, `Makefile.toml`; historical evidence: commit `4f91ab1`.
+
+## TypeScript Script Runtime
+
+Repository-maintenance TypeScript runs directly on the exact Node.js version in `.node-version`. Node erases supported TypeScript syntax at runtime but does not read `tsconfig.json` or perform type checking. The script lane therefore keeps separate repository gates:
+
+- TypeScript 7 `tsc --noEmit` is the authoritative compiler check.
+- Oxfmt owns formatting for TypeScript and its JSON configuration files. The unused root Prettier configuration was removed so two tools cannot format the same files.
+- Oxlint and tsgolint own syntax and type-aware lint. Compiler diagnostics remain separate because Oxlint type checking is not the compiler authority.
+- Node's built-in test runner executes colocated `*.test.ts` integration tests.
+
+The compiler contract requires strict checking, `noUncheckedIndexedAccess`, exact optional-property semantics, NodeNext ESM, explicit TypeScript import extensions, and syntax that Node can erase without transformation. Runtime enums, runtime namespaces, parameter properties, TypeScript path aliases, and unchecked type assertions are outside this script profile.
+
+`scripts/list-template-markers.ts` is the first script owner. It invokes `git grep` without a shell, scans only tracked files under an explicit path allowlist, sorts results, prints `path:line:text`, returns success when no markers remain, and reports operational failures on stderr with a nonzero exit status. It intentionally keeps the original template markers after adoption so a clean repository emits no marker records. Its integration test uses a temporary Git repository to prove source and lockfile detection plus the clean-repository result without scanning untracked files.
+
+Sources: `.node-version`, `package.json`, `package-lock.json`, `tsconfig.json`, `.oxfmtrc.json`, `.oxlintrc.json`, `scripts/list-template-markers.ts`, `scripts/list-template-markers.test.ts`, `Makefile.toml`.
 
 ## CLI Contract
 
@@ -64,6 +89,7 @@ Sources: `apps/name_placeholder/build.rs`, `Cargo.toml`, `.github/workflows/rele
 Adoption must replace or deliberately remove all coupled identity values:
 
 - `name_placeholder` and `description_placeholder` in README files, manifests, lockfile, Rust source, workflow package/artifact names, badges, repository/homepage URLs, and OpenWiki claims.
+- `name-placeholder-workspace` in the private npm tool-package manifest.
 - The app directory/package/binary name and all Cargo `-p` selectors.
 - `ProjectDirs` organization/application identifiers and the resulting data location.
 - CLI default text, crate-level docs, release archive names, and crates.io publication target.
@@ -84,11 +110,12 @@ These are not tracked source owners:
 
 Never infer repository state from these paths or commit them as source. `.taplo.toml` also excludes generated, local, and tool-owned trees from formatting.
 
-Sources: `.gitignore`, `.taplo.toml`, `apps/name_placeholder/src/main.rs`.
+Sources: `.gitignore`, `.taplo.toml`, `package-lock.json`, `apps/name_placeholder/src/main.rs`.
 
 ## Change Guide
 
 - Workspace/package move: update both manifests, package paths, workflows, README commands, OpenWiki ownership, and lockfile; run all checks.
 - CLI/runtime change: start in `apps/name_placeholder/src/cli.rs` or `apps/name_placeholder/src/main.rs`; add behavior tests and update this page.
+- TypeScript maintenance change: keep the program and its `*.test.ts` file in `scripts/`, preserve the Node-erasable syntax contract, and run the TypeScript check, lint, format, and test tasks.
 - Shared package addition: establish its language-specific manifest first, then update only the appropriate workspace/tooling membership.
 - Release identity/profile change: update manifest metadata and `.github/workflows/release.yml` together; verify archive paths on all target OSes.

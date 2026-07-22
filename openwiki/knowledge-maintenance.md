@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Knowledge Maintenance"
+openwiki_generated: true
+---
+
 # Knowledge Maintenance
 
 ## Purpose And Authority
@@ -101,13 +107,13 @@ Sources: Git history at commits `7c80c51`, `69eb753`, and `4f91ab1`.
 
 ## Migration Drift Audit
 
-**Status:** active evidence. **Owner:** maintainers. **Last verified:** 2026-07-11 against repository base revision `ee6f87f` plus the migration/configuration diff under review.
+**Status:** active evidence. **Owner:** maintainers. **Last verified:** 2026-07-22 against repository base revision `acb7887` plus the TypeScript scripts/tooling diff under review.
 
-- **Watched claims:** `openwiki/` is the only maintained knowledge root; all five pages are reachable from `quickstart.md`; task, runtime, workspace, CI/release, adoption, decision, research, and maintenance claims match current source or identified historical evidence; no recurring OpenWiki automation is authorized.
-- **Evidence anchors:** `README.md`, `Cargo.toml`, `Makefile.toml`, app source/manifests, tracked workflows, `.gitignore`, `.taplo.toml`, the five OpenWiki pages, and the removed documentation at base revision `ee6f87f`.
-- **Checks run (2026-07-11):** Markdown link resolution passed; all 18 `Makefile.toml` tasks matched the documented task matrix; workflow/source claims and runtime/source claims matched; stale artifact scans passed; `actionlint` passed; and `git diff --check` passed. `cargo make check` passed earlier in this migration but was not rerun for the final docs-only regeneration.
-- **Recommended reverse checks:** after relevant changes, resolve Markdown links; compare task names/dependencies with `Makefile.toml`; compare workflow triggers/jobs/`needs` with tracked YAML; compare runtime claims with `main.rs`, `cli.rs`, and `build.rs`; scan for stale `docs/`, `check-docs`, scheduled-automation, and placeholder claims; run `actionlint`, `git diff --check`, and applicable source checks; verify `openwiki/_plan.md` is absent after generation.
-- **Verdict:** pass for the migration/configuration evidence baseline and checks recorded above. This verdict does not imply that checks omitted from the run list were executed during the final regeneration.
+- **Watched claims:** `openwiki/` is the only maintained knowledge root; all five pages are reachable from `quickstart.md`; task, Rust/TypeScript runtime, workspace, CI/release, adoption, decision, research, and maintenance claims match current source or identified historical evidence; no recurring OpenWiki automation is authorized.
+- **Evidence anchors:** `README.md`, `Cargo.toml`, `Makefile.toml`, app source/manifests, `.node-version`, `package.json`, `package-lock.json`, `tsconfig.json`, Oxc configuration, TypeScript scripts/tests, tracked workflows, `.gitignore`, `.taplo.toml`, and the five OpenWiki pages.
+- **Checks run (2026-07-22):** Markdown link resolution passed; all 25 `Makefile.toml` tasks matched the documented task matrix; the TypeScript format, compiler, type-aware lint, and two integration tests passed; Rust/TOML format, Cargo check, Clippy/vstyle, and nextest passed; npm audit reported no vulnerability record in the resolved graph; npm verified registry signatures for all 11 installed packages and attestations for eight; `actionlint`, `taplo fmt --check`, and `git diff --check` passed; and `openwiki/_plan.md` was absent. `openwiki code --update --print` was attempted after source updates but stopped after proposing an unauthorized scheduled workflow, a parallel index, and incompatible generated metadata. Those outputs were rejected, and the five existing pages were curated directly under the documented fallback policy.
+- **Recommended reverse checks:** after relevant changes, resolve Markdown links; compare task names/dependencies with `Makefile.toml`; compare workflow triggers/jobs/`needs` with tracked YAML; compare Rust runtime claims with `main.rs`, `cli.rs`, and `build.rs`; compare TypeScript runtime claims with `.node-version`, manifests/configuration, scripts, and tests; scan for stale `docs/`, `check-docs`, scheduled-automation, duplicate formatter, and placeholder claims; run `actionlint`, dependency-integrity checks, `git diff --check`, and applicable source checks; verify `openwiki/_plan.md` is absent after generation.
+- **Verdict:** pass for the current Rust/TypeScript template diff and the checks recorded above. The npm signature/attestation result covers packages installed on macOS arm64; Linux CI remains the independent platform check for its selected native binaries.
 - **Required updates:** rerun the reverse checks after changes to source/config, page routing, knowledge authority, validation, or automation policy. Any mismatch blocks documentation readiness.
 
 ## Durable Decisions

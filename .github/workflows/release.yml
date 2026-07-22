@@ -37,8 +37,8 @@ jobs:
       - name: Set up Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
+          toolchain: stable
           cache: true
-          components: rustfmt, clippy
 
       - name: Add target
         run: rustup target add ${{ matrix.target.name }}
@@ -111,8 +111,8 @@ jobs:
       - name: Set up Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
+          toolchain: stable
           cache: true
-          components: rustfmt, clippy
 
       - name: Login
         run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}

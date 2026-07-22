@@ -26,10 +26,14 @@ TODO
 ## Workspace Posture
 
 - `apps/name_placeholder/` owns the default Rust CLI application package.
+- `scripts/` owns repository-maintenance TypeScript programs that run directly on
+  the pinned Node.js runtime.
 - `packages/` is reserved for reusable shared packages across Rust,
   JavaScript/TypeScript, Python, Swift, or other language toolchains.
 - The root `Cargo.toml` is a Rust workspace manifest and owns shared metadata,
   profiles, and dependency versions.
+- The root `package.json`, `package-lock.json`, and `tsconfig.json` own the
+  TypeScript script toolchain and its exact development dependencies.
 - `openwiki/` is the authoritative repository knowledge and agent-routing surface.
 
 ## Usage
@@ -92,11 +96,31 @@ TODO
 
 ## Development
 
+Install the exact TypeScript development graph without running package lifecycle
+scripts:
+
+```sh
+npm ci --ignore-scripts
+```
+
+List tracked template markers before adopting the template:
+
+```sh
+cargo make list-template-markers
+```
+
+Run the complete Rust, TypeScript, and TOML validation gate:
+
+```sh
+cargo make check
+```
+
 ### Architecture
 
 This template starts as a workspace-first monorepo:
 
 - runnable products belong under `apps/`
+- repository-maintenance programs belong under `scripts/`
 - reusable packages belong under `packages/`
 - repository-native checks are exposed through `Makefile.toml`
 - durable architecture, runbook, and routing notes belong under `openwiki/`
