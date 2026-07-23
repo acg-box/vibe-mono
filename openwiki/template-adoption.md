@@ -23,7 +23,7 @@ npm ci --ignore-scripts
 cargo make list-template-markers
 ```
 
-The helper scans an explicit allowlist through `git grep`, prints deterministic `path:line:text` records, and does not read untracked or ignored secret-bearing files. Before Node/npm is available, use this scoped bootstrap fallback:
+The helper scans all tracked files through `git grep`, forwards `path:line:text` records, and does not read untracked or ignored secret-bearing files. Before Node/npm is available, use this scoped bootstrap fallback:
 
 ```sh
 rg -n 'name_placeholder|name-placeholder-workspace|description_placeholder|hack-ink/name_placeholder|Welcome to use' \
@@ -52,7 +52,7 @@ Read [Architecture and Runtime](architecture-and-runtime.md) and choose delibera
 - If commands, flags, configuration, startup, logging, errors, or panic behavior change, implement tests and replace the corresponding contract rather than preserving template prose.
 - If there is no CLI, remove/replace the app and make the true runtime surface the architecture owner.
 - If application-data identity changes, decide migration/compatibility expectations for existing local data; renaming `ProjectDirs` silently points at a different directory.
-- Keep the TypeScript marker inventory read-only and scoped to tracked roots. If adoption changes its marker set, paths, output, or exit semantics, update its integration test and the operations contract together.
+- Keep the TypeScript marker inventory read-only and scoped to tracked files. If adoption changes its marker set, output, or exit semantics, update its integration test and the operations contract together.
 
 Do not describe placeholder behavior as product behavior after the implementation diverges.
 

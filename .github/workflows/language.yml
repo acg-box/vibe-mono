@@ -28,13 +28,11 @@ jobs:
       - name: Set up Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
-          toolchain: stable
           cache: true
           rustflags: ''
-          components: clippy
 
       - name: Install nightly rustfmt
-        run: rustup toolchain install nightly --component rustfmt
+        run: rustup toolchain install nightly --profile minimal --component rustfmt
 
       - name: Install cargo-make
         uses: taiki-e/install-action@c44f6b046f1c29ae5918b1e0bfdbb2f1813836fd # v2.84.1
@@ -76,7 +74,6 @@ jobs:
       - name: Set up Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
-          toolchain: stable
           cache: true
           rustflags: ''
 

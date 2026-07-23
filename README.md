@@ -47,10 +47,13 @@ TODO
 git clone https://github.com/hack-ink/name_placeholder
 cd name_placeholder
 
-# To install Rust on macOS and Unix, run the following command.
+# To install rustup on macOS and Unix without selecting a global default
+# toolchain, run the following command. This repository's rust-toolchain.toml
+# is authoritative for ordinary Rust commands.
 #
-# To install Rust on Windows, download and run the installer from `https://rustup.rs`.
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable
+# On Windows, download rustup-init.exe from `https://rustup.rs` and run it with
+# `--default-toolchain none`; rust-toolchain.toml remains authoritative.
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none
 
 # Install the necessary dependencies. (Unix only)
 # Using Ubuntu as an example, this really depends on your distribution.

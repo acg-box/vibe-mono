@@ -12,7 +12,7 @@ Repository-native tasks are declared in `Makefile.toml` and invoked with `cargo 
 
 | Tool | Needed by |
 | --- | --- |
-| Stable Rust/Cargo/Clippy | Rust check, lint, test, and build tasks |
+| Project Rust toolchain from `rust-toolchain.toml` | Rust check, lint, test, and build tasks |
 | Nightly toolchain with rustfmt | `fmt-rust`, `fmt-rust-check` |
 | Node.js/npm from `.node-version` | TypeScript check, format, lint, test, and template-marker tasks |
 | `cargo-make` | Every `cargo make` entrypoint |
@@ -20,9 +20,9 @@ Repository-native tasks are declared in `Makefile.toml` and invoked with `cargo 
 | `cargo-vstyle` | vstyle tasks and the composite lint/full gates |
 | `cargo-nextest` | test tasks |
 
-The repository intentionally has no `rust-toolchain.toml`; local commands use the global stable toolchain. Nightly rustfmt and all third-party Cargo tools are separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. CI selects stable explicitly, installs Clippy for the Rust lint gate, and separately installs nightly rustfmt because repository formatting tasks explicitly run it; the TOML job separately installs Taplo; the TypeScript job performs the locked npm install.
+`rust-toolchain.toml` is the sole selector for ordinary Rust commands. It selects stable with the minimal profile and adds Clippy; Cargo and rustc come from that profile. Rust formatting is the only explicit toolchain exception: `fmt-rust` and `fmt-rust-check` run nightly rustfmt because `.rustfmt.toml` uses nightly features. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. CI reads the ordinary Rust toolchain and components from `rust-toolchain.toml`, installs nightly rustfmt separately, installs Taplo for the TOML job, and performs the locked npm install for the TypeScript job.
 
-Sources: `Makefile.toml`, `.node-version`, `package.json`, `package-lock.json`, `.github/workflows/language.yml`, `.github/workflows/release.yml`.
+Sources: `rust-toolchain.toml`, `Makefile.toml`, `.node-version`, `package.json`, `package-lock.json`, `.github/workflows/language.yml`, `.github/workflows/release.yml`.
 
 ## Public Check Aggregate
 
@@ -89,7 +89,7 @@ npm ci --ignore-scripts
 cargo make list-template-markers
 ```
 
-The marker script prints deterministic `path:line:text` records. A marker record means the repository still contains template identity. No marker records means no configured marker was found; cargo-make can still print its own task status. Both inventory results are successful; inability to execute Git or malformed Git output fails the task. The helper scans only the checked-in root allowlist through `git grep`, so it does not read untracked or ignored secret-bearing files.
+The marker script forwards `git grep` output as `path:line:text` records. A marker record means the repository still contains template identity. No marker records means no configured marker was found; cargo-make can still print its own task status. Both inventory results are successful; inability to execute Git or another Git failure fails the task. The helper scans all tracked files, so it does not read untracked or ignored secret-bearing files.
 
 Before Node/npm is installed, use the equivalent scoped `rg` fallback from [Template Adoption](template-adoption.md#1-establish-identity-and-inventory). Keep that fallback for bootstrap only; `list-template-markers` owns the installed repository command.
 
@@ -120,7 +120,7 @@ Current `.github/workflows/language.yml` runs on pushes and pull requests target
 
 Three jobs run independently:
 
-- **Rust check:** rustfmt check → Cargo check → vstyle action → Clippy → nextest. It installs nightly rustfmt, cargo-make, and nextest; vstyle comes from `hack-ink/vibe-style`.
+- **Rust check:** rustfmt check → Cargo check → vstyle action → Clippy → nextest. The setup action reads the ordinary toolchain and Clippy component from `rust-toolchain.toml`; the job installs nightly rustfmt with the minimal profile, installs cargo-make and nextest separately, and gets vstyle from `hack-ink/vibe-style`.
 - **TOML check:** installs cargo-make and Taplo, then runs `fmt-toml-check`.
 - **TypeScript check:** reads the exact Node.js version from `.node-version`, installs the locked npm graph without lifecycle scripts, then runs TypeScript format, compiler, type-aware lint, and test tasks through cargo-make.
 

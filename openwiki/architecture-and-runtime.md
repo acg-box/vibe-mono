@@ -18,6 +18,7 @@ The repository is intentionally a small monorepo template with lanes for later g
 | `packages/` | Reusable, language-neutral shared packages; currently only `.gitkeep` |
 | `Cargo.toml` | Rust workspace membership (`apps/*`), resolver 3, shared package metadata, `final-release`, and shared dependency versions |
 | `Cargo.lock` | Locked dependency graph used by release commands with `--locked` |
+| `rust-toolchain.toml` | Ordinary Rust toolchain and component selection; formatting remains an explicit nightly task |
 | `package.json` and `package-lock.json` | Private npm tool-package metadata and the exact TypeScript development tool graph |
 | `tsconfig.json` | Strict, erasable, NodeNext TypeScript contract for `scripts/**/*.ts` |
 | `.oxfmtrc.json` and `.oxlintrc.json` | TypeScript formatting and type-aware lint policy |
@@ -29,7 +30,7 @@ The root is a virtual Cargo workspace, not a package. `apps/name_placeholder/Car
 
 **Ownership invariant:** put runnable product surfaces in `apps/`, repository-maintenance programs in `scripts/`, and genuinely reusable code in `packages/`. Add a Rust package lane to workspace membership deliberately; the current `apps/*` pattern does not include `packages/*`, and non-Rust packages never belong in Cargo membership.
 
-Sources: `Cargo.toml`, `package.json`, `tsconfig.json`, `apps/name_placeholder/Cargo.toml`, `scripts/list-template-markers.ts`, `packages/.gitkeep`, `Makefile.toml`; historical evidence: commit `4f91ab1`.
+Sources: `Cargo.toml`, `rust-toolchain.toml`, `package.json`, `tsconfig.json`, `apps/name_placeholder/Cargo.toml`, `scripts/list-template-markers.ts`, `packages/.gitkeep`, `Makefile.toml`; historical evidence: commit `4f91ab1`.
 
 ## TypeScript Script Runtime
 
@@ -42,7 +43,7 @@ Repository-maintenance TypeScript runs directly on the exact Node.js version in 
 
 The compiler contract requires strict checking, `noUncheckedIndexedAccess`, exact optional-property semantics, NodeNext ESM, explicit TypeScript import extensions, and syntax that Node can erase without transformation. Runtime enums, runtime namespaces, parameter properties, TypeScript path aliases, and unchecked type assertions are outside this script profile.
 
-`scripts/list-template-markers.ts` is the first script owner. It invokes `git grep` without a shell, scans only tracked files under an explicit path allowlist, sorts results, prints `path:line:text`, returns success when no markers remain, and reports operational failures on stderr with a nonzero exit status. It intentionally keeps the original template markers after adoption so a clean repository emits no marker records. Its integration test uses a temporary Git repository to prove source and lockfile detection plus the clean-repository result without scanning untracked files.
+`scripts/list-template-markers.ts` is the first script owner. It invokes `git grep` without a shell, scans all tracked files, forwards Git's `path:line:text` output, returns success when no markers remain, and reports operational failures on stderr with a nonzero exit status. It intentionally keeps the original template markers after adoption so a clean repository emits no marker records. Its integration test uses temporary directories to prove tracked-file detection, untracked-file exclusion, the clean-repository result, and non-Git failure handling.
 
 Sources: `.node-version`, `package.json`, `package-lock.json`, `tsconfig.json`, `.oxfmtrc.json`, `.oxlintrc.json`, `scripts/list-template-markers.ts`, `scripts/list-template-markers.test.ts`, `Makefile.toml`.
 
