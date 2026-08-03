@@ -20,7 +20,7 @@ Repository-native tasks are declared in `Makefile.toml` and invoked with `cargo 
 | `cargo-vstyle` | vstyle tasks and the composite lint/full gates |
 | `cargo-nextest` | test tasks |
 
-`rust-toolchain.toml` is the sole selector for ordinary Rust commands. It selects stable with the minimal profile and adds Clippy; Cargo and rustc come from that profile. Rust formatting is the only explicit toolchain exception: `fmt-rust` and `fmt-rust-check` run nightly rustfmt because `.rustfmt.toml` uses nightly features. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. CI reads the ordinary Rust toolchain and components from `rust-toolchain.toml`, installs nightly rustfmt separately, installs Taplo for the TOML job, and performs the locked npm install for the TypeScript job.
+`rust-toolchain.toml` is the sole selector for ordinary Rust commands. It selects stable with the minimal profile and adds Clippy; Cargo and rustc come from that profile. Rust formatting is the only explicit toolchain exception: `fmt-rust` and `fmt-rust-check` run nightly rustfmt because `.rustfmt.toml` uses nightly features. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. The single CI job reads both project toolchains, installs nightly rustfmt separately, installs cargo-make, nextest, and Taplo together, and performs the locked npm install once.
 
 Sources: `rust-toolchain.toml`, `Makefile.toml`, `.node-version`, `package.json`, `package-lock.json`, `.github/workflows/language.yml`, `.github/workflows/release.yml`.
 
@@ -118,13 +118,9 @@ Sources: `README.md`, `Cargo.toml`, `.github/workflows/release.yml`.
 
 Current `.github/workflows/language.yml` runs on pushes and pull requests targeting `main`, plus merge queues. It has no path filters, so documentation-only changes trigger the language checks too.
 
-Three jobs run independently:
+One 10-minute **Language check** job runs the full sequence on one Ubuntu runner: shared setup; Rust, TOML, and TypeScript format checks; Rust and TypeScript checks; vstyle, Clippy, and Oxlint; then Rust and TypeScript tests. Consolidation shares setup and the Rust cache, but it also makes the sequence fail-fast: a failed or timed-out step prevents later steps from running.
 
-- **Rust check:** rustfmt check → Cargo check → vstyle action → Clippy → nextest. The setup action reads the ordinary toolchain and Clippy component from `rust-toolchain.toml`; the job installs nightly rustfmt with the minimal profile, installs cargo-make and nextest separately, and gets vstyle from `hack-ink/vibe-style`.
-- **TOML check:** installs cargo-make and Taplo, then runs `fmt-toml-check`.
-- **TypeScript check:** reads the exact Node.js version from `.node-version`, installs the locked npm graph without lifecycle scripts, then runs TypeScript format, compiler, type-aware lint, and test tasks through cargo-make.
-
-CI does **not** invoke `cargo make check` or validate OpenWiki. Running on a documentation-only diff does not turn this workflow into a documentation-readiness gate: green proves only the listed Rust/TOML/TypeScript checks. The former CodeQL workflow—push/PR analysis for `main` plus weekly Actions/Rust scans—has been removed, so no tracked workflow currently provides that security-analysis coverage. Actions are SHA-pinned in current tracked workflows; preserve that supply-chain posture when updating them. Dependabot covers Cargo, root npm, and GitHub Actions; the TypeScript compiler, types, formatter, linter, and type-aware backend update as one review group.
+CI does **not** invoke `cargo make check` or validate OpenWiki. Running on a documentation-only diff does not turn this workflow into a documentation-readiness gate: green proves only the steps reached by the single job. The former CodeQL workflow—push/PR analysis for `main` plus weekly Actions/Rust scans—has been removed, so no tracked workflow currently provides that security-analysis coverage. Actions are SHA-pinned in current tracked workflows; preserve that supply-chain posture when updating them. Dependabot covers Cargo, root npm, and GitHub Actions; the TypeScript compiler, types, formatter, linter, and type-aware backend update as one review group.
 
 Source: `.github/workflows/language.yml`.
 
