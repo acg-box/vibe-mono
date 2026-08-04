@@ -1,5 +1,5 @@
 name: Install pinned mold
-description: Install a verified official mold archive on a Linux runner without changing the system linker.
+description: Install a verified official mold archive on Linux, adding Debian/Ubuntu libatomic1 when required without changing the system linker.
 
 inputs:
   version:
