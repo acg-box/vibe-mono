@@ -23,14 +23,14 @@ The repository is intentionally a small monorepo template with lanes for later g
 | `tsconfig.json` | Strict, erasable, NodeNext TypeScript contract for `scripts/**/*.ts` |
 | `.oxfmtrc.json` and `.oxlintrc.json` | TypeScript formatting and type-aware lint policy |
 | `Makefile.toml` | Repository-native validation task contracts |
-| `.github/` | CI, release, and dependency automation; no CodeQL workflow is currently retained |
+| `.github/` | CI, release, dependency automation, and reusable composite actions; no CodeQL workflow is currently retained |
 | `openwiki/` | Maintained repository knowledge and agent routing |
 
 The root is a virtual Cargo workspace, not a package. `apps/name_placeholder/Cargo.toml` inherits common metadata, declares the build script, selects dependencies, and names the package. The accepted workspace-first layout was introduced in commit `4f91ab1`, moving the prior root CLI without changing its runtime behavior and reserving `packages/` for future reuse.
 
 **Ownership invariant:** put runnable product surfaces in `apps/`, repository-maintenance programs in `scripts/`, and genuinely reusable code in `packages/`. Add a Rust package lane to workspace membership deliberately; the current `apps/*` pattern does not include `packages/*`, and non-Rust packages never belong in Cargo membership.
 
-Sources: `Cargo.toml`, `rust-toolchain.toml`, `package.json`, `tsconfig.json`, `apps/name_placeholder/Cargo.toml`, `scripts/list-template-markers.ts`, `packages/.gitkeep`, `Makefile.toml`; historical evidence: commit `4f91ab1`.
+Sources: `Cargo.toml`, `rust-toolchain.toml`, `package.json`, `tsconfig.json`, `apps/name_placeholder/Cargo.toml`, `scripts/list-template-markers.ts`, `packages/.gitkeep`, `Makefile.toml`, `.github/actions/install-mold/action.yml`; historical evidence: commit `4f91ab1`.
 
 ## TypeScript Script Runtime
 
