@@ -128,13 +128,16 @@ Source: `.github/workflows/language.yml`.
 
 A tag matching `v<major>.<minor>.<patch>` triggers `.github/workflows/release.yml`:
 
-1. Build `name_placeholder` with locked `final-release` for Apple arm64, Linux x86_64 GNU, and Windows x86_64 MSVC.
-2. Package macOS/Windows as ZIP and Linux as tar.gz using the explicit archive name in each matrix entry. Upload each archive without an extra artifact wrapper, fail if it is missing, and retain it for one day.
-3. After every matrix build succeeds, download matching archives into `artifacts/` with digest mismatches treated as errors and decompression disabled.
-4. Require exactly the three expected filenames and test each ZIP or tar.gz for readability before publishing a GitHub Release with generated notes. Missing, extra, renamed, corrupt, or digest-mismatched artifacts block this branch before publication.
-5. Independently publish package `name_placeholder` to crates.io using the configured repository secret.
+1. Remove cached outputs for the workspace binary, then build `name_placeholder` with locked `final-release` for Apple arm64, Linux x86_64 GNU, and Windows x86_64 MSVC. Dependency caches remain reusable, but the application code generation, fat LTO, and final link must run for the tag source. macOS continues to use Apple ld, and Windows continues to use MSVC link.exe. Linux first downloads the pinned mold archive over HTTPS, verifies its SHA-256 digest and reported version, then invokes `cargo rustc` with target-specific linker flags that replace Rust's self-contained LLD with mold.
+2. Execute each native binary before packaging and require its reported source SHA and target triple to match the workflow source and matrix target. Also require the Linux binary's ELF `.comment` section to report the pinned mold version. A missing linker, checksum or version mismatch, unsupported linker flags, identity mismatch, or absent mold marker fails that matrix branch before packaging.
+3. Package macOS/Windows as ZIP and Linux as tar.gz using the explicit archive name in each matrix entry. Upload each archive without an extra artifact wrapper, fail if it is missing, and retain it for one day.
+4. After every matrix build succeeds, download matching archives into `artifacts/` with digest mismatches treated as errors and decompression disabled.
+5. Require exactly the three expected filenames and test each ZIP or tar.gz for readability before publishing a GitHub Release with generated notes. Missing, extra, renamed, corrupt, or digest-mismatched artifacts block this branch before publication.
+6. Independently publish package `name_placeholder` to crates.io using the configured repository secret.
 
-The crates.io job does not depend on the build or GitHub release jobs; GitHub Actions may run it concurrently. A failure in one branch does not imply the other branch never ran. The explicit archive names now form a contract across the matrix, upload, download pattern, verification commands, and release files. All names, package selectors, and archive paths are still template placeholders and must change together during [Template Adoption](template-adoption.md#4-reconcile-build-and-release).
+The Linux linker selection does not change the inherited release profile: `final-release` still uses fat LTO. Mold changes only the final link step; it does not remove dependency or workspace compilation, LLVM code generation, or LTO.
+
+The crates.io job does not depend on the build or GitHub release jobs; GitHub Actions may run it concurrently. A failure in one branch does not imply the other branch never ran. The explicit archive names form a contract across the matrix, upload, download pattern, verification commands, and release files. The pinned mold version and SHA-256 value form an additional Linux supply-chain contract: update them together and preserve both the version check and post-link provenance check. All names, package selectors, and archive paths are still template placeholders and must change together during [Template Adoption](template-adoption.md#4-reconcile-build-and-release).
 
 Sources: `.github/workflows/release.yml`, `Cargo.toml`, `apps/name_placeholder/Cargo.toml`.
 
@@ -147,6 +150,6 @@ Sources: `.github/workflows/release.yml`, `Cargo.toml`, `apps/name_placeholder/C
 - Clippy/vstyle failure: fix directly or use the matching `lint-fix*` task, then review all mutations before rerunning read-only gates.
 - Oxlint failure: fix the diagnostic directly or use `lint-fix-typescript` for safe fixes only; review every mutation before rerunning compiler, lint, and tests.
 - Test failure: treat as a regression or broken assumption in the current diff until evidence shows an environment/tool issue.
-- Release failure: distinguish build, packaging/path, GitHub publication, and crates.io publication; they have different ownership and dependency edges.
+- Release failure: distinguish mold download/integrity/provenance, platform build, packaging/path, GitHub publication, and crates.io publication; they have different ownership and dependency edges.
 
 Before merge, prefer `cargo make check` plus the focused OpenWiki drift checks and any release-specific dry checks justified by the changed surface. Record unavailable tools and unrun checks explicitly rather than claiming readiness.
