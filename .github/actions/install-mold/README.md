@@ -18,7 +18,7 @@ Use the action from another repository at a reviewed full commit SHA:
 
 ```yaml
 - id: mold
-  uses: acg-box/vibe-mono/.github/actions/install-mold@<reviewed-commit-sha>
+  uses: acg-box/vibe-mono/.github/actions/install-mold@93305bc90481fef8163ea970e026c08197824f64
   with:
     version: 2.41.0
     sha256: a3696680d99e692970590a178bc3a33d78d60d1c6dc9db7a11b557b02b751f5d
