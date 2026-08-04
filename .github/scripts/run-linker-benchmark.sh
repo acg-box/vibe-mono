@@ -11,7 +11,6 @@ summary="${GITHUB_STEP_SUMMARY:?GITHUB_STEP_SUMMARY is required}"
 
 export BENCHMARK_LINKER="${candidate}"
 export CARGO_TARGET_DIR="${target_dir}"
-export CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER="${GITHUB_WORKSPACE}/.github/scripts/linker-benchmark-driver.sh"
 export LINK_TIME_LOG="${link_log}"
 
 duration_ms() {
@@ -38,18 +37,31 @@ run_sample() {
 	local workspace_seconds
 	local link_seconds
 	local codegen_lto_seconds
+	local -a rustc_args
 
 	: > "${link_log}"
+	rustc_args=(-C "linker=${GITHUB_WORKSPACE}/.github/scripts/linker-benchmark-driver.sh")
+	if [[ "${candidate}" == "mold" ]]; then
+		if [[ -z "${MOLD_LIBEXEC:-}" || ! -x "${MOLD_LIBEXEC}/ld" ]]; then
+			echo "The pinned mold linker is unavailable at MOLD_LIBEXEC." >&2
+			exit 127
+		fi
+		rustc_args+=(
+			-C link-self-contained=-linker
+			-C "link-arg=-B${MOLD_LIBEXEC}"
+		)
+	fi
 	start_ns="$(date +%s%N)"
 	/usr/bin/time \
 		--output "${resource_log}" \
 		--format 'elapsed=%e\tuser=%U\tsystem=%S\tmax_rss_kib=%M\texit=%x' \
-		cargo build \
+		cargo rustc \
 			-p name_placeholder \
 			--profile final-release \
 			--locked \
 			--target "${target}" \
-			--timings
+			--timings \
+			-- "${rustc_args[@]}"
 	end_ns="$(date +%s%N)"
 
 	timing_file="$(find "${target_dir}/cargo-timings" -type f -name 'cargo-timing-*.html' -printf '%T@ %p\n' \
@@ -121,7 +133,7 @@ grep -q '\.symtab' "${RUNNER_TEMP}/${candidate}-sections.txt"
 grep -q '\.eh_frame' "${RUNNER_TEMP}/${candidate}-sections.txt"
 
 case "${candidate}" in
-	lld) grep -qi 'LLD' "${RUNNER_TEMP}/${candidate}-comment.txt" ;;
+	current) grep -qi 'LLD' "${RUNNER_TEMP}/${candidate}-comment.txt" ;;
 	mold) grep -qi "mold ${MOLD_VERSION:?MOLD_VERSION is required}" "${RUNNER_TEMP}/${candidate}-comment.txt" ;;
 esac
 

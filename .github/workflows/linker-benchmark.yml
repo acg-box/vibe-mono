@@ -20,105 +20,6 @@ env:
   RUST_BACKTRACE: full
 
 jobs:
-  inventory-unix:
-    if: github.head_ref == 'xv/linker-benchmark'
-    name: Inventory ${{ matrix.target }} linker
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-          - os: macos-latest
-            target: aarch64-apple-darwin
-    steps:
-      - name: Fetch exact benchmark source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Set up Rust toolchain without cache
-        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
-        with:
-          cache: false
-
-      - name: Add target
-        run: rustup target add ${{ matrix.target }}
-
-      - name: Print actual rustc linker command
-        shell: bash
-        run: |
-          set -euo pipefail
-          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
-          cargo rustc \
-            -p name_placeholder \
-            --profile final-release \
-            --locked \
-            --target "${{ matrix.target }}" \
-            -- --print link-args 2>&1 | tee "${RUNNER_TEMP}/link-args.txt"
-
-      - name: Resolve invoked platform linker
-        shell: bash
-        run: |
-          set -euo pipefail
-          command -v cc
-          cc --version
-          if [[ "${RUNNER_OS}" == "Linux" ]]; then
-            command -v ld
-            ld --version
-            cc -Wl,--version -x c /dev/null -o "${RUNNER_TEMP}/cc-link-probe"
-          else
-            xcrun --find ld
-            xcrun ld -version_details
-            cc -Wl,-v -x c /dev/null -o "${RUNNER_TEMP}/cc-link-probe"
-          fi
-
-  inventory-windows:
-    if: github.head_ref == 'xv/linker-benchmark'
-    name: Inventory x86_64-pc-windows-msvc linker
-    runs-on: windows-latest
-    timeout-minutes: 10
-    steps:
-      - name: Fetch exact benchmark source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Set up Rust toolchain without cache
-        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
-        with:
-          cache: false
-
-      - name: Add target
-        run: rustup target add x86_64-pc-windows-msvc
-
-      - name: Print actual rustc linker command
-        shell: pwsh
-        run: |
-          if ((git rev-parse HEAD) -ne '${{ github.event.pull_request.head.sha }}') {
-            throw 'Unexpected checkout source.'
-          }
-          cargo rustc `
-            -p name_placeholder `
-            --profile final-release `
-            --locked `
-            --target x86_64-pc-windows-msvc `
-            -- --print link-args 2>&1 `
-            | Tee-Object -FilePath "$env:RUNNER_TEMP/link-args.txt"
-          if ($LASTEXITCODE -ne 0) {
-            throw "cargo rustc failed with exit code $LASTEXITCODE"
-          }
-
-      - name: Resolve invoked platform linker
-        shell: pwsh
-        run: |
-          Get-Command link.exe | Format-List Source, Version
-          where.exe link.exe
-          $linkOutput = & link.exe /? 2>&1
-          $linkOutput | Select-Object -First 8
-
   linux-linker:
     if: github.head_ref == 'xv/linker-benchmark'
     name: Benchmark Linux ${{ matrix.linker }} linker
@@ -129,7 +30,6 @@ jobs:
       matrix:
         linker:
           - current
-          - lld
           - mold
     steps:
       - name: Fetch exact benchmark source
@@ -169,13 +69,9 @@ jobs:
           case "${BENCHMARK_LINKER}" in
             current)
               command -v cc
-              command -v ld
-              ld --version
-              ;;
-            lld)
-              command -v ld.lld
-              ld.lld --version
-              cc -fuse-ld=lld -Wl,--version -x c /dev/null -o "${RUNNER_TEMP}/lld-probe"
+              sysroot="$(rustc --print sysroot)"
+              ls -la "${sysroot}/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld"
+              "${sysroot}/lib/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld" --version
               ;;
             mold)
               archive="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"

@@ -88,9 +88,26 @@ jobs:
       - name: Build with mold (Linux)
         if: matrix.target.name == 'x86_64-unknown-linux-gnu'
         shell: bash
-        env:
-          CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER: ${{ github.workspace }}/.github/scripts/mold-linker.sh
-        run: cargo build -p name_placeholder --profile final-release --locked --target ${{ matrix.target.name }}
+        run: |
+          set -euo pipefail
+          test -x "${MOLD_LIBEXEC}/ld"
+          cargo rustc \
+            -p name_placeholder \
+            --profile final-release \
+            --locked \
+            --target "${{ matrix.target.name }}" \
+            -- \
+            -C link-self-contained=-linker \
+            -C "link-arg=-B${MOLD_LIBEXEC}"
+
+      - name: Verify mold-linked binary (Linux)
+        if: matrix.target.name == 'x86_64-unknown-linux-gnu'
+        shell: bash
+        run: |
+          set -euo pipefail
+          readelf --string-dump=.comment \
+            "target/${{ matrix.target.name }}/final-release/name_placeholder" \
+            | grep -F "mold ${MOLD_VERSION}"
 
       - name: Build with platform linker
         if: matrix.target.name != 'x86_64-unknown-linux-gnu'
