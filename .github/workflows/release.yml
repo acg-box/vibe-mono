@@ -97,6 +97,7 @@ jobs:
             --locked \
             --target "${{ matrix.target.name }}" \
             -- \
+            -C linker-features=-lld \
             -C link-self-contained=-linker \
             -C "link-arg=-B${MOLD_LIBEXEC}"
 

@@ -47,6 +47,7 @@ run_sample() {
 			exit 127
 		fi
 		rustc_args+=(
+			-C linker-features=-lld
 			-C link-self-contained=-linker
 			-C "link-arg=-B${MOLD_LIBEXEC}"
 		)

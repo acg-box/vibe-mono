@@ -71,7 +71,7 @@ jobs:
               command -v cc
               sysroot="$(rustc --print sysroot)"
               ls -la "${sysroot}/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld"
-              "${sysroot}/lib/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld" --version
+              "${sysroot}/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/ld.lld" --version
               ;;
             mold)
               archive="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
