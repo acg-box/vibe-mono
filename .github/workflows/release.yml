@@ -63,38 +63,18 @@ jobs:
 
       - name: Install pinned mold (Linux)
         if: matrix.target.name == 'x86_64-unknown-linux-gnu'
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          archive="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
-          root="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux"
-          url="https://github.com/rui314/mold/releases/download/v${MOLD_VERSION}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
-
-          curl --fail --location --silent --show-error \
-            --proto '=https' --tlsv1.2 --retry 3 --retry-connrefused \
-            --output "${archive}" "${url}"
-          echo "${MOLD_X86_64_LINUX_SHA256}  ${archive}" | sha256sum --check --strict
-          tar -xzf "${archive}" -C "${RUNNER_TEMP}"
-
-          version="$("${root}/bin/mold" --version)"
-          case "${version}" in
-            "mold ${MOLD_VERSION}"*) ;;
-            *)
-              echo "Unexpected mold version: ${version}" >&2
-              exit 1
-              ;;
-          esac
-
-          echo "MOLD_LIBEXEC=${root}/libexec/mold" >> "${GITHUB_ENV}"
-          echo "Using ${version}"
+        id: mold
+        uses: ./.github/actions/install-mold
+        with:
+          version: ${{ env.MOLD_VERSION }}
+          sha256: ${{ env.MOLD_X86_64_LINUX_SHA256 }}
 
       - name: Build with mold (Linux)
         if: matrix.target.name == 'x86_64-unknown-linux-gnu'
         shell: bash
         run: |
           set -euo pipefail
-          test -x "${MOLD_LIBEXEC}/ld"
+          test -x "${{ steps.mold.outputs.mold_libexec }}/ld"
           cargo rustc \
             -p name_placeholder \
             --profile final-release \
@@ -103,7 +83,7 @@ jobs:
             -- \
             -C linker-features=-lld \
             -C link-self-contained=-linker \
-            -C "link-arg=-B${MOLD_LIBEXEC}"
+            -C "link-arg=-B${{ steps.mold.outputs.mold_libexec }}"
 
       - name: Verify mold-linked binary identity (Linux)
         if: matrix.target.name == 'x86_64-unknown-linux-gnu'
