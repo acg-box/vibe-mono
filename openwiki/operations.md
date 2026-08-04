@@ -151,24 +151,26 @@ outputs. It does not replace `/usr/bin/ld` or change the runner's global linker.
 The action fails closed on non-Linux hosts, unsupported architectures, missing
 tools, checksum mismatch, archive layout mismatch, and version mismatch.
 
-The template Release workflow uses the local action. An adopted repository can
-reference the public action from `acg-box/vibe-mono` at a reviewed release tag or
-full commit SHA:
+The template Release workflow uses the local action. An adopted repository should
+reference the public action from `acg-box/vibe-mono` at a reviewed full commit
+SHA:
 
 ```yaml
 - id: mold
-  uses: acg-box/vibe-mono/.github/actions/install-mold@v1
+  uses: acg-box/vibe-mono/.github/actions/install-mold@93305bc90481fef8163ea970e026c08197824f64
   with:
     version: 2.41.0
     sha256: <digest-for-the-host-architecture>
 ```
 
-Use a full commit SHA when the repository requires immutable action references.
-Keep the version and digest together. The action installs mold; each caller must
-still select it explicitly in its compiler or Cargo linker configuration and
-verify the final artifact. The upstream `rui314/setup-mold` action remains an
-alternative for repositories that accept its contract, but this wrapper keeps
-the template's checksum, no-global-linker, and fail-closed requirements.
+Keep the version and digest together. If the downloaded binary lacks
+`libatomic.so.1`, the action installs Debian/Ubuntu's `libatomic1` package with
+`apt-get` and passwordless `sudo` when needed; other distributions must provide
+it. The action installs mold; each caller must still select it explicitly in its
+compiler or Cargo linker configuration and verify the final artifact. The
+upstream `rui314/setup-mold` action remains an alternative for repositories that
+accept its contract, but this wrapper keeps the template's checksum,
+no-global-linker, and fail-closed requirements.
 
 ## Failure Interpretation
 

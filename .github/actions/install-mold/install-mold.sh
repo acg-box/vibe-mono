@@ -46,7 +46,7 @@ esac
 [[ "${MOLD_VERSION}" =~ ^[0-9]+(\.[0-9]+)*$ ]] || fail "invalid mold version: ${MOLD_VERSION}"
 [[ "${MOLD_SHA256}" =~ ^[[:xdigit:]]{64}$ ]] || fail "invalid mold SHA-256 digest"
 
-for command in curl sha256sum tar; do
+for command in curl grep sha256sum tar; do
   command -v "${command}" >/dev/null 2>&1 || fail "required command is missing: ${command}"
 done
 
@@ -72,7 +72,44 @@ mold_libexec="${root}/libexec/mold"
 test -x "${mold_binary}" || fail "mold executable is missing: ${mold_binary}"
 test -x "${mold_libexec}/ld" || fail "mold linker shim is missing: ${mold_libexec}/ld"
 
-reported_version="$("${mold_binary}" --version)"
+install_libatomic1() {
+  command -v apt-get >/dev/null 2>&1 || return 1
+
+  local -a apt_command=(apt-get)
+  if [[ "$(id -u)" -ne 0 ]]; then
+    command -v sudo >/dev/null 2>&1 || return 1
+    apt_command=(sudo -n apt-get)
+  fi
+
+  if command -v dpkg-query >/dev/null 2>&1 \
+    && dpkg-query -W -f='${Status}' libatomic1 2>/dev/null \
+      | grep -Fq 'install ok installed'; then
+    return 0
+  fi
+
+  DEBIAN_FRONTEND=noninteractive "${apt_command[@]}" update
+  DEBIAN_FRONTEND=noninteractive "${apt_command[@]}" install \
+    --no-install-recommends --yes libatomic1
+}
+
+if ! reported_version="$("${mold_binary}" --version 2>&1)"; then
+  runtime_dependencies=""
+  if command -v ldd >/dev/null 2>&1; then
+    runtime_dependencies="$(ldd "${mold_binary}" 2>&1 || true)"
+  fi
+
+  if grep -Fq 'libatomic.so.1' <<<"${reported_version}${runtime_dependencies}"; then
+    if ! install_libatomic1; then
+      fail "mold needs libatomic.so.1; install Debian/Ubuntu libatomic1 or provide passwordless sudo"
+    fi
+    if ! reported_version="$("${mold_binary}" --version 2>&1)"; then
+      fail "mold could not start after installing libatomic1: ${reported_version}"
+    fi
+  else
+    fail "mold could not start: ${reported_version}"
+  fi
+fi
+
 case "${reported_version}" in
   "mold ${MOLD_VERSION}"*) ;;
   *) fail "unexpected mold version: ${reported_version}" ;;
