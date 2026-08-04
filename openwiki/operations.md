@@ -129,11 +129,12 @@ Source: `.github/workflows/language.yml`.
 A tag matching `v<major>.<minor>.<patch>` triggers `.github/workflows/release.yml`:
 
 1. Build `name_placeholder` with locked `final-release` for Apple arm64, Linux x86_64 GNU, and Windows x86_64 MSVC.
-2. Package macOS/Windows as ZIP and Linux as tar.gz; upload one-day intermediate artifacts.
-3. After all builds, combine and publish artifacts to a GitHub Release with generated notes.
-4. Independently publish package `name_placeholder` to crates.io using the configured repository secret.
+2. Package macOS/Windows as ZIP and Linux as tar.gz using the explicit archive name in each matrix entry. Upload each archive without an extra artifact wrapper, fail if it is missing, and retain it for one day.
+3. After every matrix build succeeds, download matching archives into `artifacts/` with digest mismatches treated as errors and decompression disabled.
+4. Require exactly the three expected filenames and test each ZIP or tar.gz for readability before publishing a GitHub Release with generated notes. Missing, extra, renamed, corrupt, or digest-mismatched artifacts block this branch before publication.
+5. Independently publish package `name_placeholder` to crates.io using the configured repository secret.
 
-The crates.io job does not depend on the build or GitHub release jobs; GitHub Actions may run it concurrently. A failure in one branch does not imply the other branch never ran. All names, package selectors, and archive paths are still template placeholders and must change together during adoption.
+The crates.io job does not depend on the build or GitHub release jobs; GitHub Actions may run it concurrently. A failure in one branch does not imply the other branch never ran. The explicit archive names now form a contract across the matrix, upload, download pattern, verification commands, and release files. All names, package selectors, and archive paths are still template placeholders and must change together during [Template Adoption](template-adoption.md#4-reconcile-build-and-release).
 
 Sources: `.github/workflows/release.yml`, `Cargo.toml`, `apps/name_placeholder/Cargo.toml`.
 
