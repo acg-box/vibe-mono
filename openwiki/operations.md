@@ -157,7 +157,7 @@ SHA:
 
 ```yaml
 - id: mold
-  uses: acg-box/vibe-mono/.github/actions/install-mold@<reviewed-commit-sha>
+  uses: acg-box/vibe-mono/.github/actions/install-mold@93305bc90481fef8163ea970e026c08197824f64
   with:
     version: 2.41.0
     sha256: <digest-for-the-host-architecture>
