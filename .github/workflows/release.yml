@@ -7,6 +7,9 @@ env:
   CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
   CARGO_TERM_COLOR: always
 
+  MOLD_VERSION: 2.41.0
+  MOLD_X86_64_LINUX_SHA256: a3696680d99e692970590a178bc3a33d78d60d1c6dc9db7a11b557b02b751f5d
+
   RUST_BACKTRACE: full
 
 on:
@@ -54,7 +57,43 @@ jobs:
       - name: Add target
         run: rustup target add ${{ matrix.target.name }}
 
-      - name: Build
+      - name: Install pinned mold (Linux)
+        if: matrix.target.name == 'x86_64-unknown-linux-gnu'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          archive="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
+          root="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux"
+          url="https://github.com/rui314/mold/releases/download/v${MOLD_VERSION}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
+
+          curl --fail --location --silent --show-error \
+            --proto '=https' --tlsv1.2 --retry 3 \
+            --output "${archive}" "${url}"
+          echo "${MOLD_X86_64_LINUX_SHA256}  ${archive}" | sha256sum --check --strict
+          tar -xzf "${archive}" -C "${RUNNER_TEMP}"
+
+          version="$("${root}/bin/mold" --version)"
+          case "${version}" in
+            "mold ${MOLD_VERSION}"*) ;;
+            *)
+              echo "Unexpected mold version: ${version}" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "MOLD_LIBEXEC=${root}/libexec/mold" >> "${GITHUB_ENV}"
+          echo "Using ${version}"
+
+      - name: Build with mold (Linux)
+        if: matrix.target.name == 'x86_64-unknown-linux-gnu'
+        shell: bash
+        env:
+          CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER: ${{ github.workspace }}/.github/scripts/mold-linker.sh
+        run: cargo build -p name_placeholder --profile final-release --locked --target ${{ matrix.target.name }}
+
+      - name: Build with platform linker
+        if: matrix.target.name != 'x86_64-unknown-linux-gnu'
         run: cargo build -p name_placeholder --profile final-release --locked --target ${{ matrix.target.name }}
 
       - name: Pack (macOS)

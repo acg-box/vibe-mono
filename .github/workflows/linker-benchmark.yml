@@ -1,0 +1,216 @@
+name: Linker Benchmark (temporary)
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.sha }}
+  cancel-in-progress: true
+
+env:
+  CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
+  CARGO_TERM_COLOR: always
+  MOLD_VERSION: 2.41.0
+  MOLD_X86_64_LINUX_SHA256: a3696680d99e692970590a178bc3a33d78d60d1c6dc9db7a11b557b02b751f5d
+  RUST_BACKTRACE: full
+
+jobs:
+  inventory-unix:
+    if: github.head_ref == 'xv/linker-benchmark'
+    name: Inventory ${{ matrix.target }} linker
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: macos-latest
+            target: aarch64-apple-darwin
+    steps:
+      - name: Fetch exact benchmark source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Rust toolchain without cache
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          cache: false
+
+      - name: Add target
+        run: rustup target add ${{ matrix.target }}
+
+      - name: Print actual rustc linker command
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          cargo rustc \
+            -p name_placeholder \
+            --profile final-release \
+            --locked \
+            --target "${{ matrix.target }}" \
+            -- --print link-args 2>&1 | tee "${RUNNER_TEMP}/link-args.txt"
+
+      - name: Resolve invoked platform linker
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v cc
+          cc --version
+          if [[ "${RUNNER_OS}" == "Linux" ]]; then
+            command -v ld
+            ld --version
+            cc -Wl,--version -x c /dev/null -o "${RUNNER_TEMP}/cc-link-probe"
+          else
+            xcrun --find ld
+            xcrun ld -version_details
+            cc -Wl,-v -x c /dev/null -o "${RUNNER_TEMP}/cc-link-probe"
+          fi
+
+  inventory-windows:
+    if: github.head_ref == 'xv/linker-benchmark'
+    name: Inventory x86_64-pc-windows-msvc linker
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch exact benchmark source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Rust toolchain without cache
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          cache: false
+
+      - name: Add target
+        run: rustup target add x86_64-pc-windows-msvc
+
+      - name: Print actual rustc linker command
+        shell: pwsh
+        run: |
+          if ((git rev-parse HEAD) -ne '${{ github.event.pull_request.head.sha }}') {
+            throw 'Unexpected checkout source.'
+          }
+          cargo rustc `
+            -p name_placeholder `
+            --profile final-release `
+            --locked `
+            --target x86_64-pc-windows-msvc `
+            -- --print link-args 2>&1 `
+            | Tee-Object -FilePath "$env:RUNNER_TEMP/link-args.txt"
+          if ($LASTEXITCODE -ne 0) {
+            throw "cargo rustc failed with exit code $LASTEXITCODE"
+          }
+
+      - name: Resolve invoked platform linker
+        shell: pwsh
+        run: |
+          Get-Command link.exe | Format-List Source, Version
+          where.exe link.exe
+          $linkOutput = & link.exe /? 2>&1
+          $linkOutput | Select-Object -First 8
+
+  linux-linker:
+    if: github.head_ref == 'xv/linker-benchmark'
+    name: Benchmark Linux ${{ matrix.linker }} linker
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        linker:
+          - current
+          - lld
+          - mold
+    steps:
+      - name: Fetch exact benchmark source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Rust toolchain without cache
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          cache: false
+
+      - name: Add target
+        run: rustup target add x86_64-unknown-linux-gnu
+
+      - name: Freeze benchmark identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          test -z "$(git status --short)"
+          echo "BENCHMARK_SOURCE_SHA=${{ github.event.pull_request.head.sha }}" >> "${GITHUB_ENV}"
+          echo "BENCHMARK_LOCK_SHA256=$(sha256sum Cargo.lock | cut -d ' ' -f 1)" >> "${GITHUB_ENV}"
+          rustc --version --verbose
+          cargo --version --verbose
+          cc --version
+          uname -a
+
+      - name: Prepare ${{ matrix.linker }} linker
+        shell: bash
+        env:
+          BENCHMARK_LINKER: ${{ matrix.linker }}
+        run: |
+          set -euo pipefail
+          start_ns="$(date +%s%N)"
+
+          case "${BENCHMARK_LINKER}" in
+            current)
+              command -v cc
+              command -v ld
+              ld --version
+              ;;
+            lld)
+              command -v ld.lld
+              ld.lld --version
+              cc -fuse-ld=lld -Wl,--version -x c /dev/null -o "${RUNNER_TEMP}/lld-probe"
+              ;;
+            mold)
+              archive="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
+              root="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux"
+              url="https://github.com/rui314/mold/releases/download/v${MOLD_VERSION}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
+              curl --fail --location --silent --show-error \
+                --proto '=https' --tlsv1.2 --retry 3 \
+                --output "${archive}" "${url}"
+              echo "${MOLD_X86_64_LINUX_SHA256}  ${archive}" | sha256sum --check --strict
+              tar -xzf "${archive}" -C "${RUNNER_TEMP}"
+              version="$("${root}/bin/mold" --version)"
+              case "${version}" in
+                "mold ${MOLD_VERSION}"*) ;;
+                *)
+                  echo "Unexpected mold version: ${version}" >&2
+                  exit 1
+                  ;;
+              esac
+              echo "MOLD_LIBEXEC=${root}/libexec/mold" >> "${GITHUB_ENV}"
+              echo "Using ${version}"
+              ;;
+          esac
+
+          end_ns="$(date +%s%N)"
+          echo "LINKER_SETUP_MS=$(((end_ns - start_ns) / 1000000))" >> "${GITHUB_ENV}"
+
+      - id: benchmark
+        name: Run cold and warm benchmark
+        shell: bash
+        run: .github/scripts/run-linker-benchmark.sh ${{ matrix.linker }}
+
+      - name: Upload measured package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          archive: false
+          if-no-files-found: error
+          path: ${{ steps.benchmark.outputs.artifact_path }}
+          retention-days: 1
