@@ -7,6 +7,9 @@ env:
   CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse
   CARGO_TERM_COLOR: always
 
+  MOLD_VERSION: 2.41.0
+  MOLD_X86_64_LINUX_SHA256: a3696680d99e692970590a178bc3a33d78d60d1c6dc9db7a11b557b02b751f5d
+
   RUST_BACKTRACE: full
 
 on:
@@ -54,8 +57,101 @@ jobs:
       - name: Add target
         run: rustup target add ${{ matrix.target.name }}
 
-      - name: Build
+      # The build script embeds Git SHA, which can change without a Rust source fingerprint change.
+      - name: Remove cached package outputs
+        run: cargo clean -p name_placeholder --profile final-release --target ${{ matrix.target.name }}
+
+      - name: Install pinned mold (Linux)
+        if: matrix.target.name == 'x86_64-unknown-linux-gnu'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          archive="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
+          root="${RUNNER_TEMP}/mold-${MOLD_VERSION}-x86_64-linux"
+          url="https://github.com/rui314/mold/releases/download/v${MOLD_VERSION}/mold-${MOLD_VERSION}-x86_64-linux.tar.gz"
+
+          curl --fail --location --silent --show-error \
+            --proto '=https' --tlsv1.2 --retry 3 --retry-connrefused \
+            --output "${archive}" "${url}"
+          echo "${MOLD_X86_64_LINUX_SHA256}  ${archive}" | sha256sum --check --strict
+          tar -xzf "${archive}" -C "${RUNNER_TEMP}"
+
+          version="$("${root}/bin/mold" --version)"
+          case "${version}" in
+            "mold ${MOLD_VERSION}"*) ;;
+            *)
+              echo "Unexpected mold version: ${version}" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "MOLD_LIBEXEC=${root}/libexec/mold" >> "${GITHUB_ENV}"
+          echo "Using ${version}"
+
+      - name: Build with mold (Linux)
+        if: matrix.target.name == 'x86_64-unknown-linux-gnu'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -x "${MOLD_LIBEXEC}/ld"
+          cargo rustc \
+            -p name_placeholder \
+            --profile final-release \
+            --locked \
+            --target "${{ matrix.target.name }}" \
+            -- \
+            -C linker-features=-lld \
+            -C link-self-contained=-linker \
+            -C "link-arg=-B${MOLD_LIBEXEC}"
+
+      - name: Verify mold-linked binary identity (Linux)
+        if: matrix.target.name == 'x86_64-unknown-linux-gnu'
+        shell: bash
+        run: |
+          set -euo pipefail
+          binary="target/${{ matrix.target.name }}/final-release/name_placeholder"
+          version="$("${binary}" --version)"
+          expected_suffix="-${GITHUB_SHA}-${{ matrix.target.name }}"
+          case "${version}" in
+            *"${expected_suffix}") ;;
+            *)
+              echo "Unexpected binary identity: ${version}" >&2
+              exit 1
+              ;;
+          esac
+          readelf --string-dump=.comment \
+            "${binary}" \
+            | grep -F "mold ${MOLD_VERSION}"
+
+      - name: Build with platform linker
+        if: matrix.target.name != 'x86_64-unknown-linux-gnu'
         run: cargo build -p name_placeholder --profile final-release --locked --target ${{ matrix.target.name }}
+
+      - name: Verify binary identity (macOS)
+        if: matrix.target.name == 'aarch64-apple-darwin'
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(target/${{ matrix.target.name }}/final-release/name_placeholder --version)"
+          expected_suffix="-${GITHUB_SHA}-${{ matrix.target.name }}"
+          case "${version}" in
+            *"${expected_suffix}") ;;
+            *)
+              echo "Unexpected binary identity: ${version}" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Verify binary identity (Windows)
+        if: matrix.target.name == 'x86_64-pc-windows-msvc'
+        shell: pwsh
+        run: |
+          $version = & "target/${{ matrix.target.name }}/final-release/name_placeholder.exe" --version
+          $expectedSuffix = "-$env:GITHUB_SHA-${{ matrix.target.name }}"
+          if (-not $version.EndsWith($expectedSuffix)) {
+            throw "Unexpected binary identity: $version"
+          }
 
       - name: Pack (macOS)
         if: matrix.target.os == 'macos-latest'
