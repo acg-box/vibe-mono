@@ -1,0 +1,38 @@
+name: Install pinned mold
+description: Install a verified official mold archive on a Linux runner without changing the system linker.
+
+inputs:
+  version:
+    description: mold release version, for example 2.41.0
+    required: true
+  sha256:
+    description: SHA-256 digest of the official archive for the runner architecture
+    required: true
+
+outputs:
+  mold_root:
+    description: Directory containing the verified mold installation
+    value: ${{ steps.install.outputs.mold_root }}
+  mold_libexec:
+    description: Directory containing the ld shim used with the compiler driver
+    value: ${{ steps.install.outputs.mold_libexec }}
+  mold_binary:
+    description: Path to the verified mold executable
+    value: ${{ steps.install.outputs.mold_binary }}
+  mold_version:
+    description: Verified mold version
+    value: ${{ steps.install.outputs.mold_version }}
+  archive_architecture:
+    description: Official mold archive architecture selected from the runner
+    value: ${{ steps.install.outputs.archive_architecture }}
+
+runs:
+  using: composite
+  steps:
+    - id: install
+      name: Download and verify mold
+      shell: bash
+      env:
+        MOLD_VERSION: ${{ inputs.version }}
+        MOLD_SHA256: ${{ inputs.sha256 }}
+      run: ${{ github.action_path }}/install-mold.sh

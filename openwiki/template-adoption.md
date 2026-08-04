@@ -83,6 +83,23 @@ Update together:
 
 Check whether GitHub Release publication and registry publication should remain independent. The template runs crates.io publication without `needs: [build]`; changing that dependency is a release-policy decision, not just YAML cleanup.
 
+For Linux builds that use mold, reuse the template action instead of copying its
+download and verification script:
+
+```yaml
+- id: mold
+  uses: acg-box/vibe-mono/.github/actions/install-mold@<reviewed-commit-sha>
+  with:
+    version: <mold-version>
+    sha256: <digest-for-the-host-architecture>
+```
+
+Pass `steps.mold.outputs.mold_libexec` to the target-specific compiler or Cargo
+linker flags. Keep macOS and Windows platform linkers unless a separate
+target-matched experiment accepts a different linker. Do not copy a global
+`RUSTFLAGS` value across targets, and keep the action version and archive digest
+as one reviewed change.
+
 ## 5. Migrate Knowledge Ownership
 
 `openwiki/` is the maintained knowledge surface. For every changed behavior or boundary:

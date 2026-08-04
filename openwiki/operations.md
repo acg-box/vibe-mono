@@ -139,7 +139,36 @@ The Linux linker selection does not change the inherited release profile: `final
 
 The crates.io job does not depend on the build or GitHub release jobs; GitHub Actions may run it concurrently. A failure in one branch does not imply the other branch never ran. The explicit archive names form a contract across the matrix, upload, download pattern, verification commands, and release files. The pinned mold version and SHA-256 value form an additional Linux supply-chain contract: update them together and preserve both the version check and post-link provenance check. All names, package selectors, and archive paths are still template placeholders and must change together during [Template Adoption](template-adoption.md#4-reconcile-build-and-release).
 
-Sources: `.github/workflows/release.yml`, `Cargo.toml`, `apps/name_placeholder/Cargo.toml`.
+Sources: `.github/workflows/release.yml`, `.github/actions/install-mold/action.yml`, `.github/actions/install-mold/install-mold.sh`, `Cargo.toml`, `apps/name_placeholder/Cargo.toml`.
+
+## Reusable mold Action
+
+`.github/actions/install-mold` is the template's reusable composite action for
+installing mold on Linux CI runners. It derives the host archive architecture,
+downloads the official archive over HTTPS, verifies the caller-supplied SHA-256
+digest and reported version, and exposes `mold_libexec` and `mold_binary`
+outputs. It does not replace `/usr/bin/ld` or change the runner's global linker.
+The action fails closed on non-Linux hosts, unsupported architectures, missing
+tools, checksum mismatch, archive layout mismatch, and version mismatch.
+
+The template Release workflow uses the local action. An adopted repository can
+reference the public action from `acg-box/vibe-mono` at a reviewed release tag or
+full commit SHA:
+
+```yaml
+- id: mold
+  uses: acg-box/vibe-mono/.github/actions/install-mold@v1
+  with:
+    version: 2.41.0
+    sha256: <digest-for-the-host-architecture>
+```
+
+Use a full commit SHA when the repository requires immutable action references.
+Keep the version and digest together. The action installs mold; each caller must
+still select it explicitly in its compiler or Cargo linker configuration and
+verify the final artifact. The upstream `rui314/setup-mold` action remains an
+alternative for repositories that accept its contract, but this wrapper keeps
+the template's checksum, no-global-linker, and fail-closed requirements.
 
 ## Failure Interpretation
 
