@@ -65,7 +65,7 @@ jobs:
         run: cargo make check-typescript
 
       - name: Run Rust style check
-        uses: acg-box/vibe-style@3a0959eac5363c4c427382bae1d80d87ecadb702 # v0.2.3
+        uses: acg-box/vibe-style@ad5ea29faa33237e6e8977c44b0d84a1142d3ed1 # v0.2.4
         with:
           language: rust
           workspace: true
