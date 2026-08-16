@@ -12,7 +12,7 @@ Use this procedure when deriving a real repository from the template. Before edi
 
 Success means no unintended template identity remains, ownership and runtime docs describe the real project, release/package paths agree, and relevant validation passes. A blind global replacement is insufficient because some placeholders require design decisions or path moves.
 
-Sources: `README.md`, `Cargo.toml`, `Cargo.lock`, `package.json`, `package-lock.json`, `scripts/list-template-markers.ts`, `apps/name_placeholder/Cargo.toml`, `apps/name_placeholder/README.md`, `apps/name_placeholder/src/main.rs`, `apps/name_placeholder/src/cli.rs`, `.github/workflows/language.yml`, `.github/workflows/release.yml`; migration rationale and history are retained in [Knowledge Maintenance](knowledge-maintenance.md).
+Sources: `README.md`, `Cargo.toml`, `Cargo.lock`, `package.json`, `package-lock.json`, `scripts/list-template-markers.ts`, `apps/name_placeholder/Cargo.toml`, `apps/name_placeholder/README.md`, `apps/name_placeholder/src/main.rs`, `apps/name_placeholder/src/cli.rs`, `.github/workflows/release.yml`; migration rationale and history are retained in [Knowledge Maintenance](knowledge-maintenance.md).
 
 ## 1. Establish Identity And Inventory
 
