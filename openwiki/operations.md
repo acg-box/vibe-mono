@@ -20,9 +20,9 @@ Repository-native tasks are declared in `Makefile.toml` and invoked with `cargo 
 | `cargo-vstyle` | vstyle tasks and the composite lint/full gates |
 | `cargo-nextest` | test tasks |
 
-`rust-toolchain.toml` is the sole selector for ordinary Rust commands. It selects stable with the minimal profile and adds Clippy; Cargo and rustc come from that profile. Rust formatting is the only explicit toolchain exception: `fmt-rust` and `fmt-rust-check` run nightly rustfmt because `.rustfmt.toml` uses nightly features. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. The single CI job reads both project toolchains, installs nightly rustfmt separately, installs cargo-make, nextest, and Taplo together, and performs the locked npm install once.
+`rust-toolchain.toml` is the sole selector for ordinary Rust commands. It selects stable with the minimal profile and adds Clippy; Cargo and rustc come from that profile. Rust formatting is the only explicit toolchain exception: `fmt-rust` and `fmt-rust-check` run nightly rustfmt because `.rustfmt.toml` uses nightly features. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. Source validation is local-only; tracked GitHub Actions do not install or run this complete tool graph for pull requests, merge queues, or branch pushes.
 
-Sources: `rust-toolchain.toml`, `Makefile.toml`, `.node-version`, `package.json`, `package-lock.json`, `.github/workflows/language.yml`, `.github/workflows/release.yml`.
+Sources: `rust-toolchain.toml`, `Makefile.toml`, `.node-version`, `package.json`, `package-lock.json`, `.github/workflows/release.yml`.
 
 ## Public Check Aggregate
 
@@ -114,15 +114,15 @@ cargo run -p name_placeholder -- --help
 
 Sources: `README.md`, `Cargo.toml`, `.github/workflows/release.yml`.
 
-## CI Checks
+## Local Validation Policy
 
-Current `.github/workflows/language.yml` runs on pushes and pull requests targeting `main`, plus merge queues. It has no path filters, so documentation-only changes trigger the language checks too.
+No tracked GitHub Actions workflow validates pull requests, merge queues, or branch pushes. Run `cargo make check` locally before integration; this repository does not define an independent hosted reproduction of that result.
 
-One 10-minute **Language check** job runs the full sequence on one Ubuntu runner: shared setup; Rust, TOML, and TypeScript format checks; Rust and TypeScript checks; vstyle, Clippy, and Oxlint; then Rust and TypeScript tests. Consolidation shares setup and the Rust cache, but it also makes the sequence fail-fast: a failed or timed-out step prevents later steps from running.
+Repository-owned tracked Actions are reserved for tag-based release and publishing work. This policy removes repository-owned hosted PR feedback and its runner latency and resource use. GitHub organization or enterprise rulesets can still inject checks that are not controlled by this repository's YAML; audit that provider configuration separately. Revisit this policy if local-only validation no longer provides sufficient integration confidence or if the repository again requires an enforceable pre-merge gate.
 
-CI does **not** invoke `cargo make check` or validate OpenWiki. Running on a documentation-only diff does not turn this workflow into a documentation-readiness gate: green proves only the steps reached by the single job. The former CodeQL workflow—push/PR analysis for `main` plus weekly Actions/Rust scans—has been removed, so no tracked workflow currently provides that security-analysis coverage. Actions are SHA-pinned in current tracked workflows; preserve that supply-chain posture when updating them. Dependabot covers Cargo, root npm, and GitHub Actions; the TypeScript compiler, types, formatter, linter, and type-aware backend update as one review group.
+The former CodeQL workflow has also been removed, so no tracked workflow provides hosted security-analysis coverage. Actions used by the release pipeline remain SHA-pinned; preserve that supply-chain posture when updating them. Dependabot still covers Cargo, root npm, and GitHub Actions; the TypeScript compiler, types, formatter, linter, and type-aware backend update as one review group.
 
-Source: `.github/workflows/language.yml`.
+Sources: `Makefile.toml`, `.github/workflows/release.yml`, `.github/dependabot.yml`.
 
 ## Release Pipeline
 
