@@ -58,7 +58,7 @@ The gate covers Rust and TypeScript compilation, Rust/TypeScript/TOML formatting
 - `apps/` owns runnable products; `packages/` owns reusable packages shared by products. A Rust package under `packages/` is **not** a workspace member until root `Cargo.toml` deliberately includes it.
 - `scripts/` owns repository-maintenance TypeScript programs. Root `package.json`, `package-lock.json`, `tsconfig.json`, `.oxfmtrc.json`, and `.oxlintrc.json` own their runtime and validation policy.
 - Root `Cargo.toml` owns workspace membership, common package metadata, profiles, and dependency versions. Each app manifest owns package-specific metadata and dependency selection.
-- `Makefile.toml` owns local task names. `.github/workflows/language.yml` and `.github/workflows/release.yml` own current CI and release orchestration; `.github/actions/` owns reusable repository actions.
+- `Makefile.toml` owns local validation tasks. `.github/workflows/release.yml` owns tag-based release and publishing orchestration; `.github/actions/` owns reusable repository actions. No tracked workflow validates pull requests, merge queues, or branch pushes.
 - `openwiki/` is the sole maintained repository knowledge surface. Do not create a competing `docs/` or wiki root.
 
 ## Before Changing Anything
