@@ -109,7 +109,7 @@ These are not tracked source owners:
 - Other ignored language/tool output in `.gitignore`, including `build`, `dist`, `coverage`, and `node_modules`.
 - Platform application data created by the CLI, including rotating logs.
 
-Never infer repository state from these paths or commit them as source. `.taplo.toml` also excludes generated, local, and tool-owned trees from formatting.
+Never infer repository state from these paths or commit them as source. TOML file selection belongs to Git-tracked paths in `Makefile.toml`; `.taplo.toml` supplies formatting policy and the scoped `Makefile.toml` array-order rule.
 
 Sources: `.gitignore`, `.taplo.toml`, `package-lock.json`, `apps/name_placeholder/src/main.rs`.
 
