@@ -53,8 +53,8 @@ This diagnostic order catches mechanical formatting drift before compilation/lin
 | `fmt-check` | Composite: `fmt-rust-check`, `fmt-toml-check`, `fmt-typescript-check` | No |
 | `fmt-rust` | `rustup run nightly cargo fmt --all` | Yes |
 | `fmt-rust-check` | Same with `-- --check` | No |
-| `fmt-toml` | `taplo fmt` | Yes |
-| `fmt-toml-check` | `taplo fmt --check` | No |
+| `fmt-toml` | `git ls-files -z -- '*.toml' \| xargs -0 taplo fmt` | Yes |
+| `fmt-toml-check` | `git ls-files -z -- '*.toml' \| xargs -0 taplo fmt --check` | No |
 | `fmt-typescript` | Oxfmt over `scripts/` and the owned TypeScript JSON configuration files | Yes |
 | `fmt-typescript-check` | Same Oxfmt scope with `--check` | No |
 | `lint` | Composite: `lint-rust`, `lint-typescript`, `lint-vstyle` | No |
@@ -72,7 +72,7 @@ This diagnostic order catches mechanical formatting drift before compilation/lin
 | `test-rust` | `cargo nextest run --workspace --all-targets --all-features` | Build cache only |
 | `test-typescript` | `node --test` over the discovered `*.test.ts` files | Tool cache only |
 
-The Clippy tasks deny `clippy::all`, `clippy::too_many_lines`, `clippy::unwrap_used`, `clippy::use_self`, `clippy::wildcard_imports`, `missing-docs`, `unused-crate-dependencies`, and all warnings. `clippy.toml` allows unwrap only in tests, sets a 120-line threshold, and warns on wildcard imports. Rust formatting intentionally uses nightly features from `.rustfmt.toml`; Taplo excludes `Makefile.toml` and generated/local trees.
+The Clippy tasks deny `clippy::all`, `clippy::too_many_lines`, `clippy::unwrap_used`, `clippy::use_self`, `clippy::wildcard_imports`, `missing-docs`, `unused-crate-dependencies`, and all warnings. `clippy.toml` allows unwrap only in tests, sets a 120-line threshold, and warns on wildcard imports. Rust formatting intentionally uses nightly features from `.rustfmt.toml`. TOML selection uses Git-tracked paths in the `fmt-toml` tasks; `.taplo.toml` supplies formatting policy, including a scoped `reorder_arrays = false` rule for `Makefile.toml` while global `reorder_keys = true` remains active.
 
 The TypeScript compiler enables strict checking, indexed-access uncertainty, exact optional-property semantics, control-flow checks, and Node-erasable syntax. Oxlint denies correctness, suspicious, and performance diagnostics plus explicit `any`, unsafe type operations, non-null assertions, unhandled or misused promises, non-`Error` throws, and non-exhaustive switches. Warnings and unused suppression directives fail the task. Oxfmt is the sole TypeScript formatter; the prior root Prettier files were unused and are removed. The npm lock contains platform-specific optional binary packages for TypeScript and Oxc; `.npmrc` disables lifecycle scripts and requires exact saved versions.
 
