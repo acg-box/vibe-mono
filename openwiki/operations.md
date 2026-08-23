@@ -13,14 +13,14 @@ Repository-native tasks are declared in `Makefile.toml` and invoked with `cargo 
 | Tool | Needed by |
 | --- | --- |
 | Project Rust toolchain from `rust-toolchain.toml` | Rust check, lint, test, and build tasks |
-| Nightly toolchain with rustfmt | `fmt-rust`, `fmt-rust-check` |
+| Nightly toolchain with rustfmt | `fmt-rust` |
 | Node.js/npm from `.node-version` | TypeScript check, format, lint, test, and template-marker tasks |
 | `cargo-make` | Every `cargo make` entrypoint |
 | `taplo` | TOML format tasks |
 | `cargo-vstyle` | vstyle tasks and the composite lint/full gates |
 | `cargo-nextest` | test tasks |
 
-`rust-toolchain.toml` is the sole selector for ordinary Rust commands. It selects stable with the minimal profile and adds Clippy; Cargo and rustc come from that profile. Rust formatting is the only explicit toolchain exception: `fmt-rust` and `fmt-rust-check` run nightly rustfmt because `.rustfmt.toml` uses nightly features. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. Source validation is local-only; tracked GitHub Actions do not install or run this complete tool graph for pull requests, merge queues, or branch pushes.
+`rust-toolchain.toml` is the sole selector for ordinary Rust commands. It selects stable with the minimal profile and adds Clippy; Cargo and rustc come from that profile. Rust formatting is the only explicit toolchain exception: `fmt-rust` runs nightly rustfmt because `.rustfmt.toml` uses nightly features. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the TypeScript development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks validate but do not install dependencies. Source validation is local-only; tracked GitHub Actions do not install or run this complete tool graph for pull requests, merge queues, or branch pushes.
 
 Sources: `rust-toolchain.toml`, `Makefile.toml`, `.node-version`, `package.json`, `package-lock.json`, `.github/workflows/release.yml`.
 
@@ -30,33 +30,28 @@ Sources: `rust-toolchain.toml`, `Makefile.toml`, `.node-version`, `package.json`
 cargo make check
 ```
 
-`check` is a cargo-make composite whose dependencies are `check-rust`, `check-typescript`, `fmt-check`, `lint`, and `test`. `Makefile.toml` establishes the dependency set but does not state a runtime ordering contract. When deterministic, fail-fast diagnosis matters, invoke the targeted commands explicitly in this recommended sequence:
+`check` is a cargo-make composite whose dependencies are `check-rust`, `check-typescript`, `lint`, and `test`. It does not inspect or modify formatting; run the separate mutating `cargo make fmt` task when formatting needs correction. `Makefile.toml` establishes the dependency set but does not state a runtime ordering contract. After formatting is corrected, invoke the targeted commands explicitly in this recommended sequence when deterministic, fail-fast diagnosis matters:
 
 ```sh
-cargo make fmt-check
 cargo make check-rust
 cargo make check-typescript
 cargo make lint
 cargo make test
 ```
 
-This diagnostic order catches mechanical formatting drift before compilation/lint/test analysis; it does not change the task definitions. `check` is the public aggregate for source validation, but it no longer includes the deleted Decodex `check-docs` task. Review OpenWiki separately with the focused checks in [Knowledge Maintenance](knowledge-maintenance.md#openwiki-drift-check).
+This diagnostic order covers compilation, lint, and test analysis after formatting has been corrected; it does not change the task definitions. `check` is the public aggregate for source validation, but it no longer includes the deleted Decodex `check-docs` task. Review OpenWiki separately with the focused checks in [Knowledge Maintenance](knowledge-maintenance.md#openwiki-drift-check).
 
 ## Complete Task Matrix
 
 | Task | Exact behavior | Mutates files? |
 | --- | --- | --- |
-| `check` | Composite: `check-rust`, `check-typescript`, `fmt-check`, `lint`, `test` | Build/tool caches only |
+| `check` | Composite: `check-rust`, `check-typescript`, `lint`, `test` | Build/tool caches only |
 | `check-rust` | `cargo check --all-features --all-targets --workspace` | Build cache only |
 | `check-typescript` | Run the installed TypeScript compiler with `--noEmit --project tsconfig.json` | Tool cache only |
 | `fmt` | Composite: `fmt-rust`, `fmt-toml`, `fmt-typescript` | Yes |
-| `fmt-check` | Composite: `fmt-rust-check`, `fmt-toml-check`, `fmt-typescript-check` | No |
 | `fmt-rust` | `rustup run nightly cargo fmt --all` | Yes |
-| `fmt-rust-check` | Same with `-- --check` | No |
 | `fmt-toml` | `git ls-files -z -- '*.toml' \| xargs -0 taplo fmt` | Yes |
-| `fmt-toml-check` | `git ls-files -z -- '*.toml' \| xargs -0 taplo fmt --check` | No |
 | `fmt-typescript` | Oxfmt over `scripts/` and the owned TypeScript JSON configuration files | Yes |
-| `fmt-typescript-check` | Same Oxfmt scope with `--check` | No |
 | `lint` | Composite: `lint-rust`, `lint-typescript`, `lint-vstyle` | No |
 | `lint-fix` | Composite: `lint-fix-rust`, `lint-fix-typescript`, `lint-fix-vstyle` | Yes |
 | `lint-rust` | Workspace/all-target/all-feature Clippy with repository deny policy | Build cache only |
@@ -175,7 +170,7 @@ no-global-linker, and fail-closed requirements.
 ## Failure Interpretation
 
 - Missing command/tool: satisfy the prerequisite; do not rewrite the task to bypass the expected tool without a deliberate contract change.
-- Format failure: run `cargo make fmt`, inspect changes, then rerun `fmt-check`.
+- Formatting issue: run `cargo make fmt`, inspect changes, then rerun `cargo make check`.
 - Cargo check failure: resolve compilation/features/targets before interpreting downstream lint/test noise.
 - TypeScript check failure: resolve compiler diagnostics under the pinned Node/TypeScript versions before interpreting type-aware lint noise.
 - Clippy/vstyle failure: fix directly or use the matching `lint-fix*` task, then review all mutations before rerunning read-only gates.
@@ -183,4 +178,4 @@ no-global-linker, and fail-closed requirements.
 - Test failure: treat as a regression or broken assumption in the current diff until evidence shows an environment/tool issue.
 - Release failure: distinguish mold download/integrity/provenance, platform build, packaging/path, GitHub publication, and crates.io publication; they have different ownership and dependency edges.
 
-Before merge, prefer `cargo make check` plus the focused OpenWiki drift checks and any release-specific dry checks justified by the changed surface. Record unavailable tools and unrun checks explicitly rather than claiming readiness.
+Before merge, run `cargo make fmt` when formatting needs correction, then prefer `cargo make check` plus the focused OpenWiki drift checks and any release-specific dry checks justified by the changed surface. Record unavailable tools and unrun checks explicitly rather than claiming readiness.

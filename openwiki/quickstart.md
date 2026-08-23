@@ -38,13 +38,13 @@ npm ci --ignore-scripts
 cargo make list-template-markers
 ```
 
-Run the complete repository-defined source-validation aggregate:
+Run the repository-defined source-validation aggregate:
 
 ```sh
 cargo make check
 ```
 
-The gate covers Rust and TypeScript compilation, Rust/TypeScript/TOML formatting, Clippy, type-aware Oxlint, vstyle, and Rust/TypeScript tests. `Makefile.toml` declares these as composite dependencies but does not itself document their runtime ordering; use the explicit diagnostic sequence in [Operations](operations.md) when order matters. OpenWiki is reviewed with the focused drift checks in [Knowledge Maintenance](knowledge-maintenance.md#openwiki-drift-check).
+The gate covers Rust and TypeScript compilation, Clippy, type-aware Oxlint, vstyle, and Rust/TypeScript tests. Run `cargo make fmt` separately to correct Rust, TypeScript, and TOML formatting; `fmt` is intentionally not a `check` dependency. `Makefile.toml` declares the composite dependencies but does not itself document their runtime ordering; use the explicit diagnostic sequence in [Operations](operations.md) when order matters. OpenWiki is reviewed with the focused drift checks in [Knowledge Maintenance](knowledge-maintenance.md#openwiki-drift-check).
 
 ## Wiki Map
 

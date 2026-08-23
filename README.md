@@ -111,7 +111,13 @@ List tracked template markers before adopting the template:
 cargo make list-template-markers
 ```
 
-Run the complete Rust, TypeScript, and TOML validation gate:
+Correct repository formatting when needed:
+
+```sh
+cargo make fmt
+```
+
+Run the Rust and TypeScript source-validation gate:
 
 ```sh
 cargo make check
