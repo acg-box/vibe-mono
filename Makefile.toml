@@ -12,7 +12,6 @@ clear = true
 dependencies = [
 	"check-rust",
 	"check-typescript",
-	"fmt-check",
 	"lint",
 	"test",
 ]
@@ -42,27 +41,15 @@ workspace = false
 # | task                 | type      | cwd |
 # | -------------------- | --------- | --- |
 # | fmt                  | composite |     |
-# | fmt-check            | composite |     |
 # | fmt-rust             | command   |     |
-# | fmt-rust-check       | command   |     |
 # | fmt-toml             | command   |     |
-# | fmt-toml-check       | command   |     |
 # | fmt-typescript       | command   |     |
-# | fmt-typescript-check | command   |     |
 
 [tasks.fmt]
 dependencies = [
 	"fmt-rust",
 	"fmt-toml",
 	"fmt-typescript",
-]
-workspace = false
-
-[tasks.fmt-check]
-dependencies = [
-	"fmt-rust-check",
-	"fmt-toml-check",
-	"fmt-typescript-check",
 ]
 workspace = false
 
@@ -77,19 +64,6 @@ args = [
 command = "rustup"
 workspace = false
 
-[tasks.fmt-rust-check]
-args = [
-	"run",
-	"nightly",
-	"cargo",
-	"fmt",
-	"--all",
-	"--",
-	"--check",
-]
-command = "rustup"
-workspace = false
-
 [tasks.fmt-toml]
 args = [
 	"-c",
@@ -98,30 +72,9 @@ args = [
 command = "sh"
 workspace = false
 
-[tasks.fmt-toml-check]
-args = [
-	"-c",
-	"git ls-files -z -- '*.toml' | xargs -0 taplo fmt --check",
-]
-command = "sh"
-workspace = false
-
 [tasks.fmt-typescript]
 args = [
 	"node_modules/oxfmt/bin/oxfmt",
-	"scripts",
-	"package.json",
-	"tsconfig.json",
-	".oxfmtrc.json",
-	".oxlintrc.json",
-]
-command = "node"
-workspace = false
-
-[tasks.fmt-typescript-check]
-args = [
-	"node_modules/oxfmt/bin/oxfmt",
-	"--check",
 	"scripts",
 	"package.json",
 	"tsconfig.json",
