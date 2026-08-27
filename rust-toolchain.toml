@@ -1,3 +1,4 @@
 [toolchain]
-channel = "stable"
-profile = "minimal"
+channel    = "stable"
+components = ["clippy"]
+profile    = "minimal"

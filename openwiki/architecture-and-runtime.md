@@ -1,22 +1,32 @@
 ---
 type: "Reference"
 title: "Architecture And Runtime"
+description: Explains workspace ownership, runtime and project-tool boundaries, CLI behavior, and generated state.
+tags: [architecture, runtime, typescript, rust]
 openwiki_generated: true
 verified:
-  - by: openwiki/0.4.2
-    at: 2026-08-27T08:17:37.266Z
+  - by: openwiki/0.4.3
+    at: 2026-08-27T11:43:58.604Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-7437def7410a3f1ed2549b16
+    resource: repo://.node-version
+  - id: openwiki-source-10298c2fbefa8d2f903912bd
+    resource: repo://.oxfmtrc.json
+  - id: openwiki-source-bbf3d58bf1c2c539fc59e66c
+    resource: repo://.oxlintrc.json
   - id: openwiki-source-651d1fb6c9e49916a916ab51
     resource: repo://Cargo.toml
   - id: openwiki-source-c8b1a2a9f2113ec43d4066da
     resource: repo://Makefile.toml
-  - id: openwiki-source-23775c3de52f3ab95a13cb8b
-    resource: repo://README.md
+  - id: openwiki-source-5093b074f16e0b77479219b2
+    resource: repo://package-lock.json
+  - id: openwiki-source-5b54a58d1b51cd490b0e7162
+    resource: repo://package.json
   - id: openwiki-source-b7793decf9d7c9ba48e57e0f
     resource: repo://rust-toolchain.toml
-generated: { by: "codex", at: "2026-08-27T08:17:37.266Z" }
+generated: { by: "codex", at: "2026-08-27T11:43:58.604Z" }
 ---
 
 # Architecture And Runtime
@@ -33,8 +43,9 @@ The repository is intentionally a small monorepo template with lanes for later g
 | `packages/` | Reusable, language-neutral shared packages; currently only `.gitkeep` |
 | `Cargo.toml` | Rust workspace membership (`apps/*`), resolver 3, shared package metadata, the standard `release` profile, and shared dependency versions |
 | `Cargo.lock` | Locked dependency graph used by release commands with `--locked` |
-| `rust-toolchain.toml` | Stable toolchain selection with the minimal profile only; local Clippy and stable/nightly rustfmt come from global rustup state |
-| `package.json` and `package-lock.json` | Private npm tool-package metadata and the exact TypeScript development tool graph |
+| `rust-toolchain.toml` | Stable minimal toolchain selection with the Clippy component required by repository lint tasks; nightly rustfmt remains a separate formatting prerequisite |
+| `.node-version` and `package.json` | Exact Node.js `26.8.1` and npm `11.19.0` runtime contract plus repository-local development-tool declarations |
+| `package-lock.json` | Exact resolved graph for the repository-local TypeScript compiler, Node types, Oxfmt, Oxlint, and type-aware lint backend |
 | `tsconfig.json` | Strict, erasable, NodeNext TypeScript contract for `scripts/**/*.ts` |
 | `.oxfmtrc.json` and `.oxlintrc.json` | TypeScript formatting and type-aware lint policy |
 | `Makefile.toml` | Repository-native validation task contracts |
@@ -49,12 +60,14 @@ Sources: `Cargo.toml`, `rust-toolchain.toml`, `package.json`, `tsconfig.json`, `
 
 ## TypeScript Script Runtime
 
-Repository-maintenance TypeScript runs directly on the exact Node.js version in `.node-version`. Node erases supported TypeScript syntax at runtime but does not read `tsconfig.json` or perform type checking. The script lane therefore keeps separate repository gates:
+Repository-maintenance TypeScript runs directly on Node.js `26.8.1`, as selected by `.node-version`; `package.json` also pins npm `11.19.0`. Runtime-manager installation and activation remain outside this repository. Node erases supported TypeScript syntax at runtime but does not read `tsconfig.json` or perform type checking. The script lane therefore keeps separate repository gates:
 
-- TypeScript 7 `tsc --noEmit` is the authoritative compiler check.
-- Oxfmt owns formatting for TypeScript and its JSON configuration files. The unused root Prettier configuration was removed so two tools cannot format the same files.
-- Oxlint and tsgolint own syntax and type-aware lint. Compiler diagnostics remain separate because Oxlint type checking is not the compiler authority.
+- Repository-local TypeScript 7 `tsc --noEmit` is the authoritative compiler check.
+- Repository-local Oxfmt owns formatting for TypeScript and its JSON configuration files. The unused root Prettier configuration was removed so two tools cannot format the same files.
+- Repository-local Oxlint and `oxlint-tsgolint` own syntax and type-aware lint. Compiler diagnostics remain separate because Oxlint type checking is not the compiler authority.
 - Node's built-in test runner executes colocated `*.test.ts` integration tests.
+
+`Makefile.toml` invokes `node_modules/typescript/bin/tsc`, `node_modules/oxfmt/bin/oxfmt`, and `node_modules/oxlint/bin/oxlint` through Node. `npm ci --ignore-scripts` installs their exact resolved graph from `package-lock.json`; no task falls back to a global command or network-resolving `npx`. The Oxfmt and Oxlint configurations use their package-local schemas under `node_modules`.
 
 The compiler contract requires strict checking, `noUncheckedIndexedAccess`, exact optional-property semantics, NodeNext ESM, explicit TypeScript import extensions, and syntax that Node can erase without transformation. Runtime enums, runtime namespaces, parameter properties, TypeScript path aliases, and unchecked type assertions are outside this script profile.
 
@@ -98,7 +111,7 @@ Sources: `apps/name_placeholder/src/main.rs`, `apps/name_placeholder/src/cli.rs`
 
 The standard `release` profile enables thin LTO. The release workflow builds each target with `--release --locked`; target-specific binaries are emitted under `target/<triple>/release/`.
 
-`rust-toolchain.toml` installs no components. Local Clippy and stable/nightly rustfmt are global rustup prerequisites. The release workflow uses the pinned toolchain setup action with caching and adds each matrix target before building.
+`rust-toolchain.toml` selects stable with the minimal profile and declares only the Clippy component because `lint-rust` and `lint-fix-rust` directly invoke `cargo clippy`. Rust formatting remains separate: `fmt-rust` explicitly runs `rustup run nightly cargo fmt`, so the repository toolchain file does not add stable rustfmt. No repository task or release step consumes `llvm-tools-preview`. The release workflow uses the pinned toolchain setup action with caching and adds each matrix target before building.
 
 Sources: `apps/name_placeholder/build.rs`, `Cargo.toml`, `rust-toolchain.toml`, `README.md`, `.github/workflows/release.yml`.
 

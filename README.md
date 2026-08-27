@@ -98,9 +98,9 @@ TODO
 
 ## Development
 
-`rust-toolchain.toml` selects the stable toolchain with the minimal profile only.
-It does not install components. Local development requires global rustup state
-with Clippy and rustfmt for stable, and rustfmt for nightly.
+`rust-toolchain.toml` selects the stable toolchain with the minimal profile and
+installs Clippy for the repository lint tasks. The formatting task uses rustfmt
+from the separately managed nightly toolchain.
 
 Install the exact TypeScript development graph without running package lifecycle
 scripts:

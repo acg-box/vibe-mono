@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:f1da6a2ea8d632169244d9b90e55509a7df8abbe4d4894c322d407bccd5c8fd8",
+  "pageVersion": "sha256:a23894cbaddedec7d47f5bda68cee98997ca7f375a8ba3bbd67bb71cddec0e19",
   "claims": [
     {
       "id": "claim_b146ade6e29643dd87527fce75f03081",
@@ -18,7 +18,7 @@
     },
     {
       "id": "claim_08c2549bd8054aa38b2bd82c13a5d23b",
-      "statement": "The root Cargo configuration uses the standard release profile with thin LTO; rust-toolchain.toml selects stable minimal without components, and the release workflow's toolchain setup retains caching without requesting components.",
+      "statement": "The root Cargo configuration uses the standard release profile with thin LTO; rust-toolchain.toml selects stable minimal with the Clippy component required by repository lint tasks, and the release workflow's toolchain setup retains caching without requesting workflow-specific extra components.",
       "evidence": [
         {
           "resource": "repo://.github/workflows/release.yml#L52-L55",
@@ -30,11 +30,11 @@
         },
         {
           "resource": "repo://README.md#L101-L103",
-          "version": "repo-lines-v1:sha256:37a37a8ec9b69d3ac3b9343cebe65d828a4539d5dc36e073f307cc12f8a17b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQxNzc3YzUzMWRkNmZjODMzM2FiNWQwN2M2MDZmODU3NDYyYTk3NGIwMWNhOTU1MmZlOWNiNmMyMTFhNjc1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmUyNGVmNjQzOWZmODJjNDQyYmExM2UxYTAxOWJmNmE0Njg5MGZiZmUxMWFkNDZiODIyZDg4ZWRiMjliZDk2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
+          "version": "repo-lines-v1:sha256:4aba734eca5d95f1e7af5ea5d5fc8afd389f1ce20f60d3aaa1180bd14303fd89:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkYmIyMjgyMmY5ZDZmMjE4NzdlZTVhYWVhZWRjMTA4ZGQ1ZjAzMTViNjZhYjFiYjU2ZWNjOTg0MDg0ODhmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmNlYTFkYWI1ZTUyZmJiNWQwMzIxMTNhMGI1NTQwZTQ5ZmUyN2RhMzliNGQ1MTMxZWVjMjc1YTRmMTkzZDc5MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
         },
         {
-          "resource": "repo://rust-toolchain.toml#L1-L3",
-          "version": "repo-lines-v1:sha256:ebc5360fd3b6b35d0578ec1607d2a671e74fa5c3527a7fee576e15e57eed175d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMyMDRhMDcyMDNmZmI4M2MzYTUwZTgwZjE2YmQ1NTY3YTU2YTIzOTA0NDcwY2U2ODAwMmZiNDQ0MGQzMjM2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZkODkyOTNmMWRlMmQ0NmMxZjEzY2RkNDk2MzM2ZGM3YzZiNjc0OWU1MDZlZjIzODBlYjYyMmQwNzE2MjY4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+          "resource": "repo://rust-toolchain.toml#L1-L4",
+          "version": "repo-lines-v1:sha256:d6c06be84864a2e77f0d2c9b1392e206045bd17b9189817d26bb03c801620d33:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMyMDRhMDcyMDNmZmI4M2MzYTUwZTgwZjE2YmQ1NTY3YTU2YTIzOTA0NDcwY2U2ODAwMmZiNDQ0MGQzMjM2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTAyNDFjMDQ3MGVhNzVkNjE1ZGNkYzU1OTQ1YzkzMDMwMjAzYjhkYTRlYWUxNDI1MDlmOTcwZDQxMDg2MDgzYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
     },
@@ -51,10 +51,40 @@
           "version": "repo-lines-v1:sha256:6f4a121bd88d37a02f5f102a1af9a53d646753d62479411865a29ad22603357d:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlNjk2NmVkOTM1NWQ4MTQwMTg0ZTdkMmQwYTMyMzc1NTQwM2ViYjg4MjFmNDFjMGVjZWNjZjI2YmE2YmRmMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxM2ZjMDY5Y2YyNzliYTA4OTgyOGEwZDQwOGI5NjM0YjE2YWQ1Y2NmY2Y3YzE3YThiN2QyMTQxZmEzN2QzZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4MWU1MzMyZmQzMjk5YTMyZTRiODdlZDU2NWRlMzdiYjAwMGJkNThkYjQxNzJmMWQ3ZTg2ZmI0NjljNWYzYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MDE1MDU4YTZlNDgyNDQ2NTQxNDk2OGQ4M2QwMWUxZTg1NjUxZGM5ZjVlNzM4YTY4NjQzMTk1YzA3MTEzMGYifQ"
         }
       ]
+    },
+    {
+      "id": "claim_5b341c6ac7b8423dadf151aa3d70a846",
+      "statement": "Node 26.8.1 and npm 11.19.0 are pinned by repository version files, while TypeScript, Oxfmt, Oxlint, and type-aware lint support remain exact local development dependencies invoked through node_modules.",
+      "evidence": [
+        {
+          "resource": "repo://.node-version#L1-L1",
+          "version": "repo-lines-v1:sha256:50b8995029fdebc8ca439031c6945518d38ab6ad38a3985c9ba386bfafebcb35:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTBiODk5NTAyOWZkZWJjOGNhNDM5MDMxYzY5NDU1MThkMzhhYjZhZDM4YTM5ODVjOWJhMzg2YmZhZmViY2IzNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTBiODk5NTAyOWZkZWJjOGNhNDM5MDMxYzY5NDU1MThkMzhhYjZhZDM4YTM5ODVjOWJhMzg2YmZhZmViY2IzNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://Makefile.toml#L130-L136",
+          "version": "repo-lines-v1:sha256:d09da6db6d506b799b47848b6e87290b4c3d696f3c7a4231498cd30e585fbab8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M1MWZiYTBlODFiMGIzZDcxYjI0NjU3OTVhZjhlNjdhZTY3ODU2MTM1MjA5MzBkOTMzYmRhM2RmNjgyODkyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY3ZTMzY2E2ZWFiMTllMGZjMDZkZDFkMGRlNTQ4YjVmMmJjMmY0ZDExNDMzNDE1NWE0YjlmM2M4MDYwMDIzYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODdmMWNiN2U2MTI3MTNmODczZjllMDhjMDhmNzRlOTNjNDgxNWM5ODI2ZGZkYWMzZDZiOGEwMDAwMTk1OWMwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGE2ZTNhYmQ0OGY0ZjI1MzViODg0Zjk4MTFmN2MwMzU2OGE5Nzg1NDdjNzk1M2E3MzdjZTQ1ODk3ZWJiOTI4ZSJ9"
+        },
+        {
+          "resource": "repo://Makefile.toml#L183-L188",
+          "version": "repo-lines-v1:sha256:1aab90d071a138358e6a26b0eeb85a7793535c1bcb09b93a8fcbe21c599bcbfb:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzM4NmFhMTMwNzQ4YzA3ZDQ0Mzk1M2M0Y2M0MTljOGQ1YzJkOThhNDJmOTdkYWJlN2RiNjhlODMxY2ZjNTA4YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY3ZTMzY2E2ZWFiMTllMGZjMDZkZDFkMGRlNTQ4YjVmMmJjMmY0ZDExNDMzNDE1NWE0YjlmM2M4MDYwMDIzYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODdmMWNiN2U2MTI3MTNmODczZjllMDhjMDhmNzRlOTNjNDgxNWM5ODI2ZGZkYWMzZDZiOGEwMDAwMTk1OWMwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWQ5OGExY2RmM2NlNjcyZDQwZDdkYmY2NDU0MTg0NDZiYjQwNGNjOTU4MTY2YjMxYTUxMDQyMzRmZTIzMmJlZSJ9"
+        },
+        {
+          "resource": "repo://Makefile.toml#L21-L28",
+          "version": "repo-lines-v1:sha256:9ea99e929535e9d18a1676ed57bd96f7454e3c36b052e96d6cdd6154e6556329:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGI0Njc5ZTdhOWQxMWQxZmQ1ZmVkY2M2YjJlNWYzZDRlNmI2OTA5NTNjMTk3ZGU1OGRiMWNkMGE3YTk5MDY1ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY3ZTMzY2E2ZWFiMTllMGZjMDZkZDFkMGRlNTQ4YjVmMmJjMmY0ZDExNDMzNDE1NWE0YjlmM2M4MDYwMDIzYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGJhZWM4ODEwYzRiNTEwNzY3ZTRjNTdhZjI4NGEzYmY1ZGU2ZjIxMzBkYWE5MGZjYmIyMTk3M2UzYzg2MTAwMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTVhNGVjZmRjYTI0ZDkxYzc0MjEzZTNlNzBlMGNjMTFhYTA5NzVlYmU5M2JkMjRkZWQwMjNjYTgxZTgxZjFjMyJ9"
+        },
+        {
+          "resource": "repo://Makefile.toml#L62-L71",
+          "version": "repo-lines-v1:sha256:bdb139193e7712fe0108696d02c8ed5a0ec66245bd21769941e361cd644b1a56:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5ZTM4YTNjYTE3N2VjZTY2YWNjOTg2NTQyMmU2NDUwMGYyMmFkZjRkM2Q3MTU3MDk1ZGNkYjEwYTQ3ZWI1NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmN2UzM2NhNmVhYjE5ZTBmYzA2ZGQxZDBkZTU0OGI1ZjJiYzJmNGQxMTQzMzQxNTVhNGI5ZjNjODA2MDAyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3YmU4MzZhODFhZWYyNTIyMjUyMzk1MWZkZWQ3NzEwNTUwMjU3MDFhOGVkNjIzZmNmMThhZTg2M2RiYjgxYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiNTY5OWQ1YmEyNTIwNjZlYjUwN2MwMTRkZjIzYjJmZjQzMzdmYWNjYTYxMGIwZjQxZGUyNTY4NjdlZTUyMDUifQ"
+        },
+        {
+          "resource": "repo://package.json#L6-L29",
+          "version": "repo-lines-v1:sha256:602c77f841efaea1f9651bca3dd003d842dd89a1e1a069d40f15092ec9e8e184:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzRkZTdlZDM1YTIzMzY0NTM5ODY0ZGFkYjkzOGI4NzIzMzM3OTE3OWQ2MjkyYjlmZjVmNjE5YTZjMTMxNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZjZmMGJiYjkxZGM3NzVlZDg1NjVhNzU1NTBkZGMzMDhjZDUzN2U4NjBiMDg2ZjY5ZGRhZTc3MDI1YmVmYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5MGNlNjg0NTIzNTY4ODZlZThlY2QzNzc2NjM2ZWU2NGQ4Mzk4YTY0NWU1ZjJkOGVmNWNkOGExMDJkNzQ4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.4.2",
-    "at": "2026-08-27T08:32:32.213Z"
+    "by": "openwiki/0.4.3",
+    "at": "2026-08-27T11:43:58.604Z"
   }
 }
