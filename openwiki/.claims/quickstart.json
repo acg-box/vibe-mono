@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:db6b3209e94db400c73d37ba11c882015f6dad0da9a510f46f338670b80f7430",
+  "claims": [
+    {
+      "id": "claim_dd5a14c2ce8746f0b863798287d55825",
+      "statement": "rust-toolchain.toml selects stable with the minimal profile and installs no components; local Clippy and stable/nightly rustfmt come from global rustup state, while both release workflow toolchain setup steps retain caching without requesting components.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L210-L213",
+          "version": "repo-lines-v1:sha256:ccf166929ec4c30800525e597228c60471c296e93ce09fad43c6bf42fe22c803:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQxNjA0M2RkZWE1ZjE4OTJjNWIyMzg5ZGU1ODY4OWQ1ZDc1ZDcyMWJlNmU5ZTgwN2Q5ZDE5YTNiZDkxYTkzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk3NGM3ZTY2MWRkODE3ZDIzYWFjZjMxNWM4OWM5NjVmMGFkMjYxYmE0YTI4ZDVmY2JlMThhMzJmOGRjMjdmMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTI0ZWVmNTMxNWJiZGVmNDI3MGEwMTgzYzNhY2ZiZDA5OTYyMTBhZTBmMWEwNWU1ZGNjZDI3ZWVkMmEzYzY2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTZmNWNiZDdlYjFiNTNkYjcyZWVjMjUwYmQxYjdkZDFlM2Y4ZmYxMjIzYzExNDVhMWNkZmQ2ZDY5MDYxODFkYSJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L52-L55",
+          "version": "repo-lines-v1:sha256:ccf166929ec4c30800525e597228c60471c296e93ce09fad43c6bf42fe22c803:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQxNjA0M2RkZWE1ZjE4OTJjNWIyMzg5ZGU1ODY4OWQ1ZDc1ZDcyMWJlNmU5ZTgwN2Q5ZDE5YTNiZDkxYTkzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk3NGM3ZTY2MWRkODE3ZDIzYWFjZjMxNWM4OWM5NjVmMGFkMjYxYmE0YTI4ZDVmY2JlMThhMzJmOGRjMjdmMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTI0ZWVmNTMxNWJiZGVmNDI3MGEwMTgzYzNhY2ZiZDA5OTYyMTBhZTBmMWEwNWU1ZGNjZDI3ZWVkMmEzYzY2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzg3ZTcxOTEwYWM1ZmZlZGFlMzdjOWMxM2QxZGIwYTIyNjZiMDYyMzFjMDlhMjlmNjVlMjgwOWEyMTZlOWZlMiJ9"
+        },
+        {
+          "resource": "repo://README.md#L101-L103",
+          "version": "repo-lines-v1:sha256:37a37a8ec9b69d3ac3b9343cebe65d828a4539d5dc36e073f307cc12f8a17b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQxNzc3YzUzMWRkNmZjODMzM2FiNWQwN2M2MDZmODU3NDYyYTk3NGIwMWNhOTU1MmZlOWNiNmMyMTFhNjc1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmUyNGVmNjQzOWZmODJjNDQyYmExM2UxYTAxOWJmNmE0Njg5MGZiZmUxMWFkNDZiODIyZDg4ZWRiMjliZDk2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
+        },
+        {
+          "resource": "repo://rust-toolchain.toml#L1-L3",
+          "version": "repo-lines-v1:sha256:ebc5360fd3b6b35d0578ec1607d2a671e74fa5c3527a7fee576e15e57eed175d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMyMDRhMDcyMDNmZmI4M2MzYTUwZTgwZjE2YmQ1NTY3YTU2YTIzOTA0NDcwY2U2ODAwMmZiNDQ0MGQzMjM2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZkODkyOTNmMWRlMmQ0NmMxZjEzY2RkNDk2MzM2ZGM3YzZiNjc0OWU1MDZlZjIzODBlYjYyMmQwNzE2MjY4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c8cfc1516377487f97873ff294b03947",
+      "statement": "cargo make check is the repository's complete source-validation entrypoint and composes the typecheck, lint, and test task groups.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile.toml#L13-L28",
+          "version": "repo-lines-v1:sha256:4d8fe9c3e665287d43b7782ebd125739af9461bc32c84a736028fe23f7b781aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwNzBkOTYzZmQyYmQyYzNmMzExYTU0YTZmMDVkZTFlYmVlNmQwNmYxY2Y2MTY2NzA4Mzc1YzRjZGI1NjdmZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmN2UzM2NhNmVhYjE5ZTBmYzA2ZGQxZDBkZTU0OGI1ZjJiYzJmNGQxMTQzMzQxNTVhNGI5ZjNjODA2MDAyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhYTQzYTNiYmUyNzQyNDE1NGZiMDAzYzA0ODkxNTJiNzNmMjk3NWVhZDdjYWIzYzA4YmYyNTI5ZjFlYjY1MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1YTRlY2ZkY2EyNGQ5MWM3NDIxM2UzZTcwZTBjYzExYWEwOTc1ZWJlOTNiZDI0ZGVkMDIzY2E4MWU4MWYxYzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_769b463b90534219928e1ab1b3f6d11c",
+      "statement": "The repository is a virtual Cargo workspace whose current runnable Rust package is selected through the apps/* workspace member pattern.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L1-L3",
+          "version": "repo-lines-v1:sha256:4fb3e0edab396cbedfc77ac965be2a6f958a9946492ede14f6f01022babdfae8:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDM0ZTEwMmM4NjFmOTk0ZDJhYWNlOTExNGQzOTJkYmMxNjIxOTBlMDBiZThmZTM1N2Q0NzIxNTBjYTQzOTYxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNiMTAzMjhkZDUyNTUzODJkNTAzYWNkZmJlNDFmYTFjMzVlODc1MWI5MGMwOTVjMmYwNGM4ZmQ3NzM5ZDc4YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODE2YzY0YjI2YTE1NzhmNmI4Y2NlOTM1ZTUyMzdmZDY3MDE4NTcxNzFlM2JhNDMxMTZlZWFjNGVjMDJhNjAyMiJ9"
+        },
+        {
+          "resource": "repo://apps/name_placeholder/Cargo.toml#L1-L17",
+          "version": "repo-lines-v1:sha256:d6fea69b5e263f4a83dfe0f1433581f07d7b3ce3f1c46d2f17059aeac0bf37a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhM2NkNWE4MWIzZjlhNjIxYWE0OTNkOTBjNDVmNDJhYjU3MWQ0ZTQyYjhhZTVhZmYzNTFjYjBhMDJkMDZkODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1NDU3ZTEzMjU0NjBlMDdhMTI1YmJmOGM3MTVhOWY4NjU1YzAwYWZlMmJjNmI2YWQ1ZGIzYWI3ODEwODdkZjgifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.2",
+    "at": "2026-08-27T08:17:37.266Z"
+  }
+}

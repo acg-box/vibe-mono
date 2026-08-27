@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e18bd5ba48492af52b2034072f7acf465f8d9a22a3e2bec2d7405bdaa39dadb6",
+  "claims": [
+    {
+      "id": "claim_27b7a2dbd54e4efebab218e6a1cdcede",
+      "statement": "Makefile.toml disables cargo-make workspace injection and core hooks globally; check is composed only of typecheck, lint, and test, while typecheck directly runs the TypeScript compiler without emitting files.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile.toml#L13-L28",
+          "version": "repo-lines-v1:sha256:4d8fe9c3e665287d43b7782ebd125739af9461bc32c84a736028fe23f7b781aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwNzBkOTYzZmQyYmQyYzNmMzExYTU0YTZmMDVkZTFlYmVlNmQwNmYxY2Y2MTY2NzA4Mzc1YzRjZGI1NjdmZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmN2UzM2NhNmVhYjE5ZTBmYzA2ZGQxZDBkZTU0OGI1ZjJiYzJmNGQxMTQzMzQxNTVhNGI5ZjNjODA2MDAyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhYTQzYTNiYmUyNzQyNDE1NGZiMDAzYzA0ODkxNTJiNzNmMjk3NWVhZDdjYWIzYzA4YmYyNTI5ZjFlYjY1MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1YTRlY2ZkY2EyNGQ5MWM3NDIxM2UzZTcwZTBjYzExYWEwOTc1ZWJlOTNiZDI0ZGVkMDIzY2E4MWU4MWYxYzMifQ"
+        },
+        {
+          "resource": "repo://Makefile.toml#L3-L5",
+          "version": "repo-lines-v1:sha256:812f1e0216e1ba5481ad7a73b67b385991ac9735713eef80d26e3280e58f8d70:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTExZTllNTc0NmY3NzViNzM1YjA5ZDE4ZDdlZGIxM2ViNzc3NDUzNDE0NmVkM2U2MWQyM2JhMTFjZTRjZTM5NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2E5NzhjOGFkY2UzYTY4MDJhOTY5YmVjZjFkMjIwY2M4MWIwYjg3ODdmMTkyY2RiMzUyZDE2YTQzYjU3ODljOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDQ0MTdkMGUyZTc0ZDExYWQwZjUxMWVjZmQ4NGE1M2Y0ZDBhOWI2ODg1YzRmNGY4MzI5NWE0Mzg0NWRhYmQ0YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzdhOGVmOGZhYWFiMTNhMGJkNTEwYTNmYmIxN2EyZGFhMGU5Mjg3NjgxZDMwNzg4YzQzMmI3ZWVlM2MzNzI2OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4ecb64cd1ff642ecb7f82c157eb1bd8b",
+      "statement": "The Rust Clippy and nextest validation tasks use --locked, typecheck runs the TypeScript compiler without emitting files, and fmt remains separate while lint-fix and list-template-markers remain available.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile.toml#L21-L28",
+          "version": "repo-lines-v1:sha256:9ea99e929535e9d18a1676ed57bd96f7454e3c36b052e96d6cdd6154e6556329:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGI0Njc5ZTdhOWQxMWQxZmQ1ZmVkY2M2YjJlNWYzZDRlNmI2OTA5NTNjMTk3ZGU1OGRiMWNkMGE3YTk5MDY1ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY3ZTMzY2E2ZWFiMTllMGZjMDZkZDFkMGRlNTQ4YjVmMmJjMmY0ZDExNDMzNDE1NWE0YjlmM2M4MDYwMDIzYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGJhZWM4ODEwYzRiNTEwNzY3ZTRjNTdhZjI4NGEzYmY1ZGU2ZjIxMzBkYWE5MGZjYmIyMTk3M2UzYzg2MTAwMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTVhNGVjZmRjYTI0ZDkxYzc0MjEzZTNlNzBlMGNjMTFhYTA5NzVlYmU5M2JkMjRkZWQwMjNjYTgxZTgxZjFjMyJ9"
+        },
+        {
+          "resource": "repo://Makefile.toml#L224-L242",
+          "version": "repo-lines-v1:sha256:7a94b6417ee04592bdcba02b76cf9e2dfcdd9f8631648fac0ddfca35416b516c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0YmYzZTAyNjE2MjZmNDZjYzc5Yzg1YzI2NmI0ZTgzNzFiNmEyMDA1MWFlOTg2M2ZmNGJiOTIxMjg4ZmI2NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZWJlYWEzMzhmNDE5ZjllYWFmNmIyYTcwOTIzMGZhYmE1NGQxMWYxODk1ODVlNDU2Mzc0ZTM3Y2VhMzhmMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmYzU2NTJlNTQ1Y2FjNDgwNzljNGZlODQ0NmMxODI0ZDg2MTQwOGQ3YTY3NmNkNzA3MDE3MjVjNTlhNmNlMDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5M2Q0OTJjZGIxYjdkZTM5NjlhODQ0NmY3MThlMzBjZDJhZDNiN2ZlZTQxYTE5ZGEzOGI0ZDJlOTliZjlmMDgifQ"
+        },
+        {
+          "resource": "repo://Makefile.toml#L87-L128",
+          "version": "repo-lines-v1:sha256:04e0366b7bc3ef6a2e0aef082c975cc74546d2a15c6e89f145a0daa7272a37c2:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmOWEwOWYwZjExNTJmOGI1MmM2N2VkZjdlOGE4ZmNkYjcwODk3MGZlYWQxYmFlMWMyYTViYWQ4MmZkYWQ1NzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZWJlYWEzMzhmNDE5ZjllYWFmNmIyYTcwOTIzMGZhYmE1NGQxMWYxODk1ODVlNDU2Mzc0ZTM3Y2VhMzhmMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmZjM3YmZmMTVjN2I4NTczZDAzOTQ0YTgyM2Y0ZGFmMzg0MjMwMTYzZDcyZDUyYWI1NGFlMWJiMWRlYzhiY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmZmNkYjJjMDk0NDU0ZDVlY2JhMTliNDU3ZGQ1MTUzMDExNzc2OGExZmIxN2IyNTljMTllMGI1NzQ3MTg5MDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e248782362844cc86fec976f069e441",
+      "statement": "The standard release build and default release install examples use --locked, and targeted builds emit binaries under target/<triple>/release.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L136-L151",
+          "version": "repo-lines-v1:sha256:a42224f82a04a5948082d2e9f886366638ecc025756051af0b70386682fd37e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYjE2MmEwYjZjYjE0YzcwNTk0YWU3MTc4YWM3MGU4YTMyMmFjYTBhNWM3OTY3ZWVhZGNjNjU3YjllNmYxMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxM2ZjMDY5Y2YyNzliYTA4OTgyOGEwZDQwOGI5NjM0YjE2YWQ1Y2NmY2Y3YzE3YThiN2QyMTQxZmEzN2QzZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzZDYwYTAyYWViY2VkOWI3OWEzYjYwZDZlNTIxM2E4NjE0ZTk1ODQ2MGRmYjM3ZWJlYTY4ZmUzYTllNTE4MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MDE1MDU4YTZlNDgyNDQ2NTQxNDk2OGQ4M2QwMWUxZTg1NjUxZGM5ZjVlNzM4YTY4NjQzMTk1YzA3MTEzMGYifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L78-L109",
+          "version": "repo-lines-v1:sha256:1a3ebb1c046c6a7a9e3e231a865ae2f8ff3631d39f4e3146687829ef8bd92fbf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxM2YwY2Q4ZjMyY2E4YTY5MDQ4MTk2NmYxZGIwNTI0ZDZkYmQyYTc3ZWQwYWI1ODYzZjc1Mjc1NDk5YTk3OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwZmJiODEwMWM3MGM1ZTI5MmJjYjVmZjA2Y2Q4YjhmMDUxNWFjMmUzNzZmMzE0Zjk2MzZhMzQ0NzIyYzcxZjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5MzVjMTVjODVkOWIwOTAzOWQ4N2YzNDZlYzljYjI3NDUxZTRlODhjNDJiMzRjODg0NTk2OGIwZDE1NzA5ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkODBmZjFjZTMzMDE4ZWZlN2U5MDYzZmQ1ZGE1ZjQyMWZlZWRiZTFjMzI0NTNhNGY0NGUyOTQ2OGUwMGM1ODIifQ"
+        },
+        {
+          "resource": "repo://README.md#L57-L78",
+          "version": "repo-lines-v1:sha256:511e3f90bea893502e95f1763410f6f9bfb63fd5a26c98b97092878159d77126:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4OWUxYmEyZDQ4NDhlMTlhNDgwMTlkZTRlMzY2MmY5ZGZkN2M1Yzg4YWQ2ZGUzYzRjZmUxZjA2NjkwZmM2YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MjkwMmY2MmM2MWYwOWE5ZDQ1YTdhOGIzYTFhMDk0ZDIwYmQ3MjdkMDIwYzJmN2U4N2I0MTJlZGZmNTRjNzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4ZTk5ZDJjYzIwZmZmOGZlYjg5ODQ5ZTBkMjc4ZDkwMDRlZGNhNzY0OTQ4MmU2NDgzOWExZTI5ZGFmMDJjOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3NDJkNjc3YjQ1ODZlZmVjMmMzZTA5NmUxYzI2YThmN2NjNjM0YzQzODhhYTdjNjAxZTc4MzBjOWU1ZWMzOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f47b3d71565d4a63b9c5ccc564a30c3e",
+      "statement": "The release workflow retains the three configured platform targets, verifies embedded binary identity, and verifies the pinned Linux mold marker before packaging.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L111-L151",
+          "version": "repo-lines-v1:sha256:386d239dc95f34fe27eff5c8f4fa3438fa17baa80f2a9a6444b41ac6bcef40b3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0ZjBjZjI0NjRmMzFhYmQ5YzdjMTdkZmI2M2ZjNzkyODkzMjE2M2UxYzcxOTBhY2RiNTljNTUyNTliOWVkOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxM2ZjMDY5Y2YyNzliYTA4OTgyOGEwZDQwOGI5NjM0YjE2YWQ1Y2NmY2Y3YzE3YThiN2QyMTQxZmEzN2QzZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4NmQ4ZjhiOWY4MTBlNzhhOWE1ODk4MTQ3MzI0YWNhNTQ0MWIyNDRhNjM5YjY1ZjUwYWRlNmJkZGUzMTk0ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MDE1MDU4YTZlNDgyNDQ2NTQxNDk2OGQ4M2QwMWUxZTg1NjUxZGM5ZjVlNzM4YTY4NjQzMTk1YzA3MTEzMGYifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L26-L48",
+          "version": "repo-lines-v1:sha256:59dcf41745cd53f6e016a4288a8509bbe804b8b6a7818b1a619d5ffb8f163784:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYjRiNmVhNDY2YmY2Mjk1ZGNiYzA4MTQwNjQxODBiNDc4ZmQ3NTU4YmY5YmI1YTgyNDU1MDg3MWVlMjM2NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4OTk5MTEwM2Y2YmE4ODhlM2RlNzY1MWM1YTMwNWM3N2U1NTQ3Njc3M2FiYTgzOTU5MWVjYzViZDBmMmFiMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkMjc4ZjE5N2ZiZjhmZGI2MTdlMTdhMzJhN2I0MmRlYjdmOGYzZGYzNzY4NjYwZjM4ZjVkOGJlNTM3NGZlYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNGVlZjUzMTViYmRlZjQyNzBhMDE4M2MzYWNmYmQwOTk2MjEwYWUwZjFhMDVlNWRjY2QyN2VlZDJhM2M2NmQifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L88-L105",
+          "version": "repo-lines-v1:sha256:68f1e2d09e0f0a0668189137217f1afb03b229e36eb9dfef077f72c279cbae32:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMzE5NjZjNjVhZTY0ZGIzMjMwYWQ2NzUwODU3MjljMTBkNzFmMDcwMWIzZTA1MTI3ZmQ5Y2ViNDVhZjY4NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4YWM1ZTUxYWMxMjg0YmUwNDA4MGUxZTY3YzQyMzJiMDNjMjc4ODc1ZTZjNzk2NGI5NTVlNWQzYmJjMWQyYWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMDBhMWQ4NDE5MDhhZjllZWNmNDY5MDI4ZDc0OTJjOTk1NmJlOWUxOTJmYjE1NGUyZmZkYTNmZjZjNTExZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhNzM1ZGZlOTI1MjAwN2M4N2Y3OWM2NDhhYmVlZDcwMDViMDc5NGVkMzAyMWI0ZGViYzExMWM3Y2IwN2M4MmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_676d436740b146b0bb618135a9142032",
+      "statement": "rust-toolchain.toml selects stable minimal without components; local Clippy and stable/nightly rustfmt come from global rustup state, and the release workflow toolchain setup retains caching without requesting components.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L52-L55",
+          "version": "repo-lines-v1:sha256:ccf166929ec4c30800525e597228c60471c296e93ce09fad43c6bf42fe22c803:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQxNjA0M2RkZWE1ZjE4OTJjNWIyMzg5ZGU1ODY4OWQ1ZDc1ZDcyMWJlNmU5ZTgwN2Q5ZDE5YTNiZDkxYTkzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk3NGM3ZTY2MWRkODE3ZDIzYWFjZjMxNWM4OWM5NjVmMGFkMjYxYmE0YTI4ZDVmY2JlMThhMzJmOGRjMjdmMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTI0ZWVmNTMxNWJiZGVmNDI3MGEwMTgzYzNhY2ZiZDA5OTYyMTBhZTBmMWEwNWU1ZGNjZDI3ZWVkMmEzYzY2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzg3ZTcxOTEwYWM1ZmZlZGFlMzdjOWMxM2QxZGIwYTIyNjZiMDYyMzFjMDlhMjlmNjVlMjgwOWEyMTZlOWZlMiJ9"
+        },
+        {
+          "resource": "repo://README.md#L101-L103",
+          "version": "repo-lines-v1:sha256:37a37a8ec9b69d3ac3b9343cebe65d828a4539d5dc36e073f307cc12f8a17b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQxNzc3YzUzMWRkNmZjODMzM2FiNWQwN2M2MDZmODU3NDYyYTk3NGIwMWNhOTU1MmZlOWNiNmMyMTFhNjc1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmUyNGVmNjQzOWZmODJjNDQyYmExM2UxYTAxOWJmNmE0Njg5MGZiZmUxMWFkNDZiODIyZDg4ZWRiMjliZDk2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
+        },
+        {
+          "resource": "repo://rust-toolchain.toml#L1-L3",
+          "version": "repo-lines-v1:sha256:ebc5360fd3b6b35d0578ec1607d2a671e74fa5c3527a7fee576e15e57eed175d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMyMDRhMDcyMDNmZmI4M2MzYTUwZTgwZjE2YmQ1NTY3YTU2YTIzOTA0NDcwY2U2ODAwMmZiNDQ0MGQzMjM2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZkODkyOTNmMWRlMmQ0NmMxZjEzY2RkNDk2MzM2ZGM3YzZiNjc0OWU1MDZlZjIzODBlYjYyMmQwNzE2MjY4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.2",
+    "at": "2026-08-27T08:17:37.266Z"
+  }
+}

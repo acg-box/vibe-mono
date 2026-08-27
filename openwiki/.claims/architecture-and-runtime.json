@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8be90eaed8952d83b6123a21840a72e5b28054bdc3f7658fbbbc1d2755dca2b8",
+  "claims": [
+    {
+      "id": "claim_4bfa9a0ea4c94ee8884a86827f621262",
+      "statement": "The root Cargo manifest defines a virtual workspace over apps/* and configures the standard release profile with thin LTO.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L1-L3",
+          "version": "repo-lines-v1:sha256:4fb3e0edab396cbedfc77ac965be2a6f958a9946492ede14f6f01022babdfae8:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDM0ZTEwMmM4NjFmOTk0ZDJhYWNlOTExNGQzOTJkYmMxNjIxOTBlMDBiZThmZTM1N2Q0NzIxNTBjYTQzOTYxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNiMTAzMjhkZDUyNTUzODJkNTAzYWNkZmJlNDFmYTFjMzVlODc1MWI5MGMwOTVjMmYwNGM4ZmQ3NzM5ZDc4YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODE2YzY0YjI2YTE1NzhmNmI4Y2NlOTM1ZTUyMzdmZDY3MDE4NTcxNzFlM2JhNDMxMTZlZWFjNGVjMDJhNjAyMiJ9"
+        },
+        {
+          "resource": "repo://Cargo.toml#L14-L15",
+          "version": "repo-lines-v1:sha256:2c9bb110c8f4c7fdbb4ba5479cdaf734348766c7a876aeb085324b31d35e0d0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTYxYjk5MGFkOGY0Mjg0YzM1NGNkOGY5YjZiMWIwZDAxNTY1MDJhYmIwOGFiMjlhYjUwODI0OTRkN2EwNzYwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkNWMxNjczNDVmNmMwMDlmNTI0NWFjYzc3ZGFjY2JkNzRhMjJjNzdjMWRiNWJmNDA3YWNmYzk0MzEzMzM4YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODg4MGE5ZTIzOGMzNDllNTNlNzY2YTQ5MWU1NzhjOGYyNzhhZjQxOTkxNDFmNWFmOTc2YWQ0NzdkY2I4ZWUwMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I2YzJlZDUzYjVkMzM0Mzk5ZjRiYTJhYThhNTQ3MjBlMTdjZDQ2MTViZTRkOTdkMzg2MDA3NWIzY2VhZjViNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_762dbff414aa42b48e2914c5f63dfd22",
+      "statement": "rust-toolchain.toml selects stable with the minimal profile and installs no components; local Clippy and stable/nightly rustfmt come from global rustup state.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile.toml#L156-L181",
+          "version": "repo-lines-v1:sha256:753d4523ca4b39aca253b8d0f3ab5f103b3c3d64a7585d26c6ad2f4d6845390f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZDc5MDRlZjU0MjY3ZWNlMDg4OTViMTFjOWM3ODI2NWM3YTNlYmQ5M2E5M2ZkOGZlOTI3YzNmNDY5ZDY1Y2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZWJlYWEzMzhmNDE5ZjllYWFmNmIyYTcwOTIzMGZhYmE1NGQxMWYxODk1ODVlNDU2Mzc0ZTM3Y2VhMzhmMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3ZjFjYjdlNjEyNzEzZjg3M2Y5ZTA4YzA4Zjc0ZTkzYzQ4MTVjOTgyNmRmZGFjM2Q2YjhhMDAwMDE5NTljMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyZjk1OGU5ZTBjODdlNWVlYzIyZjY1MzYzYTM1YmZlMGU2NTQ1YzQ0Y2ZjODFlNWY5YjgwNGVkNWQ4N2QzNDkifQ"
+        },
+        {
+          "resource": "repo://Makefile.toml#L45-L53",
+          "version": "repo-lines-v1:sha256:69860c40b6110958299c4786d7e8ec94f6e4a74467975d9914c7cb116574fafd:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNlZDRiZmQ0MjA1ODdjYzBhM2RiNTU4ODc3NmM4MjZjMzRiZWNjOWIyM2FmYzcxMzM1YzRhMmYyNzdiZmY0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlmNzhlZGUyN2I4MjQ0YzI5YTgyOWMzYmRkY2Q0OTQzM2Q5ZmM2NWIwYmM0NGY0YWM2ZjRiZTI0Yjc2MjA2NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2U4MTg1M2IyOGU2MDU3NzVmMTdiZDkyYWQ5MzViMTE1ZTIyYWU0OWUxMWU5YWM4ZmRkZWMxMGRhOWEyZGQ4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdkNmM0MWU4MDViYjg3M2FjNTkzNGE4OTQ4Y2YzZGQzZTU2ZmMwMDM4YTRjOTZjYmUxYTk0NDQ3NzRlYmJmMiJ9"
+        },
+        {
+          "resource": "repo://README.md#L101-L103",
+          "version": "repo-lines-v1:sha256:37a37a8ec9b69d3ac3b9343cebe65d828a4539d5dc36e073f307cc12f8a17b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQxNzc3YzUzMWRkNmZjODMzM2FiNWQwN2M2MDZmODU3NDYyYTk3NGIwMWNhOTU1MmZlOWNiNmMyMTFhNjc1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmUyNGVmNjQzOWZmODJjNDQyYmExM2UxYTAxOWJmNmE0Njg5MGZiZmUxMWFkNDZiODIyZDg4ZWRiMjliZDk2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
+        },
+        {
+          "resource": "repo://rust-toolchain.toml#L1-L3",
+          "version": "repo-lines-v1:sha256:ebc5360fd3b6b35d0578ec1607d2a671e74fa5c3527a7fee576e15e57eed175d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMyMDRhMDcyMDNmZmI4M2MzYTUwZTgwZjE2YmQ1NTY3YTU2YTIzOTA0NDcwY2U2ODAwMmZiNDQ0MGQzMjM2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZkODkyOTNmMWRlMmQ0NmMxZjEzY2RkNDk2MzM2ZGM3YzZiNjc0OWU1MDZlZjIzODBlYjYyMmQwNzE2MjY4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7919c841a7644dbf8f7628e35bd6fb78",
+      "statement": "The release workflow retains Apple arm64, Linux x86_64 GNU, and Windows x86_64 MSVC targets, builds with the standard --release profile and --locked, and uses target/<triple>/release artifact paths.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L107-L151",
+          "version": "repo-lines-v1:sha256:ffc040acb4207c7ceae285d536c14155b3ec23d7b54a3cf5dc71f2fca156e060:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjMTdkODllOWJjNTExYThmYTc0YmM2M2FiZTgwNjcyMTliNmUwNjI4MjRhMDc3NzgzMDk5MjUxNWFkMWY4NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxM2ZjMDY5Y2YyNzliYTA4OTgyOGEwZDQwOGI5NjM0YjE2YWQ1Y2NmY2Y3YzE3YThiN2QyMTQxZmEzN2QzZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5ZjQwZWIzNzg4MjdiNzRlZjEwZjEwNTUzZGMzZGZlODE0OTlkMmIwZTgwMTZmNmVlYjI3ZDJkMmIxMzJmNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MDE1MDU4YTZlNDgyNDQ2NTQxNDk2OGQ4M2QwMWUxZTg1NjUxZGM5ZjVlNzM4YTY4NjQzMTk1YzA3MTEzMGYifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L26-L48",
+          "version": "repo-lines-v1:sha256:59dcf41745cd53f6e016a4288a8509bbe804b8b6a7818b1a619d5ffb8f163784:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYjRiNmVhNDY2YmY2Mjk1ZGNiYzA4MTQwNjQxODBiNDc4ZmQ3NTU4YmY5YmI1YTgyNDU1MDg3MWVlMjM2NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4OTk5MTEwM2Y2YmE4ODhlM2RlNzY1MWM1YTMwNWM3N2U1NTQ3Njc3M2FiYTgzOTU5MWVjYzViZDBmMmFiMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkMjc4ZjE5N2ZiZjhmZGI2MTdlMTdhMzJhN2I0MmRlYjdmOGYzZGYzNzY4NjYwZjM4ZjVkOGJlNTM3NGZlYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNGVlZjUzMTViYmRlZjQyNzBhMDE4M2MzYWNmYmQwOTk2MjEwYWUwZjFhMDVlNWRjY2QyN2VlZDJhM2M2NmQifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L57-L62",
+          "version": "repo-lines-v1:sha256:c9230b90bb71773d171a9dfdbf0a63effea5020d99034b6e600b18e34050ac94:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzY5ODdjOGQzODYzOTgwNmJkNWQxNDVhN2VlMDZmYWQxZGVhNzI4ODM2Y2RiODhmZTQ4YWIxMDQ5NWVkYTBiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzMyZGI3NzhlMTA4ZmMxMmQ4MDA5ZWE5MWQyZDc1Yjc5Yjc4ODI4NmExYjlmYjdkZDc4MWE5MzYxNTc4NWViMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTg0ZjgyNzAyNTI2ZTAwNzlkMmI3ZWU0YmE2MzdkYjNkNWI2ZDNmNGRmZGEwMDlkMmYwMTE5NGNmYWJkMDUxYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2U3YjQ4YTQ4NDQ1MWZjNDAwZDU0ZjU1NWE4NDVhNTNhNjdkOTlkMGQ3ODljOGZlMTc1M2ExOWIwYmUzZjNjZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_de7b49d18d8f4c4e8a0a5cbcd44698bf",
+      "statement": "Linux release linking uses the pinned mold action with explicit target-specific linker flags and verifies both the embedded binary identity and the mold marker before packaging.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L64-L105",
+          "version": "repo-lines-v1:sha256:ba77e2e73cb1b2a1181b3bb3086c5a1372f8202a814d4b2aff076812aeb68e75:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMWI2MTdhOWRlYzM5ZDkwNWQzZjhkM2U4MDNiNmMxMDJlMDQxNzM0ZjhkNzIwMWQwZGNlM2JiNWU5ODJmMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4YWM1ZTUxYWMxMjg0YmUwNDA4MGUxZTY3YzQyMzJiMDNjMjc4ODc1ZTZjNzk2NGI5NTVlNWQzYmJjMWQyYWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmMDc1ZTFjYmM1MjQ1YWNkYzA1YzI3YmM0NjIyZWFkNmQyNGQzMDQzNjU2ODI2ZGRmNGNhNmM3Mzg0NTgyNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhNzM1ZGZlOTI1MjAwN2M4N2Y3OWM2NDhhYmVlZDcwMDViMDc5NGVkMzAyMWI0ZGViYzExMWM3Y2IwN2M4MmMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.2",
+    "at": "2026-08-27T08:17:37.266Z"
+  }
+}

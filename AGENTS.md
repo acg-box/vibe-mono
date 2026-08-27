@@ -2,8 +2,14 @@
 
 ## OpenWiki
 
-This repository uses OpenWiki as its checked-in knowledge and agent-routing surface. Start with `openwiki/quickstart.md`, then follow its links to architecture/runtime, operations, template adoption, and knowledge maintenance.
+This repository has a generated `openwiki/` evidence index. It is optional just-in-time context, not required startup reading.
 
-Maintain it generator-first: update the source or configuration that owns the claim, run `openwiki code --update --print`, and review the generated diff against source authority. Direct page edits are reserved for explicit curation or correction. No recurring OpenWiki automation is authorized.
+- Treat source code and tests as authoritative. A brief's unknowns and review items are verification gaps, not automatic requirements.
+- Prefer the narrowest quiet validation that proves the changed behavior. Preserve complete failure output.
+
+Run OpenWiki refreshes on demand through the resumable page-job lifecycle. No
+recurring OpenWiki workflow is configured or authorized. Do not hand-edit
+generated OpenWiki pages unless explicitly asked; prefer updating source code
+or documentation and regenerating the pages through that lifecycle.
 
 <!-- OPENWIKI:END -->

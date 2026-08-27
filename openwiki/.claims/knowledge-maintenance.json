@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:f1da6a2ea8d632169244d9b90e55509a7df8abbe4d4894c322d407bccd5c8fd8",
+  "claims": [
+    {
+      "id": "claim_b146ade6e29643dd87527fce75f03081",
+      "statement": "The current task contract makes check a composite of typecheck, lint, and test; typecheck runs TypeScript tsc --noEmit, while lint's Clippy task owns Rust compilation/static analysis.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile.toml#L13-L28",
+          "version": "repo-lines-v1:sha256:4d8fe9c3e665287d43b7782ebd125739af9461bc32c84a736028fe23f7b781aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwNzBkOTYzZmQyYmQyYzNmMzExYTU0YTZmMDVkZTFlYmVlNmQwNmYxY2Y2MTY2NzA4Mzc1YzRjZGI1NjdmZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmN2UzM2NhNmVhYjE5ZTBmYzA2ZGQxZDBkZTU0OGI1ZjJiYzJmNGQxMTQzMzQxNTVhNGI5ZjNjODA2MDAyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhYTQzYTNiYmUyNzQyNDE1NGZiMDAzYzA0ODkxNTJiNzNmMjk3NWVhZDdjYWIzYzA4YmYyNTI5ZjFlYjY1MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1YTRlY2ZkY2EyNGQ5MWM3NDIxM2UzZTcwZTBjYzExYWEwOTc1ZWJlOTNiZDI0ZGVkMDIzY2E4MWU4MWYxYzMifQ"
+        },
+        {
+          "resource": "repo://Makefile.toml#L156-L181",
+          "version": "repo-lines-v1:sha256:753d4523ca4b39aca253b8d0f3ab5f103b3c3d64a7585d26c6ad2f4d6845390f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZDc5MDRlZjU0MjY3ZWNlMDg4OTViMTFjOWM3ODI2NWM3YTNlYmQ5M2E5M2ZkOGZlOTI3YzNmNDY5ZDY1Y2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZWJlYWEzMzhmNDE5ZjllYWFmNmIyYTcwOTIzMGZhYmE1NGQxMWYxODk1ODVlNDU2Mzc0ZTM3Y2VhMzhmMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3ZjFjYjdlNjEyNzEzZjg3M2Y5ZTA4YzA4Zjc0ZTkzYzQ4MTVjOTgyNmRmZGFjM2Q2YjhhMDAwMDE5NTljMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyZjk1OGU5ZTBjODdlNWVlYzIyZjY1MzYzYTM1YmZlMGU2NTQ1YzQ0Y2ZjODFlNWY5YjgwNGVkNWQ4N2QzNDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_08c2549bd8054aa38b2bd82c13a5d23b",
+      "statement": "The root Cargo configuration uses the standard release profile with thin LTO; rust-toolchain.toml selects stable minimal without components, and the release workflow's toolchain setup retains caching without requesting components.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L52-L55",
+          "version": "repo-lines-v1:sha256:ccf166929ec4c30800525e597228c60471c296e93ce09fad43c6bf42fe22c803:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQxNjA0M2RkZWE1ZjE4OTJjNWIyMzg5ZGU1ODY4OWQ1ZDc1ZDcyMWJlNmU5ZTgwN2Q5ZDE5YTNiZDkxYTkzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk3NGM3ZTY2MWRkODE3ZDIzYWFjZjMxNWM4OWM5NjVmMGFkMjYxYmE0YTI4ZDVmY2JlMThhMzJmOGRjMjdmMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTI0ZWVmNTMxNWJiZGVmNDI3MGEwMTgzYzNhY2ZiZDA5OTYyMTBhZTBmMWEwNWU1ZGNjZDI3ZWVkMmEzYzY2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzg3ZTcxOTEwYWM1ZmZlZGFlMzdjOWMxM2QxZGIwYTIyNjZiMDYyMzFjMDlhMjlmNjVlMjgwOWEyMTZlOWZlMiJ9"
+        },
+        {
+          "resource": "repo://Cargo.toml#L14-L15",
+          "version": "repo-lines-v1:sha256:2c9bb110c8f4c7fdbb4ba5479cdaf734348766c7a876aeb085324b31d35e0d0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTYxYjk5MGFkOGY0Mjg0YzM1NGNkOGY5YjZiMWIwZDAxNTY1MDJhYmIwOGFiMjlhYjUwODI0OTRkN2EwNzYwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkNWMxNjczNDVmNmMwMDlmNTI0NWFjYzc3ZGFjY2JkNzRhMjJjNzdjMWRiNWJmNDA3YWNmYzk0MzEzMzM4YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODg4MGE5ZTIzOGMzNDllNTNlNzY2YTQ5MWU1NzhjOGYyNzhhZjQxOTkxNDFmNWFmOTc2YWQ0NzdkY2I4ZWUwMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I2YzJlZDUzYjVkMzM0Mzk5ZjRiYTJhYThhNTQ3MjBlMTdjZDQ2MTViZTRkOTdkMzg2MDA3NWIzY2VhZjViNSJ9"
+        },
+        {
+          "resource": "repo://README.md#L101-L103",
+          "version": "repo-lines-v1:sha256:37a37a8ec9b69d3ac3b9343cebe65d828a4539d5dc36e073f307cc12f8a17b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQxNzc3YzUzMWRkNmZjODMzM2FiNWQwN2M2MDZmODU3NDYyYTk3NGIwMWNhOTU1MmZlOWNiNmMyMTFhNjc1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmUyNGVmNjQzOWZmODJjNDQyYmExM2UxYTAxOWJmNmE0Njg5MGZiZmUxMWFkNDZiODIyZDg4ZWRiMjliZDk2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
+        },
+        {
+          "resource": "repo://rust-toolchain.toml#L1-L3",
+          "version": "repo-lines-v1:sha256:ebc5360fd3b6b35d0578ec1607d2a671e74fa5c3527a7fee576e15e57eed175d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMyMDRhMDcyMDNmZmI4M2MzYTUwZTgwZjE2YmQ1NTY3YTU2YTIzOTA0NDcwY2U2ODAwMmZiNDQ0MGQzMjM2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZkODkyOTNmMWRlMmQ0NmMxZjEzY2RkNDk2MzM2ZGM3YzZiNjc0OWU1MDZlZjIzODBlYjYyMmQwNzE2MjY4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6ebbe4d33dbd449aadbd2f176515e81e",
+      "statement": "The release workflow builds the three configured platform targets with --release and --locked, verifies binary identity, and packages binaries from target/<triple>/release paths.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L26-L48",
+          "version": "repo-lines-v1:sha256:59dcf41745cd53f6e016a4288a8509bbe804b8b6a7818b1a619d5ffb8f163784:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYjRiNmVhNDY2YmY2Mjk1ZGNiYzA4MTQwNjQxODBiNDc4ZmQ3NTU4YmY5YmI1YTgyNDU1MDg3MWVlMjM2NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4OTk5MTEwM2Y2YmE4ODhlM2RlNzY1MWM1YTMwNWM3N2U1NTQ3Njc3M2FiYTgzOTU5MWVjYzViZDBmMmFiMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkMjc4ZjE5N2ZiZjhmZGI2MTdlMTdhMzJhN2I0MmRlYjdmOGYzZGYzNzY4NjYwZjM4ZjVkOGJlNTM3NGZlYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNGVlZjUzMTViYmRlZjQyNzBhMDE4M2MzYWNmYmQwOTk2MjEwYWUwZjFhMDVlNWRjY2QyN2VlZDJhM2M2NmQifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L72-L151",
+          "version": "repo-lines-v1:sha256:6f4a121bd88d37a02f5f102a1af9a53d646753d62479411865a29ad22603357d:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlNjk2NmVkOTM1NWQ4MTQwMTg0ZTdkMmQwYTMyMzc1NTQwM2ViYjg4MjFmNDFjMGVjZWNjZjI2YmE2YmRmMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxM2ZjMDY5Y2YyNzliYTA4OTgyOGEwZDQwOGI5NjM0YjE2YWQ1Y2NmY2Y3YzE3YThiN2QyMTQxZmEzN2QzZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4MWU1MzMyZmQzMjk5YTMyZTRiODdlZDU2NWRlMzdiYjAwMGJkNThkYjQxNzJmMWQ3ZTg2ZmI0NjljNWYzYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MDE1MDU4YTZlNDgyNDQ2NTQxNDk2OGQ4M2QwMWUxZTg1NjUxZGM5ZjVlNzM4YTY4NjQzMTk1YzA3MTEzMGYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.2",
+    "at": "2026-08-27T08:32:32.213Z"
+  }
+}

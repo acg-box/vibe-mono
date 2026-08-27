@@ -2,6 +2,21 @@
 type: "Reference"
 title: "Knowledge Maintenance"
 openwiki_generated: true
+sources:
+  - id: openwiki-source-4d1d392666be6dfdd7a91a2e
+    resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-651d1fb6c9e49916a916ab51
+    resource: repo://Cargo.toml
+  - id: openwiki-source-c8b1a2a9f2113ec43d4066da
+    resource: repo://Makefile.toml
+  - id: openwiki-source-23775c3de52f3ab95a13cb8b
+    resource: repo://README.md
+  - id: openwiki-source-b7793decf9d7c9ba48e57e0f
+    resource: repo://rust-toolchain.toml
+generated: { by: "codex", at: "2026-08-27T08:32:32.213Z" }
+verified:
+  - by: openwiki/0.4.2
+    at: 2026-08-27T08:32:32.213Z
 ---
 
 # Knowledge Maintenance
@@ -47,7 +62,7 @@ Then:
 
 1. Read the owning OpenWiki page and its cited sources.
 2. Inspect the changed implementation/config and relevant recent Git history.
-3. Update the owning source first, then run `openwiki code --update --print` and review the generated diff against source authority. Direct page edits are reserved for explicit curation or correction.
+3. Update the owning source first, then use the OpenWiki resumable page-job lifecycle and review each generated page against source authority. Direct page edits are reserved for explicit curation or the page assigned by the active lifecycle.
 4. Repair all links and routing affected by moves/renames; record routing, promotion, rename, or maintenance-policy changes in this page's historical context (or a focused successor history page if the record grows). Routine content corrections need no log entry.
 5. Run source checks from [Operations](operations.md) and a focused wiki self-check.
 6. Record a durable decision only when future maintainers would otherwise need to rediscover an accepted tradeoff.
@@ -107,13 +122,13 @@ Sources: Git history at commits `7c80c51`, `69eb753`, and `4f91ab1`.
 
 ## Migration Drift Audit
 
-**Status:** active evidence. **Owner:** maintainers. **Last verified:** 2026-07-22 against repository base revision `c120ab5` plus the Rust toolchain correction and TypeScript script simplification under review.
+**Status:** active evidence. **Owner:** maintainers. **Last verified:** 2026-08-27 against working-tree HEAD `89da575` with the Cargo profile, toolchain, task graph, release workflow, and README updates in this change.
 
-- **Watched claims:** `openwiki/` is the only maintained knowledge root; all five pages are reachable from `quickstart.md`; task, Rust/TypeScript runtime, workspace, CI/release, adoption, decision, research, and maintenance claims match current source or identified historical evidence; no recurring OpenWiki automation is authorized.
+- **Watched claims:** `openwiki/` is the only maintained knowledge root; all five pages are reachable from `quickstart.md`; the task graph exposes `check` as the aggregate of `typecheck`, `lint`, and `test`, with typecheck running only TypeScript `tsc --noEmit`, Clippy owning Rust compilation/static analysis, and nextest owning Rust tests; `fmt` remains independent, and `lint-fix` and `list-template-markers` remain available; the standard `release` profile uses thin LTO; `rust-toolchain.toml` selects stable with the minimal profile and installs no components; local Clippy and stable/nightly rustfmt come from global rustup state; the release workflow's toolchain setup retains caching without requesting components; release targets and artifact paths match the workflow; and no recurring OpenWiki automation is authorized.
 - **Evidence anchors:** `README.md`, `Cargo.toml`, `rust-toolchain.toml`, `Makefile.toml`, app source/manifests, `.node-version`, `package.json`, `package-lock.json`, `tsconfig.json`, Oxc configuration, TypeScript scripts/tests, tracked workflows, `.github/actions/install-mold/action.yml`, `.github/actions/install-mold/install-mold.sh`, `.gitignore`, `.taplo.toml`, and the five OpenWiki pages.
-- **Checks run (2026-07-22):** Markdown link resolution passed; all 25 `Makefile.toml` tasks matched the documented task matrix; the project file selected the ordinary stable Rust toolchain and nightly rustfmt remained explicit; the TypeScript format, compiler, type-aware lint, and two integration tests passed; Rust/TOML format, Cargo check, Clippy/vstyle, and nextest passed; npm audit reported no vulnerability record in the resolved graph; npm verified registry signatures for all 11 installed packages and attestations for eight; `actionlint`, `taplo fmt --check`, and `git diff --check` passed; and `openwiki/_plan.md` was absent. `openwiki code --update --print` was attempted after source updates but stopped after proposing an unauthorized scheduled workflow, a parallel index, and incompatible generated metadata. Those outputs were rejected, and the five existing pages were curated directly under the documented fallback policy.
-- **Recommended reverse checks:** after relevant changes, resolve Markdown links; compare task names/dependencies with `Makefile.toml`; compare workflow triggers/jobs/`needs` with tracked YAML; compare Rust runtime claims with `main.rs`, `cli.rs`, and `build.rs`; compare TypeScript runtime claims with `.node-version`, manifests/configuration, scripts, and tests; scan for stale `docs/`, `check-docs`, scheduled-automation, duplicate formatter, and placeholder claims; run `actionlint`, dependency-integrity checks, `git diff --check`, and applicable source checks; verify `openwiki/_plan.md` is absent after generation.
-- **Verdict:** historical pass for the 2026-07-22 Rust/TypeScript template diff and the checks recorded above. The npm signature/attestation result covers packages installed on macOS arm64; no tracked Linux source-validation workflow remains.
+- **Checks run (2026-08-27):** `cargo make check` passed with one TypeScript compiler, one Clippy, one Oxlint, one vstyle, one nextest, and one Node test invocation; `cargo build --release --locked` passed; the release binary's `--help` and `--version` commands succeeded; and `actionlint`, `taplo fmt --check`, and `git diff --check` passed.
+- **Recommended reverse checks:** after relevant changes, resolve Markdown links; compare task names/dependencies with `Makefile.toml`, including `check`'s single dependency path through `typecheck`, `lint`, and `test`; compare workflow triggers/jobs/`needs`, toolchain setup inputs, and release paths with tracked YAML; compare Rust runtime claims with `main.rs`, `cli.rs`, and `build.rs`; compare TypeScript runtime claims with `.node-version`, manifests/configuration, scripts, and tests; scan for retired release-profile names, retired check task names, unexpected repository-owned Rust component claims, per-task `workspace = false`, `docs/`, `check-docs`, scheduled-automation, duplicate formatter, and placeholder claims; run `actionlint`, dependency-integrity checks, `git diff --check`, and applicable source checks; verify `openwiki/_plan.md` is absent after generation.
+- **Verdict:** pass for the current source/config alignment and focused checks above. Future OpenWiki changes must complete their page-job lifecycle before documentation readiness is claimed.
 - **Required updates:** rerun the reverse checks after changes to source/config, page routing, knowledge authority, validation, or automation policy. Any mismatch blocks documentation readiness.
 
 ## Durable Decisions
@@ -131,6 +146,6 @@ Promotion must name and update a real contract, procedure, current-state referen
 ## Current Maintenance Boundary
 
 - `openwiki/` is the only repository knowledge root; `docs/` and its Decodex task no longer exist.
-- No tracked workflow validates source changes or OpenWiki. Run source checks locally, and review links, source citations, commands, routing, and drift explicitly when knowledge changes.
-- No recurring OpenWiki workflow is authorized. Run `openwiki code --update --print` only when repository knowledge needs regeneration, then review every generated change against source authority.
+- No tracked workflow validates source changes or OpenWiki. Run source checks locally, use the OpenWiki resumable page-job lifecycle for authorized refreshes, and review links, source citations, commands, routing, and drift explicitly when knowledge changes.
+- No recurring OpenWiki workflow is authorized. Start the OpenWiki resumable page-job lifecycle only when repository knowledge needs regeneration, then review every generated page against source authority.
 - Revisit this policy when OpenWiki validation or maintenance automation is explicitly approved, or when page ownership changes.

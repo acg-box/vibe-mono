@@ -2,6 +2,21 @@
 type: "Reference"
 title: "Architecture And Runtime"
 openwiki_generated: true
+verified:
+  - by: openwiki/0.4.2
+    at: 2026-08-27T08:17:37.266Z
+sources:
+  - id: openwiki-source-4d1d392666be6dfdd7a91a2e
+    resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-651d1fb6c9e49916a916ab51
+    resource: repo://Cargo.toml
+  - id: openwiki-source-c8b1a2a9f2113ec43d4066da
+    resource: repo://Makefile.toml
+  - id: openwiki-source-23775c3de52f3ab95a13cb8b
+    resource: repo://README.md
+  - id: openwiki-source-b7793decf9d7c9ba48e57e0f
+    resource: repo://rust-toolchain.toml
+generated: { by: "codex", at: "2026-08-27T08:17:37.266Z" }
 ---
 
 # Architecture And Runtime
@@ -16,9 +31,9 @@ The repository is intentionally a small monorepo template with lanes for later g
 | `apps/name_placeholder/` | Current Rust binary package and all package-specific metadata |
 | `scripts/` | Repository-maintenance TypeScript programs and their colocated tests |
 | `packages/` | Reusable, language-neutral shared packages; currently only `.gitkeep` |
-| `Cargo.toml` | Rust workspace membership (`apps/*`), resolver 3, shared package metadata, `final-release`, and shared dependency versions |
+| `Cargo.toml` | Rust workspace membership (`apps/*`), resolver 3, shared package metadata, the standard `release` profile, and shared dependency versions |
 | `Cargo.lock` | Locked dependency graph used by release commands with `--locked` |
-| `rust-toolchain.toml` | Ordinary Rust toolchain and component selection; formatting remains an explicit nightly task |
+| `rust-toolchain.toml` | Stable toolchain selection with the minimal profile only; local Clippy and stable/nightly rustfmt come from global rustup state |
 | `package.json` and `package-lock.json` | Private npm tool-package metadata and the exact TypeScript development tool graph |
 | `tsconfig.json` | Strict, erasable, NodeNext TypeScript contract for `scripts/**/*.ts` |
 | `.oxfmtrc.json` and `.oxlintrc.json` | TypeScript formatting and type-aware lint policy |
@@ -81,9 +96,11 @@ Sources: `apps/name_placeholder/src/main.rs`, `apps/name_placeholder/src/cli.rs`
 
 `apps/name_placeholder/build.rs` uses `vergen-gitcl` to expose the target triple and Git SHA at compile time. If adding the Git instructions fails—for example in a crates.io package without usable Git metadata—the script sets `VERGEN_GIT_SHA=crates.io`. Failure to add target-triple instructions or to perform final emission still fails the build.
 
-The release profile `final-release` inherits `release` and enables LTO. The release workflow builds each target with `--locked --profile final-release`.
+The standard `release` profile enables thin LTO. The release workflow builds each target with `--release --locked`; target-specific binaries are emitted under `target/<triple>/release/`.
 
-Sources: `apps/name_placeholder/build.rs`, `Cargo.toml`, `.github/workflows/release.yml`.
+`rust-toolchain.toml` installs no components. Local Clippy and stable/nightly rustfmt are global rustup prerequisites. The release workflow uses the pinned toolchain setup action with caching and adds each matrix target before building.
+
+Sources: `apps/name_placeholder/build.rs`, `Cargo.toml`, `rust-toolchain.toml`, `README.md`, `.github/workflows/release.yml`.
 
 ## Placeholder And Replacement Surface
 
@@ -102,7 +119,7 @@ Use [Template Adoption](template-adoption.md) for sequencing.
 
 These are not tracked source owners:
 
-- `target/`: Cargo build output, final-release binaries, bundles, and local artifacts.
+- `target/`: Cargo build output, release binaries, bundles, and local artifacts.
 - `.worktrees/` and `.workspaces/`: local Git/workspace lanes.
 - `.agent/` and `.codex/`: local agent/runtime state.
 - `tmp/`: scratch data.
