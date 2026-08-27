@@ -5,18 +5,22 @@ openwiki_generated: true
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-7437def7410a3f1ed2549b16
+    resource: repo://.node-version
   - id: openwiki-source-651d1fb6c9e49916a916ab51
     resource: repo://Cargo.toml
   - id: openwiki-source-c8b1a2a9f2113ec43d4066da
     resource: repo://Makefile.toml
+  - id: openwiki-source-5b54a58d1b51cd490b0e7162
+    resource: repo://package.json
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
   - id: openwiki-source-b7793decf9d7c9ba48e57e0f
     resource: repo://rust-toolchain.toml
-generated: { by: "codex", at: "2026-08-27T08:32:32.213Z" }
+generated: { by: "codex", at: "2026-08-27T11:43:58.604Z" }
 verified:
-  - by: openwiki/0.4.2
-    at: 2026-08-27T08:32:32.213Z
+  - by: openwiki/0.4.3
+    at: 2026-08-27T11:43:58.604Z
 ---
 
 # Knowledge Maintenance
@@ -122,11 +126,11 @@ Sources: Git history at commits `7c80c51`, `69eb753`, and `4f91ab1`.
 
 ## Migration Drift Audit
 
-**Status:** active evidence. **Owner:** maintainers. **Last verified:** 2026-08-27 against working-tree HEAD `89da575` with the Cargo profile, toolchain, task graph, release workflow, and README updates in this change.
+**Status:** active evidence. **Owner:** maintainers. **Last verified:** 2026-08-27 against working-tree HEAD `796e79f` plus the Node/npm and Clippy ownership updates in this change.
 
-- **Watched claims:** `openwiki/` is the only maintained knowledge root; all five pages are reachable from `quickstart.md`; the task graph exposes `check` as the aggregate of `typecheck`, `lint`, and `test`, with typecheck running only TypeScript `tsc --noEmit`, Clippy owning Rust compilation/static analysis, and nextest owning Rust tests; `fmt` remains independent, and `lint-fix` and `list-template-markers` remain available; the standard `release` profile uses thin LTO; `rust-toolchain.toml` selects stable with the minimal profile and installs no components; local Clippy and stable/nightly rustfmt come from global rustup state; the release workflow's toolchain setup retains caching without requesting components; release targets and artifact paths match the workflow; and no recurring OpenWiki automation is authorized.
+- **Watched claims:** `openwiki/` is the only maintained knowledge root; all five pages are reachable from `quickstart.md`; the task graph exposes `check` as the aggregate of `typecheck`, `lint`, and `test`, with typecheck running only the repository-local TypeScript compiler, Clippy owning Rust compilation/static analysis, and nextest owning Rust tests; Oxfmt, Oxlint, type-aware lint support, TypeScript, and Node types remain exact local npm development dependencies invoked through `node_modules`; Node 26.8.1 and npm 11.19.0 are repository pins; `fmt` remains independent, and `lint-fix` and `list-template-markers` remain available; the standard `release` profile uses thin LTO; `rust-toolchain.toml` selects stable with the minimal profile and installs Clippy for repository lint tasks; nightly rustfmt remains a separately managed prerequisite, while stable rustfmt and LLVM tools are not repository requirements; the release workflow's toolchain setup retains caching without requesting workflow-specific extra components; release targets and artifact paths match the workflow; and no recurring OpenWiki automation is authorized.
 - **Evidence anchors:** `README.md`, `Cargo.toml`, `rust-toolchain.toml`, `Makefile.toml`, app source/manifests, `.node-version`, `package.json`, `package-lock.json`, `tsconfig.json`, Oxc configuration, TypeScript scripts/tests, tracked workflows, `.github/actions/install-mold/action.yml`, `.github/actions/install-mold/install-mold.sh`, `.gitignore`, `.taplo.toml`, and the five OpenWiki pages.
-- **Checks run (2026-08-27):** `cargo make check` passed with one TypeScript compiler, one Clippy, one Oxlint, one vstyle, one nextest, and one Node test invocation; `cargo build --release --locked` passed; the release binary's `--help` and `--version` commands succeeded; and `actionlint`, `taplo fmt --check`, and `git diff --check` passed.
+- **Checks run (2026-08-27):** under the mise-selected Node 26.8.1/npm 11.19.0 environment, `npm ci --ignore-scripts`, `npm ls --all`, focused local TypeScript/Oxfmt/Oxlint checks, and `cargo make check` passed; the aggregate ran Clippy, vstyle, nextest, and Node tests successfully. `cargo build --release --locked`, `actionlint`, `taplo fmt --check`, and `git diff --check` also passed.
 - **Recommended reverse checks:** after relevant changes, resolve Markdown links; compare task names/dependencies with `Makefile.toml`, including `check`'s single dependency path through `typecheck`, `lint`, and `test`; compare workflow triggers/jobs/`needs`, toolchain setup inputs, and release paths with tracked YAML; compare Rust runtime claims with `main.rs`, `cli.rs`, and `build.rs`; compare TypeScript runtime claims with `.node-version`, manifests/configuration, scripts, and tests; scan for retired release-profile names, retired check task names, unexpected repository-owned Rust component claims, per-task `workspace = false`, `docs/`, `check-docs`, scheduled-automation, duplicate formatter, and placeholder claims; run `actionlint`, dependency-integrity checks, `git diff --check`, and applicable source checks; verify `openwiki/_plan.md` is absent after generation.
 - **Verdict:** pass for the current source/config alignment and focused checks above. Future OpenWiki changes must complete their page-job lifecycle before documentation readiness is claimed.
 - **Required updates:** rerun the reverse checks after changes to source/config, page routing, knowledge authority, validation, or automation policy. Any mismatch blocks documentation readiness.

@@ -5,20 +5,26 @@ openwiki_generated: true
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-7437def7410a3f1ed2549b16
+    resource: repo://.node-version
   - id: openwiki-source-27406d23c7732a24a700fbf9
     resource: repo://apps/name_placeholder/Cargo.toml
   - id: openwiki-source-651d1fb6c9e49916a916ab51
     resource: repo://Cargo.toml
   - id: openwiki-source-c8b1a2a9f2113ec43d4066da
     resource: repo://Makefile.toml
+  - id: openwiki-source-5093b074f16e0b77479219b2
+    resource: repo://package-lock.json
+  - id: openwiki-source-5b54a58d1b51cd490b0e7162
+    resource: repo://package.json
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
   - id: openwiki-source-b7793decf9d7c9ba48e57e0f
     resource: repo://rust-toolchain.toml
-generated: { by: "codex", at: "2026-08-27T08:17:37.266Z" }
+generated: { by: "codex", at: "2026-08-27T11:43:58.604Z" }
 verified:
-  - by: openwiki/0.4.2
-    at: 2026-08-27T08:17:37.266Z
+  - by: openwiki/0.4.3
+    at: 2026-08-27T11:43:58.604Z
 ---
 
 # Repository Quickstart
@@ -35,13 +41,13 @@ Sources: `README.md`, `Cargo.toml`, `rust-toolchain.toml`, `package.json`, `tsco
 
 Prerequisites for the common local path:
 
-- Rust via `rust-toolchain.toml` (stable with the minimal profile only; no components are installed).
-- Global rustup state with stable Clippy and rustfmt plus nightly rustfmt.
-- Node.js via `.node-version` and npm; `npm ci --ignore-scripts` installs the exact TypeScript tool graph from `package-lock.json`.
+- Rust via `rust-toolchain.toml` (stable with the minimal profile and the Clippy component used by repository lint tasks).
+- Rustfmt from the separately managed nightly toolchain for `fmt-rust`; stable rustfmt and LLVM tools are not repository requirements.
+- Node.js 26.8.1 via `.node-version` and npm 11.19.0 via the package manifest; `npm ci --ignore-scripts` installs the exact local TypeScript/Oxc tool graph from `package-lock.json`.
 - `cargo-make` to invoke repository-native tasks.
 - Taplo, `cargo-vstyle`, and `cargo-nextest` for the complete gate.
 
-The release jobs use the pinned Rust toolchain setup action with caching and do not request extra components.
+The release jobs honor the repository toolchain file and use the pinned Rust toolchain setup action with caching; the workflows do not request extra components of their own.
 
 Build and run the template CLI:
 
@@ -64,7 +70,7 @@ Run the repository-defined source-validation aggregate:
 cargo make check
 ```
 
-`typecheck` runs TypeScript's compiler without emitting files. `lint` runs Clippy for Rust compilation/static analysis, type-aware Oxlint, and vstyle; `test` runs Rust and TypeScript tests. `check` combines these three validation groups. Run `cargo make fmt` separately to correct Rust, TypeScript, and TOML formatting; `fmt` is intentionally not a `check` dependency. `Makefile.toml` declares the composite dependencies but does not itself document their runtime ordering; use the explicit diagnostic sequence in [Operations](operations.md) when order matters. OpenWiki is reviewed with the focused drift checks in [Knowledge Maintenance](knowledge-maintenance.md#openwiki-drift-check).
+`typecheck` runs the repository-local TypeScript compiler from `node_modules` without emitting files. `lint` runs repository-declared Clippy for Rust compilation/static analysis, local type-aware Oxlint, and vstyle; `test` runs Rust and TypeScript tests. `check` combines these three validation groups. Oxfmt and Oxlint are local development dependencies, and their tasks use deterministic `node_modules` entrypoints rather than global commands. Run `cargo make fmt` separately to correct Rust, TypeScript, and TOML formatting; `fmt` is intentionally not a `check` dependency. `Makefile.toml` declares the composite dependencies but does not itself document their runtime ordering; use the explicit diagnostic sequence in [Operations](operations.md) when order matters. OpenWiki is reviewed with the focused drift checks in [Knowledge Maintenance](knowledge-maintenance.md#openwiki-drift-check).
 
 ## Wiki Map
 
