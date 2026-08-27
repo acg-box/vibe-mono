@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:7c1ea3902f0fd13c675508d940561a836fd6c22c309c9f0c7c98b420fd4de796",
+  "pageVersion": "sha256:334e5c5d241f76e2077fee818646873637770e36788bb10ae64b66115a1e3cf2",
   "claims": [
     {
       "id": "claim_27b7a2dbd54e4efebab218e6a1cdcede",
@@ -72,15 +72,19 @@
     },
     {
       "id": "claim_676d436740b146b0bb618135a9142032",
-      "statement": "rust-toolchain.toml selects stable minimal with the Clippy component required by repository lint tasks; nightly rustfmt remains separately managed, and the release workflow toolchain setup retains caching without requesting workflow-specific extra components.",
+      "statement": "rust-toolchain.toml selects stable minimal with only the Clippy component; nightly rustfmt remains a separate explicit rustup invocation, and the release workflow toolchain setup retains caching without requesting components in workflow YAML.",
       "evidence": [
         {
           "resource": "repo://.github/workflows/release.yml#L52-L55",
           "version": "repo-lines-v1:sha256:ccf166929ec4c30800525e597228c60471c296e93ce09fad43c6bf42fe22c803:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQxNjA0M2RkZWE1ZjE4OTJjNWIyMzg5ZGU1ODY4OWQ1ZDc1ZDcyMWJlNmU5ZTgwN2Q5ZDE5YTNiZDkxYTkzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk3NGM3ZTY2MWRkODE3ZDIzYWFjZjMxNWM4OWM5NjVmMGFkMjYxYmE0YTI4ZDVmY2JlMThhMzJmOGRjMjdmMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTI0ZWVmNTMxNWJiZGVmNDI3MGEwMTgzYzNhY2ZiZDA5OTYyMTBhZTBmMWEwNWU1ZGNjZDI3ZWVkMmEzYzY2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzg3ZTcxOTEwYWM1ZmZlZGFlMzdjOWMxM2QxZGIwYTIyNjZiMDYyMzFjMDlhMjlmNjVlMjgwOWEyMTZlOWZlMiJ9"
         },
         {
+          "resource": "repo://Makefile.toml#L45-L53",
+          "version": "repo-lines-v1:sha256:69860c40b6110958299c4786d7e8ec94f6e4a74467975d9914c7cb116574fafd:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNlZDRiZmQ0MjA1ODdjYzBhM2RiNTU4ODc3NmM4MjZjMzRiZWNjOWIyM2FmYzcxMzM1YzRhMmYyNzdiZmY0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlmNzhlZGUyN2I4MjQ0YzI5YTgyOWMzYmRkY2Q0OTQzM2Q5ZmM2NWIwYmM0NGY0YWM2ZjRiZTI0Yjc2MjA2NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2U4MTg1M2IyOGU2MDU3NzVmMTdiZDkyYWQ5MzViMTE1ZTIyYWU0OWUxMWU5YWM4ZmRkZWMxMGRhOWEyZGQ4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdkNmM0MWU4MDViYjg3M2FjNTkzNGE4OTQ4Y2YzZGQzZTU2ZmMwMDM4YTRjOTZjYmUxYTk0NDQ3NzRlYmJmMiJ9"
+        },
+        {
           "resource": "repo://README.md#L101-L103",
-          "version": "repo-lines-v1:sha256:4aba734eca5d95f1e7af5ea5d5fc8afd389f1ce20f60d3aaa1180bd14303fd89:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkYmIyMjgyMmY5ZDZmMjE4NzdlZTVhYWVhZWRjMTA4ZGQ1ZjAzMTViNjZhYjFiYjU2ZWNjOTg0MDg0ODhmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmNlYTFkYWI1ZTUyZmJiNWQwMzIxMTNhMGI1NTQwZTQ5ZmUyN2RhMzliNGQ1MTMxZWVjMjc1YTRmMTkzZDc5MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
+          "version": "repo-lines-v1:sha256:197a7e0c75ce2f34274f26dac5ce761a0e9317fa7cf5bf3c2a849a8c100b4264:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkYmIyMjgyMmY5ZDZmMjE4NzdlZTVhYWVhZWRjMTA4ZGQ1ZjAzMTViNjZhYjFiYjU2ZWNjOTg0MDg0ODhmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdjZWUxMTk5NjRmYmY3MzZjZDdkY2IwZTk3MzdhMjYyOGRmZjNjOGExN2M1MWQzZWU4MjEzZDdjMmYwZTQ1NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
         },
         {
           "resource": "repo://rust-toolchain.toml#L1-L4",
@@ -89,13 +93,9 @@
       ]
     },
     {
-      "id": "claim_31c7beff6cdc41a2b1969dacea755971",
-      "statement": "The repository pins Node 26.8.1 and npm 11.19.0, locks TypeScript and Oxc as local development dependencies, invokes their executables through node_modules, and groups those five direct packages for Dependabot updates.",
+      "id": "claim_71eea8da12db47cbb873aa4980e7a84e",
+      "statement": "The mise-managed runtime contract pins Node.js 26.8.1 and npm 11.19.0; npm owns the local TypeScript 7.0.2 compiler, Node type definitions, Oxfmt, Oxlint, and oxlint-tsgolint, and Makefile.toml invokes the executable tools through project-local node_modules paths.",
       "evidence": [
-        {
-          "resource": "repo://.github/dependabot.yml#L9-L22",
-          "version": "repo-lines-v1:sha256:e14e346dbf9432eb1bae0d2c429b3887f4af9d090250311ed40582825966ae64:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyOTQxOTU0MmM2NTM5MWIxNTZiYTJlMTU2MjcwNmEwNjNjZmVlYzI3NmU4OTI0MjBmN2Q2NGVmNzA0NDAyZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4OTcxY2ZmMWYzNzU4OWVjZjAyNGQ4ODc5MDU2OGRhYWQzM2UxMDc0ZDNlZDIxMGZkODY1NDY4ZWJiNDUwMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NjE1ZDFhMjhjNTJjYzk0NTJkNTcxZWZkYzU1MmFjZDk1NzY3Y2E1MTQwZjllZWY2NTY2ODEyMzhmMDk4NDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmNDMxOWVmOTQ5MzE3ZjY0NjExODBiZmE5ZDVjZmIyMWQ5NGYzNzliODNlMWIwZGMzZWJjZmQxZWMyZmMzOTAifQ"
-        },
         {
           "resource": "repo://.node-version#L1-L1",
           "version": "repo-lines-v1:sha256:50b8995029fdebc8ca439031c6945518d38ab6ad38a3985c9ba386bfafebcb35:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTBiODk5NTAyOWZkZWJjOGNhNDM5MDMxYzY5NDU1MThkMzhhYjZhZDM4YTM5ODVjOWJhMzg2YmZhZmViY2IzNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTBiODk5NTAyOWZkZWJjOGNhNDM5MDMxYzY5NDU1MThkMzhhYjZhZDM4YTM5ODVjOWJhMzg2YmZhZmViY2IzNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
@@ -125,10 +125,24 @@
           "version": "repo-lines-v1:sha256:602c77f841efaea1f9651bca3dd003d842dd89a1e1a069d40f15092ec9e8e184:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzRkZTdlZDM1YTIzMzY0NTM5ODY0ZGFkYjkzOGI4NzIzMzM3OTE3OWQ2MjkyYjlmZjVmNjE5YTZjMTMxNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZjZmMGJiYjkxZGM3NzVlZDg1NjVhNzU1NTBkZGMzMDhjZDUzN2U4NjBiMDg2ZjY5ZGRhZTc3MDI1YmVmYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5MGNlNjg0NTIzNTY4ODZlZThlY2QzNzc2NjM2ZWU2NGQ4Mzk4YTY0NWU1ZjJkOGVmNWNkOGExMDJkNzQ4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
         }
       ]
+    },
+    {
+      "id": "claim_1cda9a0804a64b29b7070a4fafc7ad97",
+      "statement": "Root npm Dependabot groups @types/node, Oxfmt, Oxlint, oxlint-tsgolint, and TypeScript as one project-local TypeScript toolchain update group.",
+      "evidence": [
+        {
+          "resource": "repo://.github/dependabot.yml#L9-L22",
+          "version": "repo-lines-v1:sha256:e14e346dbf9432eb1bae0d2c429b3887f4af9d090250311ed40582825966ae64:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyOTQxOTU0MmM2NTM5MWIxNTZiYTJlMTU2MjcwNmEwNjNjZmVlYzI3NmU4OTI0MjBmN2Q2NGVmNzA0NDAyZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4OTcxY2ZmMWYzNzU4OWVjZjAyNGQ4ODc5MDU2OGRhYWQzM2UxMDc0ZDNlZDIxMGZkODY1NDY4ZWJiNDUwMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NjE1ZDFhMjhjNTJjYzk0NTJkNTcxZWZkYzU1MmFjZDk1NzY3Y2E1MTQwZjllZWY2NTY2ODEyMzhmMDk4NDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmNDMxOWVmOTQ5MzE3ZjY0NjExODBiZmE5ZDVjZmIyMWQ5NGYzNzliODNlMWIwZGMzZWJjZmQxZWMyZmMzOTAifQ"
+        },
+        {
+          "resource": "repo://package.json#L6-L11",
+          "version": "repo-lines-v1:sha256:62123be4b5517543013f345f929c4796f09fb6c7c300666de6dd1d406699f366:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRjNGRlN2VkMzVhMjMzNjQ1Mzk4NjRkYWRiOTM4Yjg3MjMzMzc5MTc5ZDYyOTJiOWZmNWY2MTlhNmMxMzE2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RlMjNhYzI0NDZmMzU0NmRjYzFjZWU2YTQyZWViMmFmOGZiMzM4OWIxYjA2NTk3ZjgxOTllNzhhYmZkNmE1MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTkwY2U2ODQ1MjM1Njg4NmVlOGVjZDM3NzY2MzZlZTY0ZDgzOThhNjQ1ZTVmMmQ4ZWY1Y2Q4YTEwMmQ3NDhkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjM3MWI3MDgwMzgwZjViM2NjYTM5MDRhOTJhYjg1MDlmYzk2OTkyN2I5YjUzMThjNGY2NDJiM2NjNmVjYTE3NiJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.4.3",
-    "at": "2026-08-27T11:43:58.604Z"
+    "at": "2026-08-27T11:51:28.056Z"
   }
 }

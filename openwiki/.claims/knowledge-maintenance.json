@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a23894cbaddedec7d47f5bda68cee98997ca7f375a8ba3bbd67bb71cddec0e19",
+  "pageVersion": "sha256:71c27a6c21a5870b1626baf7ac72a12a22b85e350a8737c945ada4159f0bd041",
   "claims": [
     {
       "id": "claim_b146ade6e29643dd87527fce75f03081",
@@ -18,7 +18,7 @@
     },
     {
       "id": "claim_08c2549bd8054aa38b2bd82c13a5d23b",
-      "statement": "The root Cargo configuration uses the standard release profile with thin LTO; rust-toolchain.toml selects stable minimal with the Clippy component required by repository lint tasks, and the release workflow's toolchain setup retains caching without requesting workflow-specific extra components.",
+      "statement": "The root Cargo configuration uses the standard release profile with thin LTO; rust-toolchain.toml selects stable minimal with only the Clippy component, and the release workflow's toolchain setup retains caching without requesting components.",
       "evidence": [
         {
           "resource": "repo://.github/workflows/release.yml#L52-L55",
@@ -30,7 +30,7 @@
         },
         {
           "resource": "repo://README.md#L101-L103",
-          "version": "repo-lines-v1:sha256:4aba734eca5d95f1e7af5ea5d5fc8afd389f1ce20f60d3aaa1180bd14303fd89:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkYmIyMjgyMmY5ZDZmMjE4NzdlZTVhYWVhZWRjMTA4ZGQ1ZjAzMTViNjZhYjFiYjU2ZWNjOTg0MDg0ODhmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmNlYTFkYWI1ZTUyZmJiNWQwMzIxMTNhMGI1NTQwZTQ5ZmUyN2RhMzliNGQ1MTMxZWVjMjc1YTRmMTkzZDc5MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
+          "version": "repo-lines-v1:sha256:197a7e0c75ce2f34274f26dac5ce761a0e9317fa7cf5bf3c2a849a8c100b4264:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkYmIyMjgyMmY5ZDZmMjE4NzdlZTVhYWVhZWRjMTA4ZGQ1ZjAzMTViNjZhYjFiYjU2ZWNjOTg0MDg0ODhmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdjZWUxMTk5NjRmYmY3MzZjZDdkY2IwZTk3MzdhMjYyOGRmZjNjOGExN2M1MWQzZWU4MjEzZDdjMmYwZTQ1NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
         },
         {
           "resource": "repo://rust-toolchain.toml#L1-L4",
@@ -53,8 +53,8 @@
       ]
     },
     {
-      "id": "claim_5b341c6ac7b8423dadf151aa3d70a846",
-      "statement": "Node 26.8.1 and npm 11.19.0 are pinned by repository version files, while TypeScript, Oxfmt, Oxlint, and type-aware lint support remain exact local development dependencies invoked through node_modules.",
+      "id": "claim_7fb3e1e26611475a996e765cec958830",
+      "statement": "The exact Node.js 26.8.1 and npm 11.19.0 runtime pins bootstrap a lockfile-owned project graph whose TypeScript, Oxfmt, Oxlint, and oxlint-tsgolint implementations are invoked through local node_modules paths.",
       "evidence": [
         {
           "resource": "repo://.node-version#L1-L1",
@@ -77,6 +77,10 @@
           "version": "repo-lines-v1:sha256:bdb139193e7712fe0108696d02c8ed5a0ec66245bd21769941e361cd644b1a56:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5ZTM4YTNjYTE3N2VjZTY2YWNjOTg2NTQyMmU2NDUwMGYyMmFkZjRkM2Q3MTU3MDk1ZGNkYjEwYTQ3ZWI1NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmN2UzM2NhNmVhYjE5ZTBmYzA2ZGQxZDBkZTU0OGI1ZjJiYzJmNGQxMTQzMzQxNTVhNGI5ZjNjODA2MDAyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3YmU4MzZhODFhZWYyNTIyMjUyMzk1MWZkZWQ3NzEwNTUwMjU3MDFhOGVkNjIzZmNmMThhZTg2M2RiYjgxYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiNTY5OWQ1YmEyNTIwNjZlYjUwN2MwMTRkZjIzYjJmZjQzMzdmYWNjYTYxMGIwZjQxZGUyNTY4NjdlZTUyMDUifQ"
         },
         {
+          "resource": "repo://package-lock.json#L6-L20",
+          "version": "repo-lines-v1:sha256:f919674f98135600876160f52573e3391b4271086d41c186e858ca082db3979e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5OTc5MjkyMTBlYjM1ODhhNDA3MGQ0NDc0OGZhMGQ0NGUzNDI1ZWI2ODkzZjI3YTcwYmNmYjA2YzI0MzVmYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxNzU2ZjUxNmQ3YmY0ZGJmYmJlYTdiMDMyNmNlODkyODE0ZDhkMDc0Njg0MTU2MGQ5NmNjNzE4MTllNzk1YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkYjlkNmRjZGJmNzVhMmE3YzI3MTYwMjNhZTZlYzZmMzEzMDM0M2ZjNWFhNDkzYzA4MzE4ODRmOWI3YTg2NWQifQ"
+        },
+        {
           "resource": "repo://package.json#L6-L29",
           "version": "repo-lines-v1:sha256:602c77f841efaea1f9651bca3dd003d842dd89a1e1a069d40f15092ec9e8e184:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzRkZTdlZDM1YTIzMzY0NTM5ODY0ZGFkYjkzOGI4NzIzMzM3OTE3OWQ2MjkyYjlmZjVmNjE5YTZjMTMxNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZjZmMGJiYjkxZGM3NzVlZDg1NjVhNzU1NTBkZGMzMDhjZDUzN2U4NjBiMDg2ZjY5ZGRhZTc3MDI1YmVmYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5MGNlNjg0NTIzNTY4ODZlZThlY2QzNzc2NjM2ZWU2NGQ4Mzk4YTY0NWU1ZjJkOGVmNWNkOGExMDJkNzQ4ZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
         }
@@ -85,6 +89,6 @@
   ],
   "verification": {
     "by": "openwiki/0.4.3",
-    "at": "2026-08-27T11:43:58.604Z"
+    "at": "2026-08-27T11:51:28.056Z"
   }
 }

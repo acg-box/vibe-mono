@@ -1,7 +1,8 @@
 ---
-type: "Reference"
-title: "Repository Quickstart"
-openwiki_generated: true
+type: Reference
+title: Repository Quickstart
+description: Routes contributors through repository ownership, prerequisites, common commands, and deeper OpenWiki pages.
+tags: [quickstart, repository, validation, routing]
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -21,10 +22,10 @@ sources:
     resource: repo://README.md
   - id: openwiki-source-b7793decf9d7c9ba48e57e0f
     resource: repo://rust-toolchain.toml
-generated: { by: "codex", at: "2026-08-27T11:43:58.604Z" }
+generated: { by: "codex", at: "2026-08-27T11:51:28.056Z" }
 verified:
   - by: openwiki/0.4.3
-    at: 2026-08-27T11:43:58.604Z
+    at: 2026-08-27T11:51:28.056Z
 ---
 
 # Repository Quickstart
@@ -41,13 +42,13 @@ Sources: `README.md`, `Cargo.toml`, `rust-toolchain.toml`, `package.json`, `tsco
 
 Prerequisites for the common local path:
 
-- Rust via `rust-toolchain.toml` (stable with the minimal profile and the Clippy component used by repository lint tasks).
-- Rustfmt from the separately managed nightly toolchain for `fmt-rust`; stable rustfmt and LLVM tools are not repository requirements.
-- Node.js 26.8.1 via `.node-version` and npm 11.19.0 via the package manifest; `npm ci --ignore-scripts` installs the exact local TypeScript/Oxc tool graph from `package-lock.json`.
+- Rust via `rust-toolchain.toml` (stable with the minimal profile and only the Clippy component).
+- Separately managed nightly rustfmt for the explicit `rustup run nightly` format task.
+- Node.js `26.8.1` and npm `11.19.0` through mise; `npm ci --ignore-scripts` installs the repository-local TypeScript compiler, Node type definitions, Oxfmt, Oxlint, and `oxlint-tsgolint` graph from `package-lock.json`.
 - `cargo-make` to invoke repository-native tasks.
 - Taplo, `cargo-vstyle`, and `cargo-nextest` for the complete gate.
 
-The release jobs honor the repository toolchain file and use the pinned Rust toolchain setup action with caching; the workflows do not request extra components of their own.
+The release jobs use the pinned Rust toolchain setup action with caching and do not request extra components.
 
 Build and run the template CLI:
 
@@ -70,7 +71,7 @@ Run the repository-defined source-validation aggregate:
 cargo make check
 ```
 
-`typecheck` runs the repository-local TypeScript compiler from `node_modules` without emitting files. `lint` runs repository-declared Clippy for Rust compilation/static analysis, local type-aware Oxlint, and vstyle; `test` runs Rust and TypeScript tests. `check` combines these three validation groups. Oxfmt and Oxlint are local development dependencies, and their tasks use deterministic `node_modules` entrypoints rather than global commands. Run `cargo make fmt` separately to correct Rust, TypeScript, and TOML formatting; `fmt` is intentionally not a `check` dependency. `Makefile.toml` declares the composite dependencies but does not itself document their runtime ordering; use the explicit diagnostic sequence in [Operations](operations.md) when order matters. OpenWiki is reviewed with the focused drift checks in [Knowledge Maintenance](knowledge-maintenance.md#openwiki-drift-check).
+`typecheck` runs the repository-local TypeScript compiler without emitting files. `lint` runs Clippy for Rust compilation/static analysis, repository-local type-aware Oxlint, and vstyle; `test` runs Rust and TypeScript tests. `check` combines these three validation groups. Run `cargo make fmt` separately to correct Rust, TypeScript, and TOML formatting; `fmt` is intentionally not a `check` dependency. `Makefile.toml` declares the composite dependencies but does not itself document their runtime ordering; use the explicit diagnostic sequence in [Operations](operations.md) when order matters. OpenWiki is reviewed with the focused drift checks in [Knowledge Maintenance](knowledge-maintenance.md#openwiki-drift-check).
 
 ## Wiki Map
 
@@ -82,7 +83,7 @@ cargo make check
 ## Repository Status And Boundaries
 
 - `apps/` owns runnable products; `packages/` owns reusable packages shared by products. A Rust package under `packages/` is **not** a workspace member until root `Cargo.toml` deliberately includes it.
-- `scripts/` owns repository-maintenance TypeScript programs. Root `package.json`, `package-lock.json`, `tsconfig.json`, `.oxfmtrc.json`, and `.oxlintrc.json` own their runtime and validation policy.
+- `scripts/` owns repository-maintenance TypeScript programs. Root `package.json` and `package-lock.json` own the pinned Node/npm contract plus the local TypeScript, Node type-definition, Oxfmt, Oxlint, and `oxlint-tsgolint` implementations. `tsconfig.json`, `.oxfmtrc.json`, and `.oxlintrc.json` own compiler, formatter, schema, and type-aware lint policy.
 - Root `Cargo.toml` owns workspace membership, common package metadata, profiles, and dependency versions. Each app manifest owns package-specific metadata and dependency selection.
 - `Makefile.toml` owns local validation tasks. `.github/workflows/release.yml` owns tag-based release and publishing orchestration; `.github/actions/` owns reusable repository actions. No tracked workflow validates pull requests, merge queues, or branch pushes.
 - `openwiki/` is the sole maintained repository knowledge surface. Do not create a competing `docs/` or wiki root.

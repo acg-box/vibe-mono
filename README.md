@@ -99,8 +99,8 @@ TODO
 ## Development
 
 `rust-toolchain.toml` selects the stable toolchain with the minimal profile and
-installs Clippy for the repository lint tasks. The formatting task uses rustfmt
-from the separately managed nightly toolchain.
+installs Clippy for the repository lint gate. Rust formatting remains a separate
+nightly rustfmt invocation through `rustup run nightly`.
 
 Install the exact TypeScript development graph without running package lifecycle
 scripts:
