@@ -1,33 +1,24 @@
 # Monorepo workspace tasks.
 
+[config]
+default_to_workspace = false
+skip_core_tasks      = true
+
 # Check
-# | task             | type      | cwd |
-# | ---------------- | --------- | --- |
-# | check            | composite |     |
-# | check-rust       | command   |     |
-# | check-typescript | command   |     |
+# | task      | type      | cwd |
+# | --------- | --------- | --- |
+# | check     | composite |     |
+# | typecheck | command   |     |
 
 [tasks.check]
 clear = true
 dependencies = [
-	"check-rust",
-	"check-typescript",
+	"typecheck",
 	"lint",
 	"test",
 ]
-workspace = false
 
-[tasks.check-rust]
-args = [
-	"check",
-	"--all-features",
-	"--all-targets",
-	"--workspace",
-]
-command = "cargo"
-workspace = false
-
-[tasks.check-typescript]
+[tasks.typecheck]
 args = [
 	"node_modules/typescript/bin/tsc",
 	"--noEmit",
@@ -35,7 +26,6 @@ args = [
 	"tsconfig.json",
 ]
 command = "node"
-workspace = false
 
 # Format
 # | task                 | type      | cwd |
@@ -51,7 +41,6 @@ dependencies = [
 	"fmt-toml",
 	"fmt-typescript",
 ]
-workspace = false
 
 [tasks.fmt-rust]
 args = [
@@ -62,7 +51,6 @@ args = [
 	"--all",
 ]
 command = "rustup"
-workspace = false
 
 [tasks.fmt-toml]
 args = [
@@ -70,7 +58,6 @@ args = [
 	"git ls-files -z -- '*.toml' | xargs -0 taplo fmt",
 ]
 command = "sh"
-workspace = false
 
 [tasks.fmt-typescript]
 args = [
@@ -82,7 +69,6 @@ args = [
 	".oxlintrc.json",
 ]
 command = "node"
-workspace = false
 
 # Lint
 # | task                  | type      | cwd |
@@ -104,7 +90,6 @@ dependencies = [
 	"lint-typescript",
 	"lint-vstyle",
 ]
-workspace = false
 
 [tasks.lint-fix]
 dependencies = [
@@ -112,13 +97,13 @@ dependencies = [
 	"lint-fix-typescript",
 	"lint-fix-vstyle",
 ]
-workspace = false
 
 [tasks.lint-fix-rust]
 args = [
 	"clippy",
 	"--fix",
 	"--allow-dirty",
+	"--locked",
 	"--all-features",
 	"--all-targets",
 	"--workspace",
@@ -141,7 +126,6 @@ args = [
 	"warnings",
 ]
 command = "cargo"
-workspace = false
 
 [tasks.lint-fix-typescript]
 args = [
@@ -150,16 +134,15 @@ args = [
 	"scripts",
 ]
 command = "node"
-workspace = false
 
 [tasks.lint-fix-vstyle]
 dependencies = [
 	"lint-fix-vstyle-rust",
 ]
-workspace = false
 
 [tasks.lint-fix-vstyle-rust]
 args = [
+	"--locked",
 	"vstyle",
 	"tune",
 	"--language",
@@ -169,11 +152,11 @@ args = [
 	"--strict",
 ]
 command = "cargo"
-workspace = false
 
 [tasks.lint-rust]
 args = [
 	"clippy",
+	"--locked",
 	"--all-features",
 	"--all-targets",
 	"--workspace",
@@ -196,7 +179,6 @@ args = [
 	"warnings",
 ]
 command = "cargo"
-workspace = false
 
 [tasks.lint-typescript]
 args = [
@@ -204,16 +186,15 @@ args = [
 	"scripts",
 ]
 command = "node"
-workspace = false
 
 [tasks.lint-vstyle]
 dependencies = [
 	"lint-vstyle-rust",
 ]
-workspace = false
 
 [tasks.lint-vstyle-rust]
 args = [
+	"--locked",
 	"vstyle",
 	"curate",
 	"--language",
@@ -223,7 +204,6 @@ args = [
 	"--strict",
 ]
 command = "cargo"
-workspace = false
 
 # List
 # | task                  | type    | cwd |
@@ -235,7 +215,6 @@ args = [
 	"scripts/list-template-markers.ts",
 ]
 command = "node"
-workspace = false
 
 # Test
 # | task            | type      | cwd |
@@ -250,22 +229,20 @@ dependencies = [
 	"test-rust",
 	"test-typescript",
 ]
-workspace = false
 
 [tasks.test-rust]
 args = [
 	"nextest",
 	"run",
+	"--locked",
 	"--workspace",
 	"--all-targets",
 	"--all-features",
 ]
 command = "cargo"
-workspace = false
 
 [tasks.test-typescript]
 args = [
 	"--test",
 ]
 command = "node"
-workspace = false

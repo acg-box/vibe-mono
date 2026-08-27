@@ -59,7 +59,7 @@ jobs:
 
       # The build script embeds Git SHA, which can change without a Rust source fingerprint change.
       - name: Remove cached package outputs
-        run: cargo clean -p name_placeholder --profile final-release --target ${{ matrix.target.name }}
+        run: cargo clean -p name_placeholder --release --target ${{ matrix.target.name }}
 
       - name: Install pinned mold (Linux)
         if: matrix.target.name == 'x86_64-unknown-linux-gnu'
@@ -77,7 +77,7 @@ jobs:
           test -x "${{ steps.mold.outputs.mold_libexec }}/ld"
           cargo rustc \
             -p name_placeholder \
-            --profile final-release \
+            --release \
             --locked \
             --target "${{ matrix.target.name }}" \
             -- \
@@ -90,7 +90,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          binary="target/${{ matrix.target.name }}/final-release/name_placeholder"
+          binary="target/${{ matrix.target.name }}/release/name_placeholder"
           version="$("${binary}" --version)"
           expected_suffix="-${GITHUB_SHA}-${{ matrix.target.name }}"
           case "${version}" in
@@ -106,14 +106,14 @@ jobs:
 
       - name: Build with platform linker
         if: matrix.target.name != 'x86_64-unknown-linux-gnu'
-        run: cargo build -p name_placeholder --profile final-release --locked --target ${{ matrix.target.name }}
+        run: cargo build -p name_placeholder --release --locked --target ${{ matrix.target.name }}
 
       - name: Verify binary identity (macOS)
         if: matrix.target.name == 'aarch64-apple-darwin'
         shell: bash
         run: |
           set -euo pipefail
-          version="$(target/${{ matrix.target.name }}/final-release/name_placeholder --version)"
+          version="$(target/${{ matrix.target.name }}/release/name_placeholder --version)"
           expected_suffix="-${GITHUB_SHA}-${{ matrix.target.name }}"
           case "${version}" in
             *"${expected_suffix}") ;;
@@ -127,7 +127,7 @@ jobs:
         if: matrix.target.name == 'x86_64-pc-windows-msvc'
         shell: pwsh
         run: |
-          $version = & "target/${{ matrix.target.name }}/final-release/name_placeholder.exe" --version
+          $version = & "target/${{ matrix.target.name }}/release/name_placeholder.exe" --version
           $expectedSuffix = "-$env:GITHUB_SHA-${{ matrix.target.name }}"
           if (-not $version.EndsWith($expectedSuffix)) {
             throw "Unexpected binary identity: $version"
@@ -136,19 +136,19 @@ jobs:
       - name: Pack (macOS)
         if: matrix.target.os == 'macos-latest'
         run: |
-          mv target/${{ matrix.target.name }}/final-release/name_placeholder .
+          mv target/${{ matrix.target.name }}/release/name_placeholder .
           zip "${{ matrix.target.archive }}" name_placeholder
 
       - name: Pack (Windows)
         if: matrix.target.os == 'windows-latest'
         run: |
-          mv target/${{ matrix.target.name }}/final-release/name_placeholder.exe .
+          mv target/${{ matrix.target.name }}/release/name_placeholder.exe .
           Compress-Archive -Path name_placeholder.exe -DestinationPath "${{ matrix.target.archive }}"
 
       - name: Pack (Linux)
         if: matrix.target.os == 'ubuntu-latest'
         run: |
-          mv target/${{ matrix.target.name }}/final-release/name_placeholder .
+          mv target/${{ matrix.target.name }}/release/name_placeholder .
           tar -czf "${{ matrix.target.archive }}" name_placeholder
 
       - name: Upload artifact

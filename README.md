@@ -48,10 +48,10 @@ cd name_placeholder
 
 # To install rustup on macOS and Unix without selecting a global default
 # toolchain, run the following command. This repository's rust-toolchain.toml
-# is authoritative for ordinary Rust commands.
+# selects stable with the minimal profile for ordinary Rust commands.
 #
 # On Windows, download rustup-init.exe from `https://rustup.rs` and run it with
-# `--default-toolchain none`; rust-toolchain.toml remains authoritative.
+# `--default-toolchain none`; rust-toolchain.toml still selects stable minimal.
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none
 
 # Install the necessary dependencies. (Unix only)
@@ -60,10 +60,10 @@ sudo apt-get update
 sudo apt-get install <DEPENDENCIES>
 
 # Build the default Rust app, and the binary will be available at `target/release/name_placeholder`.
-cargo build --release -p name_placeholder
+cargo build --release -p name_placeholder --locked
 
 # Install the default Rust app from the workspace.
-cargo install --path apps/name_placeholder --force
+cargo install --path apps/name_placeholder --locked --force
 
 # If you are a macOS user and want to have a `name_placeholder.app`, run the following command.
 # Install `cargo-bundle` to pack the binary into an app.
@@ -98,6 +98,10 @@ TODO
 
 ## Development
 
+`rust-toolchain.toml` selects the stable toolchain with the minimal profile only.
+It does not install components. Local development requires global rustup state
+with Clippy and rustfmt for stable, and rustfmt for nightly.
+
 Install the exact TypeScript development graph without running package lifecycle
 scripts:
 
@@ -117,11 +121,16 @@ Correct repository formatting when needed:
 cargo make fmt
 ```
 
-Run the Rust and TypeScript source-validation gate:
+Run the repository source-validation gate:
 
 ```sh
 cargo make check
 ```
+
+`typecheck` runs TypeScript's `tsc --noEmit`. `lint` runs Clippy for Rust
+static analysis, Oxlint, and vstyle. `test` runs Rust tests with nextest and
+the TypeScript integration tests. `check` combines these three validation
+groups; formatting remains independent and is corrected with `cargo make fmt`.
 
 ### Architecture
 

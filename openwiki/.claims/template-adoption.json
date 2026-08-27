@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:5615ba2e006124aefac77bb648d0e3f83869864ced6d15c86b6ac10fdf56497e",
+  "claims": [
+    {
+      "id": "claim_7536039dbd504acfa82806f5ddd93e60",
+      "statement": "The template's root standard release profile enables thin LTO only; adoption must update that profile, release workflow selectors and artifact paths, and README build/install guidance together when release needs or identity change.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L78-L151",
+          "version": "repo-lines-v1:sha256:311e6438a39465e1c295e8b4a10dcaceb2428283ee6f4968bf42024495f7e68c:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxM2YwY2Q4ZjMyY2E4YTY5MDQ4MTk2NmYxZGIwNTI0ZDZkYmQyYTc3ZWQwYWI1ODYzZjc1Mjc1NDk5YTk3OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxM2ZjMDY5Y2YyNzliYTA4OTgyOGEwZDQwOGI5NjM0YjE2YWQ1Y2NmY2Y3YzE3YThiN2QyMTQxZmEzN2QzZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5MzVjMTVjODVkOWIwOTAzOWQ4N2YzNDZlYzljYjI3NDUxZTRlODhjNDJiMzRjODg0NTk2OGIwZDE1NzA5ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MDE1MDU4YTZlNDgyNDQ2NTQxNDk2OGQ4M2QwMWUxZTg1NjUxZGM5ZjVlNzM4YTY4NjQzMTk1YzA3MTEzMGYifQ"
+        },
+        {
+          "resource": "repo://Cargo.toml#L14-L15",
+          "version": "repo-lines-v1:sha256:2c9bb110c8f4c7fdbb4ba5479cdaf734348766c7a876aeb085324b31d35e0d0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTYxYjk5MGFkOGY0Mjg0YzM1NGNkOGY5YjZiMWIwZDAxNTY1MDJhYmIwOGFiMjlhYjUwODI0OTRkN2EwNzYwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkNWMxNjczNDVmNmMwMDlmNTI0NWFjYzc3ZGFjY2JkNzRhMjJjNzdjMWRiNWJmNDA3YWNmYzk0MzEzMzM4YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODg4MGE5ZTIzOGMzNDllNTNlNzY2YTQ5MWU1NzhjOGYyNzhhZjQxOTkxNDFmNWFmOTc2YWQ0NzdkY2I4ZWUwMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I2YzJlZDUzYjVkMzM0Mzk5ZjRiYTJhYThhNTQ3MjBlMTdjZDQ2MTViZTRkOTdkMzg2MDA3NWIzY2VhZjViNSJ9"
+        },
+        {
+          "resource": "repo://README.md#L57-L78",
+          "version": "repo-lines-v1:sha256:511e3f90bea893502e95f1763410f6f9bfb63fd5a26c98b97092878159d77126:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4OWUxYmEyZDQ4NDhlMTlhNDgwMTlkZTRlMzY2MmY5ZGZkN2M1Yzg4YWQ2ZGUzYzRjZmUxZjA2NjkwZmM2YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MjkwMmY2MmM2MWYwOWE5ZDQ1YTdhOGIzYTFhMDk0ZDIwYmQ3MjdkMDIwYzJmN2U4N2I0MTJlZGZmNTRjNzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlYjJhOTgzMjc0NzhiYWNkY2Q4ODliNzZiMmUyM2ZkMTk4YjUzYTQ5Nzc3NmEzMGM5ZTVjMTlkZGYxODY2YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3NDJkNjc3YjQ1ODZlZmVjMmMzZTA5NmUxYzI2YThmN2NjNjM0YzQzODhhYTdjNjAxZTc4MzBjOWU1ZWMzOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c2de1392abe49b8b6bbd16605fc8c5c",
+      "statement": "The repository's marker inventory is a read-only cargo-make task that invokes the tracked TypeScript helper, while the release workflow keeps the three target-specific package contracts and Linux mold verification.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L26-L48",
+          "version": "repo-lines-v1:sha256:59dcf41745cd53f6e016a4288a8509bbe804b8b6a7818b1a619d5ffb8f163784:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYjRiNmVhNDY2YmY2Mjk1ZGNiYzA4MTQwNjQxODBiNDc4ZmQ3NTU4YmY5YmI1YTgyNDU1MDg3MWVlMjM2NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4OTk5MTEwM2Y2YmE4ODhlM2RlNzY1MWM1YTMwNWM3N2U1NTQ3Njc3M2FiYTgzOTU5MWVjYzViZDBmMmFiMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkMjc4ZjE5N2ZiZjhmZGI2MTdlMTdhMzJhN2I0MmRlYjdmOGYzZGYzNzY4NjYwZjM4ZjVkOGJlNTM3NGZlYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyNGVlZjUzMTViYmRlZjQyNzBhMDE4M2MzYWNmYmQwOTk2MjEwYWUwZjFhMDVlNWRjY2QyN2VlZDJhM2M2NmQifQ"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L64-L105",
+          "version": "repo-lines-v1:sha256:ba77e2e73cb1b2a1181b3bb3086c5a1372f8202a814d4b2aff076812aeb68e75:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMWI2MTdhOWRlYzM5ZDkwNWQzZjhkM2U4MDNiNmMxMDJlMDQxNzM0ZjhkNzIwMWQwZGNlM2JiNWU5ODJmMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4YWM1ZTUxYWMxMjg0YmUwNDA4MGUxZTY3YzQyMzJiMDNjMjc4ODc1ZTZjNzk2NGI5NTVlNWQzYmJjMWQyYWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmMDc1ZTFjYmM1MjQ1YWNkYzA1YzI3YmM0NjIyZWFkNmQyNGQzMDQzNjU2ODI2ZGRmNGNhNmM3Mzg0NTgyNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhNzM1ZGZlOTI1MjAwN2M4N2Y3OWM2NDhhYmVlZDcwMDViMDc5NGVkMzAyMWI0ZGViYzExMWM3Y2IwN2M4MmMifQ"
+        },
+        {
+          "resource": "repo://Makefile.toml#L224-L233",
+          "version": "repo-lines-v1:sha256:3764f9c6005b3107db0bcf86a81760fc795a3679ed88fcf78d23378493f44dec:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1NTY1NjFkNjUzZjc5Y2I5ODllMmMwNzY2ZDZjNjIwZDAxOTFjZGM0MzIzMWUxMWNhMTA3YjRjZTc0YmMyNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmN2UzM2NhNmVhYjE5ZTBmYzA2ZGQxZDBkZTU0OGI1ZjJiYzJmNGQxMTQzMzQxNTVhNGI5ZjNjODA2MDAyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3ZjFjYjdlNjEyNzEzZjg3M2Y5ZTA4YzA4Zjc0ZTkzYzQ4MTVjOTgyNmRmZGFjM2Q2YjhhMDAwMDE5NTljMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzNTg4YjExYTZjMWMyYjIzNDc0NDIzNjRlYjRlOTQ4Y2NmNDI3ZGE4OWQ5ZGEzNGY3NWMwNDUyNTRjNzYyN2YifQ"
+        },
+        {
+          "resource": "repo://scripts/list-template-markers.ts#L1-L52",
+          "version": "repo-lines-v1:sha256:3f9723eba3b0720e96d6694fe21b9888fe144d6b2e56075f06af386f4784f1cc:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2MjZiZDkyYTFjMDZiMTBjZGM1ZjA0YTM2OGMyMWExNWNlNjQzOGRlNzQxN2QzZjA5YWVkMDBiNDM5NmU4YWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.4.2",
+    "at": "2026-08-27T08:17:37.266Z"
+  }
+}

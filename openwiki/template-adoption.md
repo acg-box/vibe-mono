@@ -2,6 +2,21 @@
 type: "Reference"
 title: "Template Adoption"
 openwiki_generated: true
+sources:
+  - id: openwiki-source-4d1d392666be6dfdd7a91a2e
+    resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-651d1fb6c9e49916a916ab51
+    resource: repo://Cargo.toml
+  - id: openwiki-source-c8b1a2a9f2113ec43d4066da
+    resource: repo://Makefile.toml
+  - id: openwiki-source-23775c3de52f3ab95a13cb8b
+    resource: repo://README.md
+  - id: openwiki-source-bc06f7fe5334bbc75a9075ce
+    resource: repo://scripts/list-template-markers.ts
+generated: { by: "codex", at: "2026-08-27T08:17:37.266Z" }
+verified:
+  - by: openwiki/0.4.2
+    at: 2026-08-27T08:17:37.266Z
 ---
 
 # Template Adoption
@@ -75,7 +90,7 @@ If the project rejects this workspace model, record why in [Knowledge Maintenanc
 Update together:
 
 - `apps/<app>/build.rs` fallback/version behavior.
-- Root `final-release` profile if release needs differ.
+- Root `release` profile, which currently enables thin LTO only, if release needs differ.
 - Root private npm tool-package identity and its generated lockfile.
 - `.github/workflows/release.yml` package selectors, target matrix, executable names, archive names, paths, and publication target.
 - README download/install instructions and docs.rs/repository badges.
@@ -104,7 +119,7 @@ as one reviewed change.
 
 `openwiki/` is the maintained knowledge surface. For every changed behavior or boundary:
 
-- Update the source/configuration that owns the claim, run `openwiki code --update --print`, and review the generated owning-page diff; use direct page edits only for explicit curation or correction.
+- Update the source/configuration that owns the claim, run the OpenWiki resumable page-job update lifecycle, and review each assigned owning-page diff; edit only the page assigned by the active lifecycle.
 - Keep one canonical page per claim and link from other pages instead of copying it.
 - Preserve the accepted reason for a checked-in, agent-routable knowledge system, but use OpenWiki pages rather than recreating the legacy strict OKF lane tree.
 - Convert unresolved options into explicitly non-authoritative research notes only when there is active research.
@@ -127,7 +142,7 @@ Also verify:
 ```sh
 cargo make list-template-markers
 cargo run -p <real-package> -- --help
-cargo build -p <real-package> --profile final-release --locked
+cargo build --release -p <real-package> --locked
 ```
 
 `list-template-markers` must produce no marker records after adoption. Cargo-make can still print task status. If Node/npm is not available, use the scoped `rg` fallback from step 1.
