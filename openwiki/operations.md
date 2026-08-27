@@ -1,7 +1,8 @@
 ---
-type: "Reference"
-title: "Operations And Validation"
-openwiki_generated: true
+type: Reference
+title: Operations And Validation
+description: Defines local validation, build, release, dependency, and failure-handling operations.
+tags: [operations, validation, release, dependencies]
 sources:
   - id: openwiki-source-79b37831c9c81206da1d88ec
     resource: repo://.github/dependabot.yml
@@ -19,10 +20,10 @@ sources:
     resource: repo://README.md
   - id: openwiki-source-b7793decf9d7c9ba48e57e0f
     resource: repo://rust-toolchain.toml
-generated: { by: "codex", at: "2026-08-27T11:43:58.604Z" }
+generated: { by: "codex", at: "2026-08-27T11:51:28.056Z" }
 verified:
   - by: openwiki/0.4.3
-    at: 2026-08-27T11:43:58.604Z
+    at: 2026-08-27T11:51:28.056Z
 ---
 
 # Operations And Validation
@@ -33,16 +34,16 @@ Repository-native tasks are declared in `Makefile.toml` and invoked with `cargo 
 
 | Tool | Needed by |
 | --- | --- |
-| Project Rust selection from `rust-toolchain.toml` | Stable toolchain with the minimal profile and Clippy for repository lint tasks |
-| Separately managed nightly rustfmt | `fmt-rust` |
-| Node.js/npm from `.node-version` | TypeScript typecheck, format, lint, test, and template-marker tasks |
-| Exact local npm development graph from `package-lock.json` | TypeScript, Oxfmt, Oxlint, and type-aware lint support |
+| Project Rust selection from `rust-toolchain.toml` | Stable toolchain with the minimal profile and Clippy for the Rust lint tasks |
+| Separately managed nightly rustfmt | `fmt-rust` through the explicit `rustup run nightly` invocation |
+| Node.js `26.8.1` and npm `11.19.0` through mise | Runtime and package-manager bootstrap for npm operations and repository-maintenance scripts |
+| Repository-local TypeScript, Node type definitions, Oxfmt, Oxlint, and `oxlint-tsgolint` | Typecheck, TypeScript format, and type-aware lint tasks |
 | `cargo-make` | Every `cargo make` entrypoint |
 | `taplo` | TOML format tasks |
 | `cargo-vstyle` | vstyle tasks and the composite lint/full gates |
 | `cargo-nextest` | test tasks |
 
-`rust-toolchain.toml` selects stable with the minimal profile and installs Clippy for repository lint tasks. The formatting task uses rustfmt from the separately managed nightly toolchain; stable rustfmt and LLVM tools are not repository requirements. The release and crates.io jobs use the pinned toolchain setup action with caching and do not request workflow-specific extra components. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, and the complete local TypeScript/Oxc development graph. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate; repository tasks invoke the installed tools through deterministic `node_modules` entrypoints and do not install dependencies. Source validation is local-only; tracked GitHub Actions do not install or run this complete tool graph for pull requests, merge queues, or branch pushes.
+`rust-toolchain.toml` selects stable with the minimal profile and installs only Clippy because the repository lint gate invokes it. The `fmt-rust` task continues to invoke nightly rustfmt explicitly through `rustup run nightly`, outside the stable component declaration. The release and crates.io jobs use the pinned toolchain setup action with caching and do not request components in workflow YAML. Third-party Cargo tools remain separate prerequisites. `.node-version`, `package.json`, and `package-lock.json` pin Node.js, npm, the local TypeScript compiler, Node type definitions, Oxfmt, Oxlint, and `oxlint-tsgolint`. Run `npm ci --ignore-scripts` before a TypeScript task or the full aggregate. Repository tasks validate but do not install dependencies. Source validation is local-only; tracked GitHub Actions do not install or run this complete tool graph for pull requests, merge queues, or branch pushes.
 
 Sources: `rust-toolchain.toml`, `Makefile.toml`, `.node-version`, `package.json`, `package-lock.json`, `.github/workflows/release.yml`.
 
@@ -54,7 +55,7 @@ Sources: `rust-toolchain.toml`, `Makefile.toml`, `.node-version`, `package.json`
 cargo make check
 ```
 
-`check` is the complete cargo-make source-validation aggregate. Its dependencies are `typecheck`, `lint`, and `test`; `typecheck` runs TypeScript `tsc --noEmit`, while lint's Clippy task owns Rust compilation/static analysis and test's nextest task owns Rust tests. It does not inspect or modify formatting; run the separate mutating `cargo make fmt` task when formatting needs correction. `Makefile.toml` establishes the dependency set but does not state a runtime ordering contract. After formatting is corrected, invoke the targeted commands explicitly in this recommended sequence when deterministic, fail-fast diagnosis matters:
+`check` is the complete cargo-make source-validation aggregate. Its dependencies are `typecheck`, `lint`, and `test`; `typecheck` runs the repository-local TypeScript compiler with `--noEmit`, while lint's Clippy task owns Rust compilation/static analysis and test's nextest task owns Rust tests. It does not inspect or modify formatting; run the separate mutating `cargo make fmt` task when formatting needs correction. `Makefile.toml` establishes the dependency set but does not state a runtime ordering contract. After formatting is corrected, invoke the targeted commands explicitly in this recommended sequence when deterministic, fail-fast diagnosis matters:
 
 ```sh
 cargo make typecheck
@@ -69,17 +70,17 @@ This diagnostic order covers TypeScript typechecking, Rust compilation/static an
 | Task | Exact behavior | Mutates files? |
 | --- | --- | --- |
 | `check` | Composite: `typecheck`, `lint`, `test` | Build/tool caches only |
-| `typecheck` | `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json` | Tool cache only |
+| `typecheck` | Run `node node_modules/typescript/bin/tsc --noEmit --project tsconfig.json` | Tool cache only |
 | `fmt` | Composite: `fmt-rust`, `fmt-toml`, `fmt-typescript` | Yes |
 | `fmt-rust` | `rustup run nightly cargo fmt --all` | Yes |
 | `fmt-toml` | `git ls-files -z -- '*.toml' \| xargs -0 taplo fmt` | Yes |
-| `fmt-typescript` | Run `node_modules/oxfmt/bin/oxfmt` through Node over `scripts/` and the owned TypeScript JSON configuration files | Yes |
+| `fmt-typescript` | Run `node node_modules/oxfmt/bin/oxfmt` over `scripts/` and the owned TypeScript JSON configuration files | Yes |
 | `lint` | Composite: `lint-rust`, `lint-typescript`, `lint-vstyle` | No |
 | `lint-fix` | Composite: `lint-fix-rust`, `lint-fix-typescript`, `lint-fix-vstyle` | Yes |
 | `lint-rust` | Rust compilation/static analysis through workspace/all-target/all-feature Clippy with `--locked` and repository deny policy | Build cache only |
 | `lint-fix-rust` | Same locked Clippy policy with `--fix --allow-dirty` | Yes |
-| `lint-typescript` | Run `node_modules/oxlint/bin/oxlint` through Node over `scripts/` with the checked-in type-aware deny policy | No |
-| `lint-fix-typescript` | Run the same local Oxlint entrypoint with safe `--fix`; suggestions and dangerous fixes remain disabled | Yes |
+| `lint-typescript` | Run `node node_modules/oxlint/bin/oxlint scripts` with the checked-in type-aware deny policy | No |
+| `lint-fix-typescript` | Run the same local Oxlint path with safe `--fix`; suggestions and dangerous fixes remain disabled | Yes |
 | `lint-vstyle` | Composite: `lint-vstyle-rust` | No |
 | `lint-vstyle-rust` | `cargo --locked vstyle curate --language rust --workspace --all-features --strict` | No |
 | `lint-fix-vstyle` | Composite: `lint-fix-vstyle-rust` | Yes |
@@ -91,7 +92,7 @@ This diagnostic order covers TypeScript typechecking, Rust compilation/static an
 
 The Clippy tasks deny `clippy::all`, `clippy::too_many_lines`, `clippy::unwrap_used`, `clippy::use_self`, `clippy::wildcard_imports`, `missing-docs`, `unused-crate-dependencies`, and all warnings. `clippy.toml` allows unwrap only in tests, sets a 120-line threshold, and warns on wildcard imports. Rust formatting intentionally uses nightly features from `.rustfmt.toml`. TOML selection uses Git-tracked paths in the `fmt-toml` tasks; `.taplo.toml` supplies formatting policy, including a scoped `reorder_arrays = false` rule for `Makefile.toml` while global `reorder_keys = true` remains active.
 
-The TypeScript compiler enables strict checking, indexed-access uncertainty, exact optional-property semantics, control-flow checks, and Node-erasable syntax. Oxlint denies correctness, suspicious, and performance diagnostics plus explicit `any`, unsafe type operations, non-null assertions, unhandled or misused promises, non-`Error` throws, and non-exhaustive switches. Warnings and unused suppression directives fail the task. Oxfmt is the sole TypeScript formatter; the prior root Prettier files were unused and are removed. The npm lock contains platform-specific optional binary packages for TypeScript and Oxc; `.npmrc` disables lifecycle scripts and requires exact saved versions.
+The TypeScript compiler enables strict checking, indexed-access uncertainty, exact optional-property semantics, control-flow checks, and Node-erasable syntax. Oxlint uses the locked `oxlint-tsgolint` backend for rules that require type information and denies correctness, suspicious, and performance diagnostics plus explicit `any`, unsafe type operations, non-null assertions, unhandled or misused promises, non-`Error` throws, and non-exhaustive switches. Warnings and unused suppression directives fail the task. Oxfmt is the sole TypeScript formatter. The npm lock contains TypeScript, Oxfmt, Oxlint, `oxlint-tsgolint`, Node type definitions, and their platform-specific optional packages. `.npmrc` disables lifecycle scripts and requires exact saved versions.
 
 History: commit `452039e` separated `cargo check` from Clippy and made task contracts explicit; `b250fc0` split vstyle wrappers by language for monorepo extension.
 
@@ -136,7 +137,7 @@ No tracked GitHub Actions workflow validates pull requests, merge queues, or bra
 
 Repository-owned tracked Actions are reserved for tag-based release and publishing work. This policy removes repository-owned hosted PR feedback and its runner latency and resource use. GitHub organization or enterprise rulesets can still inject checks that are not controlled by this repository's YAML; audit that provider configuration separately. Revisit this policy if local-only validation no longer provides sufficient integration confidence or if the repository again requires an enforceable pre-merge gate.
 
-The former CodeQL workflow has also been removed, so no tracked workflow provides hosted security-analysis coverage. Actions used by the release pipeline remain SHA-pinned; preserve that supply-chain posture when updating them. Dependabot still covers Cargo, root npm, and GitHub Actions; the TypeScript compiler, types, formatter, linter, and type-aware backend update as one review group.
+The former CodeQL workflow has also been removed, so no tracked workflow provides hosted security-analysis coverage. Actions used by the release pipeline remain SHA-pinned; preserve that supply-chain posture when updating them. Dependabot still covers Cargo, root npm, and GitHub Actions. Its `typescript-toolchain` group contains `@types/node`, Oxfmt, Oxlint, `oxlint-tsgolint`, and TypeScript so the repository-local compiler, formatter, linter, and type-aware backend update together.
 
 Sources: `Makefile.toml`, `.github/workflows/release.yml`, `.github/dependabot.yml`.
 
@@ -144,7 +145,7 @@ Sources: `Makefile.toml`, `.github/workflows/release.yml`, `.github/dependabot.y
 
 A tag matching `v<major>.<minor>.<patch>` triggers `.github/workflows/release.yml`:
 
-1. Select stable minimal with the repository-declared Clippy component from `rust-toolchain.toml` and preserve the toolchain action cache without requesting workflow-specific extra components. Then remove cached outputs for the workspace binary and build `name_placeholder` with the standard release profile and `--locked` for Apple arm64, Linux x86_64 GNU, and Windows x86_64 MSVC. The standard release profile uses thin LTO. Dependency caches remain reusable, but the application code generation and final link must run for the tag source. macOS continues to use Apple ld, and Windows continues to use MSVC link.exe. Linux first downloads the pinned mold archive over HTTPS, verifies its SHA-256 digest and reported version, then invokes `cargo rustc --release --locked` with target-specific linker flags that replace Rust's self-contained LLD with mold.
+1. Select stable minimal from `rust-toolchain.toml` and preserve the toolchain action cache without requesting extra components. Then remove cached outputs for the workspace binary and build `name_placeholder` with the standard release profile and `--locked` for Apple arm64, Linux x86_64 GNU, and Windows x86_64 MSVC. The standard release profile uses thin LTO. Dependency caches remain reusable, but the application code generation and final link must run for the tag source. macOS continues to use Apple ld, and Windows continues to use MSVC link.exe. Linux first downloads the pinned mold archive over HTTPS, verifies its SHA-256 digest and reported version, then invokes `cargo rustc --release --locked` with target-specific linker flags that replace Rust's self-contained LLD with mold.
 2. Execute each native binary before packaging and require its reported source SHA and target triple to match the workflow source and matrix target. Also require the Linux binary's ELF `.comment` section to report the pinned mold version. A missing linker, checksum or version mismatch, unsupported linker flags, identity mismatch, or absent mold marker fails that matrix branch before packaging.
 3. Package macOS/Windows as ZIP and Linux as tar.gz using the explicit archive name in each matrix entry. Upload each archive without an extra artifact wrapper, fail if it is missing, and retain it for one day.
 4. After every matrix build succeeds, download matching archives into `artifacts/` with digest mismatches treated as errors and decompression disabled.

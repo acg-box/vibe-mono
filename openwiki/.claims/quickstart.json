@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:55d4600c76cceafea12b9dd2ade624bc2cc8176cc9f8b5ba8b8c25e27aded00e",
+  "pageVersion": "sha256:ce6f438907d638a7f943892d0075a7ba4bf07d5a657454df456bf0a9aa7a854c",
   "claims": [
     {
       "id": "claim_dd5a14c2ce8746f0b863798287d55825",
-      "statement": "rust-toolchain.toml selects stable with the minimal profile and the Clippy component required by repository lint tasks; nightly rustfmt remains separately managed, while both release workflow toolchain setup steps retain caching without requesting workflow-specific extra components.",
+      "statement": "rust-toolchain.toml selects stable with the minimal profile and only the Clippy component; nightly rustfmt remains a separate explicit rustup invocation, while both release workflow toolchain setup steps retain caching without requesting components in workflow YAML.",
       "evidence": [
         {
           "resource": "repo://.github/workflows/release.yml#L210-L213",
@@ -15,8 +15,12 @@
           "version": "repo-lines-v1:sha256:ccf166929ec4c30800525e597228c60471c296e93ce09fad43c6bf42fe22c803:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQxNjA0M2RkZWE1ZjE4OTJjNWIyMzg5ZGU1ODY4OWQ1ZDc1ZDcyMWJlNmU5ZTgwN2Q5ZDE5YTNiZDkxYTkzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk3NGM3ZTY2MWRkODE3ZDIzYWFjZjMxNWM4OWM5NjVmMGFkMjYxYmE0YTI4ZDVmY2JlMThhMzJmOGRjMjdmMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTI0ZWVmNTMxNWJiZGVmNDI3MGEwMTgzYzNhY2ZiZDA5OTYyMTBhZTBmMWEwNWU1ZGNjZDI3ZWVkMmEzYzY2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzg3ZTcxOTEwYWM1ZmZlZGFlMzdjOWMxM2QxZGIwYTIyNjZiMDYyMzFjMDlhMjlmNjVlMjgwOWEyMTZlOWZlMiJ9"
         },
         {
+          "resource": "repo://Makefile.toml#L45-L53",
+          "version": "repo-lines-v1:sha256:69860c40b6110958299c4786d7e8ec94f6e4a74467975d9914c7cb116574fafd:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNlZDRiZmQ0MjA1ODdjYzBhM2RiNTU4ODc3NmM4MjZjMzRiZWNjOWIyM2FmYzcxMzM1YzRhMmYyNzdiZmY0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlmNzhlZGUyN2I4MjQ0YzI5YTgyOWMzYmRkY2Q0OTQzM2Q5ZmM2NWIwYmM0NGY0YWM2ZjRiZTI0Yjc2MjA2NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2U4MTg1M2IyOGU2MDU3NzVmMTdiZDkyYWQ5MzViMTE1ZTIyYWU0OWUxMWU5YWM4ZmRkZWMxMGRhOWEyZGQ4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdkNmM0MWU4MDViYjg3M2FjNTkzNGE4OTQ4Y2YzZGQzZTU2ZmMwMDM4YTRjOTZjYmUxYTk0NDQ3NzRlYmJmMiJ9"
+        },
+        {
           "resource": "repo://README.md#L101-L103",
-          "version": "repo-lines-v1:sha256:4aba734eca5d95f1e7af5ea5d5fc8afd389f1ce20f60d3aaa1180bd14303fd89:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkYmIyMjgyMmY5ZDZmMjE4NzdlZTVhYWVhZWRjMTA4ZGQ1ZjAzMTViNjZhYjFiYjU2ZWNjOTg0MDg0ODhmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmNlYTFkYWI1ZTUyZmJiNWQwMzIxMTNhMGI1NTQwZTQ5ZmUyN2RhMzliNGQ1MTMxZWVjMjc1YTRmMTkzZDc5MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
+          "version": "repo-lines-v1:sha256:197a7e0c75ce2f34274f26dac5ce761a0e9317fa7cf5bf3c2a849a8c100b4264:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkYmIyMjgyMmY5ZDZmMjE4NzdlZTVhYWVhZWRjMTA4ZGQ1ZjAzMTViNjZhYjFiYjU2ZWNjOTg0MDg0ODhmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdjZWUxMTk5NjRmYmY3MzZjZDdkY2IwZTk3MzdhMjYyOGRmZjNjOGExN2M1MWQzZWU4MjEzZDdjMmYwZTQ1NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjdmMzIwMTgyZWE5YjEwYTNhNTE0OTlkOWI1YzY3MzkxYTE1Y2ZiNWFmNDIxOTBmMWFjYjU2MjI2NTVhYWIwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2YxYzllOGQ1NGMyYWI4NzU0NTAxMTlhYzUzZDQ3NzY1N2UzZjFmYjY4ZDMxZjYxOTQzNmNmYmMzZWMxMDA2YyJ9"
         },
         {
           "resource": "repo://rust-toolchain.toml#L1-L4",
@@ -49,8 +53,8 @@
       ]
     },
     {
-      "id": "claim_997d6b55e7eb4509b1fe47483cd712d2",
-      "statement": "The repository pins Node 26.8.1 and npm 11.19.0, keeps TypeScript and Oxc in the local locked development graph, and invokes their compiler, formatter, and linter through node_modules.",
+      "id": "claim_a8d352c71f1c4c4d97e14352e5dfda65",
+      "statement": "The local TypeScript lane uses mise-managed Node.js 26.8.1 and npm 11.19.0, installs TypeScript, Node type definitions, Oxfmt, Oxlint, and oxlint-tsgolint from the npm lock, and invokes the executable tools through project-local node_modules paths.",
       "evidence": [
         {
           "resource": "repo://.node-version#L1-L1",
@@ -85,6 +89,6 @@
   ],
   "verification": {
     "by": "openwiki/0.4.3",
-    "at": "2026-08-27T11:43:58.604Z"
+    "at": "2026-08-27T11:51:28.056Z"
   }
 }
