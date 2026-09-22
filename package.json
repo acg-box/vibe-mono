@@ -4,10 +4,10 @@
   "license": "GPL-3.0-only",
   "type": "module",
   "devDependencies": {
-    "@types/node": "26.1.2",
-    "oxfmt": "0.62.0",
-    "oxlint": "1.77.0",
-    "oxlint-tsgolint": "7.0.2001",
+    "@types/node": "26.6.1",
+    "oxfmt": "0.68.0",
+    "oxlint": "1.83.0",
+    "oxlint-tsgolint": "7.0.2002",
     "typescript": "7.0.2"
   },
   "devEngines": {
